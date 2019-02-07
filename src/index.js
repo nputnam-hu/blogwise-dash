@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './all.sass'
 import 'typeface-roboto'
+import 'typeface-lato'
 import '@blueprintjs/core/lib/css/blueprint.css'
 
 import App from './App'

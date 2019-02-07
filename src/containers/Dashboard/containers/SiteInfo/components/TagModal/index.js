@@ -6,6 +6,7 @@ import {
   TextArea,
   Button,
 } from '@blueprintjs/core'
+import uuid from 'uuid/v4'
 import './styles.sass'
 
 class TagModal extends Component {
@@ -16,10 +17,7 @@ class TagModal extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onClick = () =>
     this.state.name &&
-    this.props.modifyTag(
-      this.props.modalTagKey || this.state.name.toLowerCase(),
-      this.state,
-    )
+    this.props.modifyTag(this.props.modalTagKey || uuid(), this.state)
   render() {
     const { isOpen, handleClose, isEdit } = this.props
     return (
