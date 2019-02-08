@@ -35,7 +35,7 @@ const SideBarPreview = ({
           <div id="sociallinks">
             {twitterUrl && (
               <a
-                href={`https://wwww.twitter.com/${twitterUrl}`}
+                href={`https://www.twitter.com/${twitterUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -44,7 +44,7 @@ const SideBarPreview = ({
             )}
             {facebookUrl && (
               <a
-                href={`https://wwww.facebook.com/${facebookUrl}`}
+                href={`https://www.facebook.com/${facebookUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -53,7 +53,7 @@ const SideBarPreview = ({
             )}
             {linkedinUrl && (
               <a
-                href={`https://wwww.linkedin.com/${linkedinUrl}`}
+                href={`https://www.linkedin.com/${linkedinUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

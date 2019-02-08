@@ -99,7 +99,7 @@ class Header extends Component {
             </FormGroup>
             <FormGroup
               htmlFor="headerimg"
-              label="Header Image"
+              label="Logo"
               helperText="For best results use an image with a transparent background"
             >
               <FileInput
@@ -108,6 +108,11 @@ class Header extends Component {
                 onInputChange={this.handleFileUpload}
                 disabled={this.state.locked}
                 style={{ width: 250 }}
+              />
+              <img
+                src={this.state.headerPhotoUri}
+                alt="logo preview"
+                id="headerimg-preview"
               />
             </FormGroup>
             <FormGroup htmlFor="color" label="Background Color">

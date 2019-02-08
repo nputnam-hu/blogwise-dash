@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
+import Navbar from './components/Navbar'
 import Dashboard from './containers/Dashboard/'
 import Register from './containers/Onboarding/Register'
 import Header from './containers/Onboarding/Header'
@@ -12,6 +13,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+          <Navbar />
           <Switch>
             <Route path="/onboarding/4" component={OtherInfo} />
             <Route path="/onboarding/3" component={Users} />

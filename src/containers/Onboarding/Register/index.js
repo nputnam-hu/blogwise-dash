@@ -33,7 +33,7 @@ class Register extends Component {
           Get a world-class blog up in just minutes.
         </span>
         <div className="onboarding-form">
-          <FormGroup htmlFor="name" label="Name">
+          <FormGroup htmlFor="name" label="Your Name" labelInfo="(required)">
             <InputGroup
               name="name"
               value={this.state.name}
@@ -41,7 +41,7 @@ class Register extends Component {
               placeholder="Steve Jobs"
             />
           </FormGroup>
-          <FormGroup htmlFor="email" label="Email">
+          <FormGroup htmlFor="email" label="Your Email" labelInfo="(required)">
             <InputGroup
               name="email"
               value={this.state.email}
@@ -49,7 +49,11 @@ class Register extends Component {
               placeholder="steve@apple.com"
             />
           </FormGroup>
-          <FormGroup htmlFor="password" label="Choose a Password">
+          <FormGroup
+            htmlFor="password"
+            label="Choose a Password"
+            labelInfo="(required)"
+          >
             <InputGroup
               name="password"
               type="password"
