@@ -1,122 +1,215 @@
 import React, { Component } from 'react'
-import { Button, Text, Intent, Icon, Alert, HTMLTable } from '@blueprintjs/core'
-import axios from 'axios'
-import config from '../../../../config'
-import { loadUser, saveUser } from './utils'
+import {
+  Icon,
+  Button,
+  Intent,
+  Toaster,
+  Position,
+  Dialog,
+  FormGroup,
+  InputGroup,
+  HTMLSelect,
+} from '@blueprintjs/core'
+import EditModal from './components/EditModal'
+import QuestionHint from '../../../../components/QuestionHint'
+import Client from '../../../../client'
 import './styles.sass'
 
+const toaster = Toaster.create()
+
+function trimString(str) {
+  return str ? `${str.slice(0, 25)}...` : ''
+}
+
 class Users extends Component {
-  state = {
-    authors: {},
-    locked: true,
-    cancelChangesAlertOpen: false,
-    saveChangesAlertOpen: false,
-  }
-  componentDidMount() {
-    this.setInitialState()
-    window.addEventListener('beforeunload', this.onUnload)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onUnload)
-  }
-
-  // eslint-disable-next-line consistent-return
-  onUnload = e => {
-    if (!this.state.locked) {
-      const confirmMessage =
-        'Are you sure you want to leave the page without saving changes?'
-      e.returnValue = confirmMessage
-      return confirmMessage
+  constructor(props) {
+    super(props)
+    this.client = new Client()
+    this.state = {
+      users: [],
+      newName: '',
+      newEmail: '',
+      newRole: 'WRITER',
+      modalIsOpen: false,
+      editModalIsOpen: false,
+      editModalUser: {},
     }
   }
-  setInitialState = () =>
-    loadUser().then(userInfo => {
-      this.setState({ ...userInfo })
+  componentDidMount() {
+    this.client.get('/organizations/users').then(users => {
+      this.setState({ users })
     })
-
-  toggleLock = () => this.setState({ locked: false })
-
-  handleCancelChanges = () => this.setState({ cancelChangesAlertOpen: true })
-  handleCancelCancelAlert = () =>
-    this.setState({ cancelChangesAlertOpen: false })
-  handleConfirmCancelAlert = () => {
-    this.setInitialState()
-    this.setState({ cancelChangesAlertOpen: false, locked: true })
+  }
+  onChange = e => this.setState({ [e.target.name]: e.target.value })
+  onSelectChange = e => this.setState({ newRole: e.currentTarget.value })
+  onClick = () => {
+    this.props.history.push('/onboarding/4', {
+      ...this.props.location.state,
+    })
   }
 
-  handleSaveChanges = () => this.setState({ saveChangesAlertOpen: true })
-  handleCancelSaveAlert = () => this.setState({ saveChangesAlertOpen: false })
-  handleConfirmSaveAlert = () => {
-    saveUser(this.state)
-    this.setState({ saveChangesAlertOpen: false, locked: true })
+  openModal = () => this.setState({ modalIsOpen: true })
+  handleModalClose = () =>
+    this.setState({
+      modalIsOpen: false,
+      newName: '',
+      newEmail: '',
+      newRole: '',
+    })
+  inviteNewUser = async () => {
+    const { newName, newRole, newEmail, users } = this.state
+    if (!newName || !newEmail) {
+      return
+    }
+    try {
+      const { user } = await this.client.post('/users', {
+        name: newName,
+        email: newEmail,
+        type: newRole,
+      })
+
+      this.setState({
+        modalIsOpen: false,
+        newName: '',
+        newEmail: '',
+        newRole: '',
+        users: [...users, user],
+      })
+    } catch (err) {
+      console.error(err)
+      toaster.show({
+        message: 'Failed to invite user, make sure email is unique',
+        position: Position.TOP,
+        intent: Intent.DANGER,
+        icon: 'cross',
+      })
+    }
+  }
+
+  editUser = user =>
+    this.setState({ editModalIsOpen: true, editModalUser: user })
+  handleEditModalClose = () => this.setState({ editModalIsOpen: false })
+  handleUserEdit = user => {
+    const newUsers = this.state.users.reduce((acc, el) => {
+      if (el.id === user.id) {
+        return [...acc, user]
+      }
+      return [...acc, el]
+    }, [])
+    this.setState({
+      editModalIsOpen: false,
+      users: newUsers,
+    })
   }
 
   render() {
+    const { users } = this.state
     return (
       <div id="users-container">
         <div id="inputcontent">
           <h1>Users & Roles</h1>
-          <div
-            id="unlock-container"
-            onClick={this.toggleLock}
-            onKeyDown={this.toggleLock}
-            role="button"
-            tabIndex="0"
-          >
-            <Icon
-              icon={this.state.locked ? 'lock' : 'unlock'}
-              iconSize={16}
-              color="#5C7081"
+          <div className="section-header">
+            <h2>Users</h2>
+            <QuestionHint
+              title="Users"
+              helperText="New users can be assigned one of two roles: Admin and Writer. Writers can write new content for the blog and publish new posts. Admins, in addition to having the same writing power as Writers, can also manage the blog content and settings on the blogwise dashboard."
             />
-            <Text>
-              {this.state.locked
-                ? 'Click the lock to make changes'
-                : 'Click below to finish making changes or cancel'}
-            </Text>
           </div>
-          {!this.state.locked && (
-            <div id="savebuttons">
-              <Button icon="cross" onClick={this.handleCancelChanges}>
-                Discard Changes
-              </Button>
-              <Button icon="floppy-disk" onClick={this.handleSaveChanges}>
-                Save
-              </Button>
-            </div>
-          )}
-          <h2>Users</h2>
+          <table className="bp3-html-table bp3-html-table-striped bp3-interactive users-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Bio</th>
+                <th>Invite Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(user => {
+                const { name, email, type, token, id, bio } = user
+                return (
+                  <tr key={id} onClick={() => this.editUser(user)}>
+                    <td>{name}</td>
+                    <td>{email}</td>
+                    <td>{type === 'ADMIN' ? 'Admin' : 'Writer'}</td>
+                    <td>{trimString(bio)}</td>
+                    <td>{token ? 'Accepted' : 'Pending'}</td>
+                    <td>
+                      <Icon icon="edit" />
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+          <Button
+            style={{
+              alignSelf: 'flex-start',
+            }}
+            large
+            icon="new-person"
+            onClick={this.openModal}
+          >
+            Invite User
+          </Button>
         </div>
         {/* Modals */}
-        <Alert
-          cancelButtonText="Cancel"
-          confirmButtonText="Discard Changes"
-          icon="cross"
-          intent={Intent.DANGER}
-          isOpen={this.state.cancelChangesAlertOpen}
-          onCancel={this.handleCancelCancelAlert}
-          onConfirm={this.handleConfirmCancelAlert}
+        <Dialog
+          icon="new-person"
+          isOpen={this.state.modalIsOpen}
+          onClose={this.handleModalClose}
+          title="Invite User"
         >
-          <p>
-            Are you sure you want to cancel your changes? This action will
-            delete all of the changes you have made.
-          </p>
-        </Alert>
-        <Alert
-          cancelButtonText="Cancel"
-          confirmButtonText="Save Changes"
-          icon="floppy-disk"
-          intent={Intent.WARNING}
-          isOpen={this.state.saveChangesAlertOpen}
-          onCancel={this.handleCancelSaveAlert}
-          onConfirm={this.handleConfirmSaveAlert}
-        >
-          <p>
-            Are you sure you want to save your changes? This action will
-            immediately push an update out to your blog with the new changes
-            made.
-          </p>
-        </Alert>
+          <div style={{ padding: '5px 5% 5px' }}>
+            <span style={{ color: '#86969F' }}>
+              Enter in the information of who you want to invite. We'll send
+              them an email with a link to create an account
+            </span>
+            <div style={{ padding: '15px 10% 0px' }}>
+              <FormGroup htmlFor="newName" label="Name">
+                <InputGroup
+                  name="newName"
+                  placeholder="Steve Jobs"
+                  value={this.state.newNname}
+                  onChange={this.onChange}
+                />
+              </FormGroup>
+              <FormGroup htmlFor="newEmail" label="Email">
+                <InputGroup
+                  name="newEmail"
+                  placeholder="steve@apple.com"
+                  value={this.state.newEmail}
+                  onChange={this.onChange}
+                />
+              </FormGroup>
+              <FormGroup htmlFor="newRole" label="Role">
+                <HTMLSelect
+                  onChange={this.onSelectChange}
+                  options={[
+                    { label: 'Writer', value: 'WRITER' },
+                    { label: 'Admin', value: 'ADMIN' },
+                  ]}
+                />
+              </FormGroup>
+              <br />
+              <Button
+                large
+                intent={Intent.PRIMARY}
+                onClick={this.inviteNewUser}
+                rightIcon="envelope"
+              >
+                Invite
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+        <EditModal
+          isOpen={this.state.editModalIsOpen}
+          handleClose={this.handleEditModalClose}
+          user={this.state.editModalUser}
+          handleSave={this.handleUserEdit}
+        />
       </div>
     )
   }

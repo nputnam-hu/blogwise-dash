@@ -9,14 +9,31 @@ import {
 } from '@blueprintjs/core'
 import SideBarPreview from '../../Dashboard/containers/SiteInfo/previews/SideBar'
 import './styles.sass'
+import Client from '../../../client'
 
 class OtherInfo extends Component {
-  state = {
-    description: '',
-    mainSite: '',
+  constructor() {
+    super()
+    this.client = new Client()
+    this.state = {
+      description: '',
+      mainSiteUrl: '',
+      facebookUrl: '',
+      twitterUrl: '',
+      linkedinUrl: '',
+    }
+  }
+  componentDidMount() {
+    if (!this.props.location.state) {
+      this.props.history.push('/register')
+    }
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
-  onClick = () => {
+  onClick = async () => {
+    if (!this.state.description) {
+      return
+    }
+    await this.client.put('/blogs', this.state)
     this.props.history.push('/dashboard', {
       ...this.state,
       ...this.props.location.state,
@@ -38,14 +55,18 @@ class OtherInfo extends Component {
               : {}
           }
         >
-          <div className="onboarding-stepcounter">Step 5 of 5</div>
-          <h2>Tell Your Story</h2>
+          <div className="onboarding-stepcounter">Step 4 of 4</div>
+          <h2>Build About Section</h2>
           <span className="onboarding-subheader">
             Fill in a description of what your blog is about, as well as any
             external links you want to direct readers to.
           </span>
           <div className="onboarding-form">
-            <FormGroup htmlFor="description" label="Description">
+            <FormGroup
+              htmlFor="description"
+              label="Description"
+              labelInfo="(required)"
+            >
               <TextArea
                 name="description"
                 value={this.state.description}
@@ -56,13 +77,13 @@ class OtherInfo extends Component {
               />
             </FormGroup>
             <FormGroup
-              htmlFor="mainSite"
+              htmlFor="mainSiteUrl"
               label="Website Link"
               helperText="A link to your primary website"
             >
               <InputGroup
-                name="mainSite"
-                value={this.state.mainSite}
+                name="mainSiteUrl"
+                value={this.state.mainSiteUrl}
                 onChange={this.onChange}
                 disabled={this.state.locked}
               />

@@ -13,9 +13,11 @@ import {
   FileInput,
   Icon,
   Text,
+  Popover,
+  PopoverInteractionKind,
 } from '@blueprintjs/core'
-import axios from 'axios'
-import config from '../../../../config'
+import { ChromePicker as ColorPicker } from 'react-color'
+import Client, { uploadFileToS3 } from '../../../../client'
 import QuestionHint from '../../../../components/QuestionHint'
 import TagModal from './components/TagModal'
 import SideBarPreview from './previews/SideBar'
@@ -23,25 +25,30 @@ import { loadUser, saveUser } from './utils'
 import './styles.sass'
 
 class SiteInfo extends Component {
-  state = {
-    locked: true,
-    title: '',
-    description: '',
-    facebookUrl: '',
-    twitterUrl: '',
-    linkedinUrl: '',
-    siteUrl: '',
-    tags: {},
-    logoUri: '',
-    modalOpen: false,
-    modalIsEdit: '',
-    modalTagName: '',
-    modalTagDescription: '',
-    modalTagKey: '',
-    alertOpen: false,
-    deleteKey: '',
-    cancelChangesAlertOpen: false,
-    saveChangesAlertOpen: false,
+  constructor() {
+    super()
+    this.client = new Client()
+    this.state = {
+      locked: true,
+      title: '',
+      description: '',
+      facebookUrl: '',
+      twitterUrl: '',
+      linkedinUrl: '',
+      mainSiteUrl: '',
+      backgroundHexCode: '',
+      tags: {},
+      logoUri: '',
+      modalOpen: false,
+      modalIsEdit: '',
+      modalTagName: '',
+      modalTagDescription: '',
+      modalTagKey: '',
+      alertOpen: false,
+      deleteKey: '',
+      cancelChangesAlertOpen: false,
+      saveChangesAlertOpen: false,
+    }
   }
 
   componentDidMount() {
@@ -90,21 +97,9 @@ class SiteInfo extends Component {
     const { files } = evt.target
     const file = files[0]
     if (file) {
-      const options = {
-        headers: {
-          'Content-Type': file.type,
-        },
-      }
-      axios
-        .put(`${config.apiUrl}/s3/logo`, {
-          fileName: `${Date.now()}_${file.name}`,
-          contentType: file.type,
-        })
-        .then(({ data: url }) => {
-          axios
-            .put(url, file, options)
-            .then(() => this.handlePhotoUploaded(url.split('?')[0]))
-        })
+      uploadFileToS3(file, this.client).then(url =>
+        this.handlePhotoUploaded(url.split('?')[0]),
+      )
     }
   }
 
@@ -129,6 +124,8 @@ class SiteInfo extends Component {
       modalTagKey: tagKey,
     })
   handleClose = () => this.setState({ modalOpen: false })
+
+  handleColorPicked = ({ hex }) => this.setState({ backgroundHexCode: hex })
 
   modifyTag = (tagKey, newTag) =>
     this.setState({
@@ -188,7 +185,7 @@ class SiteInfo extends Component {
               helperText="This info will be used to inform users about the purpose of your blog so they can better understand it. It will also be indexed by search engines and will be displayed in Google results."
             />
           </div>
-          <FormGroup htmlFor="title" label="Title" labelInfo="(required)">
+          <FormGroup htmlFor="title" label="Title" >
             <InputGroup
               name="title"
               value={this.state.title}
@@ -199,7 +196,7 @@ class SiteInfo extends Component {
           <FormGroup
             htmlFor="description"
             label="Description"
-            labelInfo="(required)"
+
             helperText="Description of your blog that will show up on the main page"
           >
             <TextArea
@@ -212,22 +209,8 @@ class SiteInfo extends Component {
             />
           </FormGroup>
           <FormGroup
-            htmlFor="mainSite"
-            label="Website Link"
-            labelInfo="(required)"
-            helperText="Put a link to your primary site here"
-          >
-            <InputGroup
-              name="mainSite"
-              value={this.state.mainSite}
-              onChange={this.onChange}
-              disabled={this.state.locked}
-            />
-          </FormGroup>
-          <FormGroup
             htmlFor="logo"
             label="Logo"
-            labelInfo="(required)"
             helperText="For best results, please use SVG format"
           >
             {this.state.logoUri && (
@@ -250,6 +233,27 @@ class SiteInfo extends Component {
               disabled={this.state.locked}
             />
           </FormGroup>
+          <FormGroup htmlFor="color" label="Background Color">
+            <div id="colorinput">
+              <div
+                id="colorpreview"
+                style={{ background: this.state.backgroundHexCode }}
+              />
+              <Popover interactionKind={PopoverInteractionKind.CLICK}>
+                <Button
+                  disabled={this.state.locked}
+                  onClick={this.openColorPicker}
+                >
+                  Change
+                </Button>
+                <ColorPicker
+                  name="color"
+                  color={this.state.backgroundHexCode}
+                  onChange={this.handleColorPicked}
+                />
+              </Popover>
+            </div>
+          </FormGroup>
           <div className="section-header">
             <h2>Tags</h2>
             <QuestionHint
@@ -260,7 +264,7 @@ class SiteInfo extends Component {
           {Object.keys(this.state.tags).map(key => {
             const { name, description } = this.state.tags[key]
             return (
-              <React.Fragment>
+              <React.Fragment key={key}>
                 <Card>
                   <H5>{name}</H5>
                   <p>{description}</p>
@@ -293,16 +297,34 @@ class SiteInfo extends Component {
             New Tag
           </Button>
           <div className="section-header">
-            <h2>Social Media Links</h2>
+            <h2>External Links</h2>
             <QuestionHint
-              title="Social Media"
+              title="External Links"
               helperText="Put in any links you have to your company's social media pages. They will be displayed on the home page to direct potential customers to explore your business more."
             />
           </div>
-
-          <FormGroup htmlFor="twitterUrl" label="Twitter URL">
+          <FormGroup
+            htmlFor="mainSiteUrl"
+            label="Website Link"
+            helperText="A link to your primary website"
+          >
             <ControlGroup>
-              <span className="urlStart">www.twitter.com/</span>
+              <span className="urlStart">https://www.</span>
+              <InputGroup
+                name="mainSiteUrl"
+                value={this.state.mainSiteUrl}
+                onChange={this.onChange}
+                disabled={this.state.locked}
+              />
+            </ControlGroup>
+          </FormGroup>
+          <FormGroup
+            htmlFor="twitterUrl"
+            label="Twitter URL"
+            helperText="A link to your company's twitter account"
+          >
+            <ControlGroup>
+              <span className="urlStart">twitter.com/</span>
               <InputGroup
                 name="twitterUrl"
                 style={{ paddingLeft: 2 }}
@@ -312,9 +334,13 @@ class SiteInfo extends Component {
               />
             </ControlGroup>
           </FormGroup>
-          <FormGroup htmlFor="facebookUrl" label="Facebook Page">
+          <FormGroup
+            htmlFor="facebookUrl"
+            label="Facebook URL"
+            helperText="A link to your company's facebook page"
+          >
             <ControlGroup>
-              <span className="urlStart">www.facebook.com/</span>
+              <span className="urlStart">facebook.com/</span>
               <InputGroup
                 name="facebookUrl"
                 style={{ paddingLeft: 2 }}
@@ -324,9 +350,13 @@ class SiteInfo extends Component {
               />
             </ControlGroup>
           </FormGroup>
-          <FormGroup htmlFor="linkedinUrl" label="LinkedIn Page">
+          <FormGroup
+            htmlFor="linkedinUrl"
+            label="LinkedIn URL"
+            helperText="A link to your company's LinkedIn Profile"
+          >
             <ControlGroup>
-              <span className="urlStart">www.linkedin.com/</span>
+              <span className="urlStart">linkedin.com/</span>
               <InputGroup
                 name="linkedinUrl"
                 style={{ paddingLeft: 2 }}

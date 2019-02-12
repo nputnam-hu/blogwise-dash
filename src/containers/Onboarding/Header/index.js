@@ -5,12 +5,13 @@ import {
   Button,
   Intent,
   FileInput,
+  Toaster,
+  Position,
   Popover,
   PopoverInteractionKind,
 } from '@blueprintjs/core'
 import { ChromePicker as ColorPicker } from 'react-color'
-import axios from 'axios'
-import config from '../../../config'
+import Client, { uploadFileToS3 } from '../../../client'
 import './styles.sass'
 
 function getColorByBgColor(bgColor) {
@@ -32,39 +33,52 @@ const HeaderPreview = ({ title, headerPhotoUri, color }) => (
   </div>
 )
 
+const toaster = Toaster.create()
+
 class Header extends Component {
-  state = {
-    title: 'Your Title Here',
-    headerPhotoUri:
-      'https://s3.amazonaws.com/megaphone-logo-uploads/1549559463864_blogwise_logo.png',
-    color: '#E6E6E6',
+  constructor() {
+    super()
+    this.client = new Client()
+    this.state = {
+      title: 'Your Title Here',
+      headerPhotoUri:
+        'https://s3.amazonaws.com/megaphone-logo-uploads/1549559463864_blogwise_logo.png',
+      color: '#E6E6E6',
+    }
+  }
+  componentDidMount() {
+    if (!this.props.location.state) {
+      this.props.history.push('/register')
+    }
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
-  onClick = () => {
-    this.props.history.push('/onboarding/2', {
-      ...this.props.location.state,
-      ...this.state,
-    })
+  onClick = async () => {
+    try {
+      await this.client.put('/blogs', {
+        title: this.state.title,
+        logoUri: this.state.headerPhotoUri,
+        backgroundHexCode: this.state.color,
+      })
+      this.props.history.push('/onboarding/2', {
+        ...this.props.location.state,
+      })
+    } catch (err) {
+      console.error(err)
+      toaster.show({
+        message: 'Failed to update blog',
+        position: Position.TOP,
+        intent: Intent.DANGER,
+        icon: 'cross',
+      })
+    }
   }
   handleFileUpload = evt => {
     const { files } = evt.target
     const file = files[0]
     if (file) {
-      const options = {
-        headers: {
-          'Content-Type': file.type,
-        },
-      }
-      axios
-        .put(`${config.apiUrl}/s3/logo`, {
-          fileName: `${Date.now()}_${file.name}`,
-          contentType: file.type,
-        })
-        .then(({ data: url }) => {
-          axios
-            .put(url, file, options)
-            .then(() => this.handlePhotoUploaded(url.split('?')[0]))
-        })
+      uploadFileToS3(file, this.client).then(url =>
+        this.handlePhotoUploaded(url.split('?')[0]),
+      )
     }
   }
   handlePhotoUploaded = url => {
@@ -82,7 +96,7 @@ class Header extends Component {
         />
         <br />
         <div className="onboarding-container">
-          <div className="onboarding-stepcounter">Step 2 of 5</div>
+          <div className="onboarding-stepcounter">Step 2 of 4</div>
           <h2>Build Home Page</h2>
           <span className="onboarding-subheader">
             Customize the home page of your blog to give customers a full sense
