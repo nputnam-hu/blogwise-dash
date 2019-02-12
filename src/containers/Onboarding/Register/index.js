@@ -130,7 +130,7 @@ class Register extends Component {
             <Button
               large
               rightIcon="arrow-right"
-              intent={Intent.SUCCESS}
+              intent={Intent.PRIMARY}
               onClick={this.onClick}
             >
               Create your blog
