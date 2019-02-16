@@ -1,4 +1,6 @@
+// TODO, don't have TWO api clients :(
 import rp from 'request-promise'
+import axios from 'axios'
 import store from 'store'
 import config from './config'
 
@@ -50,22 +52,17 @@ class Client {
   }
 }
 
-export function uploadFileToS3(file, client) {
-  return client
-    .put('/s3/logo', {
-      fileName: `${Date.now()}_${file.name}`,
-      contentType: file.type,
-    })
-    .then(url =>
-      rp({
-        uri: url,
-        file,
-        method: 'PUT',
-        headers: {
-          'Content-Type': file.type,
-        },
-      }).then(() => url),
-    )
+export async function uploadFileToS3(file, client) {
+  const url = await client.put('/s3/logo', {
+    fileName: `${Date.now()}_${file.name}`,
+    contentType: file.type,
+  })
+  await axios.put(url, file, {
+    headers: {
+      'Content-Type': file.type,
+    },
+  })
+  return url
 }
 
 export default Client
