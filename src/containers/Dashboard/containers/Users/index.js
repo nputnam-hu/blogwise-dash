@@ -94,7 +94,8 @@ class Users extends Component {
 
   editUser = user =>
     this.setState({ editModalIsOpen: true, editModalUser: user })
-  handleEditModalClose = () => this.setState({ editModalIsOpen: false })
+  handleEditModalClose = () =>
+    this.setState({ editModalIsOpen: false, editModalUser: {} })
   handleUserEdit = user => {
     const newUsers = this.state.users.reduce((acc, el) => {
       if (el.id === user.id) {
@@ -104,6 +105,7 @@ class Users extends Component {
     }, [])
     this.setState({
       editModalIsOpen: false,
+      editModalUser: {},
       users: newUsers,
     })
   }
