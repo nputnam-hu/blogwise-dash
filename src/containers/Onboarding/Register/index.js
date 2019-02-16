@@ -6,17 +6,14 @@ import {
   InputGroup,
   RadioGroup,
   Radio,
-  Toaster,
-  Position,
 } from '@blueprintjs/core'
 import store from 'store'
 import Client from '../../../client'
+import errorMessage from '../../../errorMessage'
 import lowerSwoosh from './lower_swoosh.png'
 import upperSwoosh from './upper_swoosh.png'
 import girlPainting from './girl_painting.png'
 import './styles.sass'
-
-const toaster = Toaster.create()
 
 class Register extends Component {
   constructor() {
@@ -45,18 +42,21 @@ class Register extends Component {
         },
       })
       store.set('user', user)
-      this.props.history.push('/onboarding/1', {
-        surveyAnswer: this.state.surveyAnswer,
-        name: this.state.name,
-        email: this.state.email,
-      })
+      if (!this.props.location.state || !this.props.location.state.plan) {
+        this.props.history.push('/plans', {
+          surveyAnswer: this.state.surveyAnswer,
+          name: this.state.name,
+          email: this.state.email,
+        })
+      } else {
+        this.props.history.push('/onboarding/1', {
+          surveyAnswer: this.state.surveyAnswer,
+          name: this.state.name,
+          email: this.state.email,
+        })
+      }
     } catch (err) {
-      toaster.show({
-        message: 'An account with that email already exists',
-        position: Position.TOP,
-        intent: Intent.DANGER,
-        icon: 'cross',
-      })
+      errorMessage('An account with that email already exists')
     }
   }
   onKeyDown = e => {

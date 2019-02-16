@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import store from 'store'
 import Account from './containers/Account'
 import Users from './containers/Users'
 import Integrations from './containers/Integrations'

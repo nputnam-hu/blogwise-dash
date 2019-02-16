@@ -140,7 +140,7 @@ class OtherInfo extends Component {
             <Button
               large
               rightIcon="arrow-right"
-              intent={Intent.SUCCESS}
+              intent={Intent.PRIMARY}
               onClick={this.onClick}
             >
               Complete

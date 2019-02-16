@@ -3,19 +3,16 @@ import {
   Icon,
   Button,
   Intent,
-  Toaster,
-  Position,
   Dialog,
   FormGroup,
   InputGroup,
   HTMLSelect,
 } from '@blueprintjs/core'
-import EditModal from './components/EditModal'
+import EditModal from '../../../../components/EditModal'
 import QuestionHint from '../../../../components/QuestionHint'
+import errorMessage from '../../../../errorMessage'
 import Client from '../../../../client'
 import './styles.sass'
-
-const toaster = Toaster.create()
 
 function trimString(str) {
   return str ? `${str.slice(0, 25)}...` : ''
@@ -62,7 +59,7 @@ class Users extends Component {
       return
     }
     try {
-      const { user } = await this.client.post('/users', {
+      const { user } = await this.client.post('/users/invite', {
         name: newName,
         email: newEmail,
         type: newRole,
@@ -77,12 +74,21 @@ class Users extends Component {
       })
     } catch (err) {
       console.error(err)
-      toaster.show({
-        message: 'Failed to invite user, make sure email is unique',
-        position: Position.TOP,
-        intent: Intent.DANGER,
-        icon: 'cross',
-      })
+      switch (err.error.code) {
+        case 1006:
+          errorMessage('A user with that email already exists')
+          break
+        case 1008:
+          errorMessage(
+            'Your plan has reached the max number of staff users, please upgrade to invite more users',
+          )
+          break
+        default:
+          errorMessage(
+            'There was a problem inviting that user, if the problem continues contact support',
+          )
+          break
+      }
     }
   }
 

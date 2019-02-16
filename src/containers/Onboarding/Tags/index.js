@@ -5,11 +5,10 @@ import {
   FormGroup,
   Intent,
   ProgressBar,
-  Toaster,
-  Position,
 } from '@blueprintjs/core'
 import uuid from 'uuid/v4'
 import Client from '../../../client'
+import errorMessage from '../../../errorMessage'
 import './styles.sass'
 
 function genPlaceholder(index) {
@@ -35,8 +34,6 @@ function genPlaceholder(index) {
       return {}
   }
 }
-
-const toaster = Toaster.create()
 
 class Tags extends Component {
   constructor() {
@@ -81,12 +78,7 @@ class Tags extends Component {
       })
     } catch (err) {
       console.error(err)
-      toaster.show({
-        message: 'Failed to update blog',
-        position: Position.TOP,
-        intent: Intent.DANGER,
-        icon: 'cross',
-      })
+      errorMessage('Failed to update blog')
     }
   }
   addTag = () => {

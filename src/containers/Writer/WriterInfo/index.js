@@ -1,34 +1,40 @@
 import React, { Component } from 'react'
 import {
-  Dialog,
   FormGroup,
-  InputGroup,
   FileInput,
-  TextArea,
-  HTMLSelect,
   Button,
+  TextArea,
+  InputGroup,
   Intent,
 } from '@blueprintjs/core'
-import Client, { uploadFileToS3 } from '../../../../../../client'
+import Client, { uploadFileToS3 } from '../../../client'
 import './styles.sass'
 
-class EditModal extends Component {
-  constructor(props) {
-    super(props)
+class WriterInfo extends Component {
+  constructor() {
+    super()
     this.client = new Client()
     this.state = {
-      name: '',
-      type: '',
-      bio: '',
       headshotUri: '',
+      bio: '',
+      name: '',
     }
   }
+  componentDidMount() {
+    this.client.get('/users/me').then(user => {
+      this.setState({
+        headshotUri: user.headshotUri || '',
+        bio: user.bio || '',
+        name: user.name || '',
+        id: user.id,
+      })
+    })
+  }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
-  onSelectChange = e => this.setState({ type: e.currentTarget.value })
   onClick = () => {
-    this.client
-      .put('/users', { ...this.state, id: this.props.user.id })
-      .then(this.props.handleSave)
+    this.client.put('/users', { ...this.state }).then(() => {
+      this.props.history.push('/writer')
+    })
   }
   handleFileUpload = evt => {
     const { files } = evt.target
@@ -45,25 +51,12 @@ class EditModal extends Component {
   }
 
   render() {
-    const { isOpen, handleClose } = this.props
     return (
-      <Dialog
-        icon="user"
-        isOpen={isOpen}
-        onClose={handleClose}
-        title="Update User"
-        style={{ width: '750px' }}
-        onOpening={() =>
-          this.setState({
-            name: this.props.user.name,
-            type: this.props.user.type,
-            bio: this.props.user.bio,
-            headshotUri: this.props.user.headshotUri,
-          })
-        }
-      >
-        <div id="editmodal-container">
-          <div id="editmodal-user">
+      <div className="onboarding-container writerinfo">
+        <div className="onboarding-stepcounter">Step 2 of 2</div>
+        <h2>Complete Your Profile</h2>
+        <div id="writerinfo-container">
+          <div id="writerinfo-user">
             <div id="headshot-preview">
               <img
                 id="headshot-img"
@@ -82,7 +75,7 @@ class EditModal extends Component {
                 />
               </FormGroup>
             </div>
-            <div id="editmodal-inputs">
+            <div id="writerinfo-inputs">
               <FormGroup htmlFor="name" label="Name">
                 <InputGroup
                   name="name"
@@ -103,31 +96,21 @@ class EditModal extends Component {
                   style={{ resize: 'none' }}
                 />
               </FormGroup>
-              <FormGroup htmlFor="role" label="Role">
-                <HTMLSelect
-                  name="role"
-                  onChange={this.onSelectChange}
-                  value={this.state.type}
-                  options={[
-                    { label: 'Writer', value: 'WRITER' },
-                    { label: 'Admin', value: 'ADMIN' },
-                  ]}
-                />
-              </FormGroup>
             </div>
           </div>
           <Button
             intent={Intent.PRIMARY}
             id="confirm-button"
             onClick={this.onClick}
+            rightIcon="arrow-right"
             large
           >
-            Save User
+            Finish Registration
           </Button>
         </div>
-      </Dialog>
+      </div>
     )
   }
 }
 
-export default EditModal
+export default WriterInfo

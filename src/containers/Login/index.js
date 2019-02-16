@@ -1,17 +1,9 @@
 import React, { Component } from 'react'
-import {
-  Button,
-  FormGroup,
-  InputGroup,
-  Position,
-  Toaster,
-  Intent,
-} from '@blueprintjs/core'
+import { Button, FormGroup, InputGroup } from '@blueprintjs/core'
 import store from 'store'
+import errorMessage from '../../errorMessage'
 import client from '../../client'
 import './styles.sass'
-
-const toaster = Toaster.create()
 
 class Login extends Component {
   state = {
@@ -33,12 +25,7 @@ class Login extends Component {
       store.set('user', user)
       this.props.history.push('/dashboard')
     } catch (err) {
-      toaster.show({
-        message: 'Failed to log in, check your email and password',
-        position: Position.TOP,
-        intent: Intent.DANGER,
-        icon: 'cross',
-      })
+      errorMessage('Failed to log in, check your email and password')
     }
   }
   onKeyDown = e => {

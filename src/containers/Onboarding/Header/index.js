@@ -5,13 +5,12 @@ import {
   Button,
   Intent,
   FileInput,
-  Toaster,
-  Position,
   Popover,
   PopoverInteractionKind,
 } from '@blueprintjs/core'
 import { ChromePicker as ColorPicker } from 'react-color'
 import Client, { uploadFileToS3 } from '../../../client'
+import errorMessage from '../../../errorMessage'
 import './styles.sass'
 
 function getColorByBgColor(bgColor) {
@@ -32,8 +31,6 @@ const HeaderPreview = ({ title, headerPhotoUri, color }) => (
     </div>
   </div>
 )
-
-const toaster = Toaster.create()
 
 class Header extends Component {
   constructor() {
@@ -64,12 +61,7 @@ class Header extends Component {
       })
     } catch (err) {
       console.error(err)
-      toaster.show({
-        message: 'Failed to update blog',
-        position: Position.TOP,
-        intent: Intent.DANGER,
-        icon: 'cross',
-      })
+      errorMessage('Failed to update blog')
     }
   }
   handleFileUpload = evt => {
