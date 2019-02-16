@@ -17,6 +17,7 @@ import Plans from './containers/Onboarding/Plans'
 import Header from './containers/Onboarding/Header'
 import Tags from './containers/Onboarding/Tags'
 import OtherInfo from './containers/Onboarding/OtherInfo'
+import Home from './containers/Home'
 
 const PrivateRoute = ({ component: MainComponent, ...rest }) => (
   <Route
@@ -62,6 +63,7 @@ class App extends Component {
             <ReducedBar path="/register" component={Register} />
             <ReducedBar path="/plans" component={Plans} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
+            <ReducedBar path="/" component={Home} />
           </Switch>
         </div>
       </Router>
