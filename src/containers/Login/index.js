@@ -2,13 +2,17 @@ import React, { Component } from 'react'
 import { Button, FormGroup, InputGroup } from '@blueprintjs/core'
 import store from 'store'
 import errorMessage from '../../errorMessage'
-import client from '../../client'
+import Client from '../../client'
 import './styles.sass'
 
 class Login extends Component {
-  state = {
-    email: '',
-    password: '',
+  constructor() {
+    super()
+    this.client = new Client()
+    this.state = {
+      email: '',
+      password: '',
+    }
   }
   componentDidMount() {
     if (store.get('user')) {
@@ -18,10 +22,12 @@ class Login extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onClick = async () => {
     if (!this.state.email || !this.state.password) {
-      return
+      return errorMessage(
+        `Please enter a ${this.state.email ? 'password' : 'email'}`,
+      )
     }
     try {
-      const user = await client.post('/auth/login', { ...this.state })
+      const user = await this.client.post('/auth/login', { ...this.state })
       store.set('user', user)
       this.props.history.push('/dashboard')
     } catch (err) {
