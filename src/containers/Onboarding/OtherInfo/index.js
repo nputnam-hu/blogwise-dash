@@ -33,10 +33,11 @@ class OtherInfo extends Component {
     if (!this.state.description) {
       return
     }
-    await this.client.put('/blogs', this.state)
+    const { siteUrl } = await this.client.put('/blogs', this.state)
     this.props.history.push('/dashboard', {
-      ...this.state,
       ...this.props.location.state,
+      siteUrl,
+      firstTime: true,
     })
   }
   render() {
