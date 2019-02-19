@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import Account from './containers/Account'
 import Users from './containers/Users'
-import Integrations from './containers/Integrations'
+import MyBlog from './containers/MyBlog'
 import SiteInfo from './containers/SiteInfo'
 import WelcomeModal from '../../components/WelcomeModal'
 
 import { Tab, Tabs } from '@blueprintjs/core'
 import './styles.sass'
 
-class Home extends Component {
-  constructor() {
-    super()
+class Dashboard extends Component {
+  constructor(props) {
+    super(props)
     this.state = {
       tabId: 'si',
-      welcomeModalOpen: true,
-      // this.props.location.state && this.props.location.state.firstTime,
+      welcomeModalOpen: props.location.state && props.location.state.firstTime,
     }
   }
   handleTabChange = tabId => {
@@ -33,7 +32,7 @@ class Home extends Component {
         >
           <Tab id="si" title="Site Info" panel={<SiteInfo />} />
           <Tab id="us" title="Users & Roles" panel={<Users />} />
-          <Tab id="in" title="Integrations" panel={<Integrations />} />
+          <Tab id="in" title="My Blog" panel={<MyBlog />} />
           <Tab id="ac" title="Account" panel={<Account />} />
           <Tabs.Expander />
         </Tabs>
@@ -49,4 +48,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default Dashboard
