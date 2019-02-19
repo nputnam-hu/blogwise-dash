@@ -8,6 +8,7 @@ import {
   Radio,
 } from '@blueprintjs/core'
 import store from 'store'
+import GoTrue from 'gotrue-js'
 import Client from '../../../client'
 import errorMessage from '../../../errorMessage'
 import lowerSwoosh from './lower_swoosh.png'
@@ -33,7 +34,7 @@ class Register extends Component {
       return
     }
     try {
-      const user = await this.client.post('/organizations', {
+      const { token, netlifyUrl } = await this.client.post('/organizations', {
         surveyAnswer: this.state.surveyAnswer,
         user: {
           name: this.state.name,
@@ -41,7 +42,12 @@ class Register extends Component {
           hash: this.state.password,
         },
       })
-      store.set('user', user)
+      const auth = new GoTrue({
+        APIUrl: `${netlifyUrl}/.netlify/identity`,
+        setCookie: false,
+      })
+      auth.signup(this.state.email, this.state.password)
+      store.set('user', { token })
       if (!this.props.location.state || !this.props.location.state.plan) {
         this.props.history.push('/plans', {
           surveyAnswer: this.state.surveyAnswer,

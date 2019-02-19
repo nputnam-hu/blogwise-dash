@@ -9,7 +9,7 @@ import './styles.sass'
 
 class Home extends Component {
   state = {
-    tabId: 'us',
+    tabId: 'si',
   }
   handleTabChange = tabId => {
     this.setState({ tabId })

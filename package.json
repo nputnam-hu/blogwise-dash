@@ -5,6 +5,7 @@
   "dependencies": {
     "@blueprintjs/core": "^3.10.0",
     "axios": "^0.18.0",
+    "gotrue-js": "^0.9.24",
     "node-sass": "^4.11.0",
     "qs": "^6.6.0",
     "react": "^16.7.0",

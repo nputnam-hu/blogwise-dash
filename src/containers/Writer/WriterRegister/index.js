@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { InputGroup, FormGroup, Button, Intent } from '@blueprintjs/core'
+import GoTrue from 'gotrue-js'
 import qs from 'qs'
 import store from 'store'
 import Client from '../../../client'
@@ -25,11 +26,19 @@ class WriterRegister extends Component {
       errorMessage('Passwords do not match')
     } else {
       try {
-        const { token, type } = await this.client.put('/users/invite', {
-          password: this.state.password,
-          id: this.state.id,
-        })
+        const { token, type, netlifyUrl, email } = await this.client.put(
+          '/users/invite',
+          {
+            password: this.state.password,
+            id: this.state.id,
+          },
+        )
         store.set('user', { token })
+        const auth = new GoTrue({
+          APIUrl: `${netlifyUrl}/.netlify/identity`,
+          setCookie: false,
+        })
+        auth.signup(email, this.state.password)
         if (type === 'ADMIN') {
           this.props.history.push('/dashboard')
         } else {

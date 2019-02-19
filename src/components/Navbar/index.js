@@ -20,7 +20,9 @@ const Navbar = () => (
 
 export const ReducedNavbar = () => (
   <div id="navbar-container">
-    <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
+    <a href="/">
+      <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
+    </a>
   </div>
 )
 

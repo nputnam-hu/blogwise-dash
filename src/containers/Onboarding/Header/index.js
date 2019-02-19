@@ -23,7 +23,7 @@ function getColorByBgColor(bgColor) {
 const HeaderPreview = ({ title, headerPhotoUri, color }) => (
   <div style={{ background: color }} id="headercontainer">
     <div style={{ background: color }} id="headercontent">
-      <img id="headerimg" alt="Kaldi Logo" src={headerPhotoUri} />
+      <img id="headerimg" alt="Your Logo Here" src={headerPhotoUri} />
       <br />
       <span style={{ color: getColorByBgColor(color) }} id="headertext">
         {title}
