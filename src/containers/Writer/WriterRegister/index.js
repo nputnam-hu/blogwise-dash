@@ -40,7 +40,10 @@ class WriterRegister extends Component {
         })
         auth.signup(email, this.state.password)
         if (type === 'ADMIN') {
-          this.props.history.push('/dashboard')
+          this.props.history.push('/dashboard', {
+            firstTime: true,
+            siteUrl: netlifyUrl,
+          })
         } else {
           this.props.history.push('/writer/onboarding/1')
         }

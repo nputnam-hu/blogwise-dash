@@ -2,7 +2,7 @@ import React from 'react'
 import { TwitterIcon, FacebookIcon, LinkedinIcon } from 'react-share'
 import './styles.sass'
 
-const SideBarPreview = ({
+const SidebarPreview = ({
   tags,
   logoUri,
   description,
@@ -67,4 +67,4 @@ const SideBarPreview = ({
   </div>
 )
 
-export default SideBarPreview
+export default SidebarPreview

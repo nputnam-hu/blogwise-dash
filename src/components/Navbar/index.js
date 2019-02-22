@@ -1,25 +1,34 @@
 import React from 'react'
+import { Button } from '@blueprintjs/core'
 import store from 'store'
 import logo from './logo.png'
 import './styles.sass'
 
 const Navbar = () => (
   <div id="navbar-container">
-    <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
-    <button
-      id="logout-button"
+    <a href="/dashboard">
+      <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
+    </a>
+    <Button
+      large
+      className="logout-button"
+      icon="log-out"
       onClick={() => {
         store.remove('user')
+        store.remove('blog')
         window.location = '/login'
       }}
     >
       Log Out
-    </button>
+    </Button>
   </div>
 )
 
 export const ReducedNavbar = () => (
-  <div id="navbar-container">
+  <div
+    id="navbar-container"
+    style={{ background: 'white', borderBottom: 'none' }}
+  >
     <a href="/">
       <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
     </a>

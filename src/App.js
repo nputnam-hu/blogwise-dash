@@ -8,6 +8,7 @@ import {
 import store from 'store'
 import Navbar, { ReducedNavbar } from './components/Navbar'
 import Dashboard from './containers/Dashboard/'
+import HomeHeader from './containers/EditAppearence/HomeHeader'
 import Login from './containers/Login'
 import WriterRegister from './containers/Writer/WriterRegister'
 import WriterInfo from './containers/Writer/WriterInfo'
@@ -18,6 +19,8 @@ import Header from './containers/Onboarding/Header'
 import Tags from './containers/Onboarding/Tags'
 import OtherInfo from './containers/Onboarding/OtherInfo'
 import Home from './containers/Home'
+import HomeSidebar from './containers/EditAppearence/HomeSidebar'
+import BlogNavbar from './containers/EditAppearence/BlogNavbar'
 
 const PrivateRoute = ({ component: MainComponent, ...rest }) => (
   <Route
@@ -47,6 +50,17 @@ const ReducedBar = ({ component: MainComponent, ...rest }) => (
   />
 )
 
+const NoBar = ({ component: MainComponent, ...rest }) => (
+  <Route
+    {...rest}
+    render={props => (
+      <div>
+        <MainComponent {...props} />
+      </div>
+    )}
+  />
+)
+
 class App extends Component {
   render() {
     return (
@@ -62,6 +76,9 @@ class App extends Component {
             <ReducedBar path="/onboarding/1" component={Header} />
             <ReducedBar path="/register" component={Register} />
             <ReducedBar path="/plans" component={Plans} />
+            <NoBar path="/edit/header" component={HomeHeader} />
+            <NoBar path="/edit/sidebar" component={HomeSidebar} />
+            <NoBar path="/edit/navbar" component={BlogNavbar} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <ReducedBar path="/" component={Home} />
           </Switch>

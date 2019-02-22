@@ -50,7 +50,13 @@ class Tags extends Component {
   componentDidMount() {
     if (!this.props.location.state) {
       this.props.history.push('/register')
+      return
     }
+    this.client.get('/blogs').then(blog => {
+      if (Object.keys(blog.tags || {}).length > 0) {
+        this.setState({ tags: blog.tags })
+      }
+    })
   }
   onTagChange = (e, key) => {
     this.setState({
@@ -81,6 +87,9 @@ class Tags extends Component {
       errorMessage('Failed to update blog')
     }
   }
+  onBackButtonClick = () => {
+    this.props.history.push('/onboarding/1', { ...this.props.location.state })
+  }
   addTag = () => {
     this.setState({
       tags: {
@@ -96,6 +105,15 @@ class Tags extends Component {
 
     return (
       <div className="onboarding-container">
+        <Button
+          small
+          icon="arrow-left"
+          className="onboarding-backbutton"
+          minimal
+          onClick={this.onBackButtonClick}
+        >
+          Back
+        </Button>
         <div className="onboarding-stepcounter">Step 3 of 4</div>
         <h2>Create Custom Tags</h2>
         <span className="onboarding-subheader">

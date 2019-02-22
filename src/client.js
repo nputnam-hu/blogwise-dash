@@ -16,6 +16,21 @@ class Client {
     }
   }
   get(stub, options = {}) {
+    if (stub === '/blogs') {
+      const blog = store.get('blog')
+      if (blog) {
+        return Promise.resolve(blog)
+      }
+      return rp({
+        uri: config.apiUrl + stub,
+        method: 'GET',
+        ...this.defaultOptions,
+        ...options,
+      }).then(fetchedBlog => {
+        store.set('blog', fetchedBlog)
+        return fetchedBlog
+      })
+    }
     return rp({
       uri: config.apiUrl + stub,
       method: 'GET',
@@ -33,6 +48,19 @@ class Client {
     })
   }
   put(stub, body = {}, options = {}) {
+    if (stub === '/blogs') {
+      store.remove('blog')
+      return rp({
+        uri: config.apiUrl + stub,
+        method: 'PUT',
+        body,
+        ...this.defaultOptions,
+        ...options,
+      }).then(updatedBlog => {
+        store.set('blog', updatedBlog)
+        return updatedBlog
+      })
+    }
     return rp({
       uri: config.apiUrl + stub,
       method: 'PUT',

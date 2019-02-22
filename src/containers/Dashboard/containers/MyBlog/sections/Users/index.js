@@ -8,10 +8,10 @@ import {
   InputGroup,
   HTMLSelect,
 } from '@blueprintjs/core'
-import EditModal from '../../../../components/EditModal'
-import QuestionHint from '../../../../components/QuestionHint'
-import errorMessage from '../../../../errorMessage'
-import Client from '../../../../client'
+import EditModal from '../../../../../../components/EditModal'
+import QuestionHint from '../../../../../../components/QuestionHint'
+import errorMessage from '../../../../../../errorMessage'
+import Client from '../../../../../../client'
 import './styles.sass'
 
 function trimString(str) {
@@ -73,7 +73,6 @@ class Users extends Component {
         users: [...users, user],
       })
     } catch (err) {
-      console.error(err)
       switch (err.error.code) {
         case 1006:
           errorMessage('A user with that email already exists')
@@ -115,9 +114,10 @@ class Users extends Component {
     return (
       <div id="users-container">
         <div id="inputcontent">
-          <h1>Users & Roles</h1>
           <div className="section-header">
-            <h2>Users</h2>
+            <a href="#users-roles" name="users-roles">
+              <h2>Users & Roles</h2>
+            </a>
             <QuestionHint
               title="Users"
               helperText="New users can be assigned one of two roles: Admin and Writer. Writers can write new content for the blog and publish new posts. Admins, in addition to having the same writing power as Writers, can also manage the blog content and settings on the blogwise dashboard."

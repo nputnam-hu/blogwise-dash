@@ -1,0 +1,25 @@
+#overview-container
+  padding-bottom: 60px
+  #overview-cards
+    display: flex
+    flex-direction: row
+    justify-content: center
+    flex-wrap: wrap
+    .overview-column
+      width: 49%
+      @media only screen and (max-width: 1000px)
+        width: 500px
+      .overview-card
+        border-radius: 10px
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        height: 215px
+        margin: 10px
+        font-size: 16px
+        button
+          border-radius: 2px
+
+      .overview-spinner
+        margin-left: 200px
+        margin-top: 40px
