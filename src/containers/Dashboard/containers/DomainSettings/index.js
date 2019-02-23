@@ -14,7 +14,12 @@ import QuestionHint from '../../../../components/QuestionHint'
 import Client from '../../../../client'
 
 function getRecordNameFromUrl(url) {
-  return url.split('.')[0]
+  const urlParts = url.split('.')
+  if (urlParts.length === 0) {
+    return '@'
+  }
+  urlParts.splice(-1)
+  return urlParts.join('.')
 }
 
 function getRecordValueFromUrl(url) {
