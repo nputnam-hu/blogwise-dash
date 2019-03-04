@@ -4,33 +4,17 @@ import {
   InputGroup,
   Button,
   Intent,
-  FileInput,
   Popover,
   Spinner,
   PopoverInteractionKind,
+  RadioGroup,
+  Radio,
 } from '@blueprintjs/core'
 import { ChromePicker as ColorPicker } from 'react-color'
+import CropImgUploader from '../CropImgUploader'
+import HeaderPreview from '../HeaderPreview'
 import { uploadFileToS3 } from '../../client'
 import './styles.sass'
-
-function getColorByBgColor(bgColor) {
-  if (!bgColor) {
-    return ''
-  }
-  return parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff'
-}
-
-const HeaderPreview = ({ title, headerPhotoUri, color }) => (
-  <div style={{ background: color }} id="headercontainer">
-    <div style={{ background: color }} id="headercontent">
-      <img id="headerimg" alt="Your Logo Here" src={headerPhotoUri} />
-      <br />
-      <span style={{ color: getColorByBgColor(color) }} id="headertext">
-        {title}
-      </span>
-    </div>
-  </div>
-)
 
 class EditHeader extends Component {
   constructor(props) {
@@ -40,7 +24,11 @@ class EditHeader extends Component {
       title: props.title,
       headerPhotoUri: props.headerPhotoUri,
       color: props.color,
+      bgImgUri: props.bgImgUri,
+      cropModalOpen: false,
+      bgCropModalOpen: false,
       fetchingData: props.fetchData,
+      bgType: props.bgImgUri ? 'img' : 'color',
     }
   }
   componentDidMount() {
@@ -48,6 +36,8 @@ class EditHeader extends Component {
       this.setState({
         title: blog.title || this.props.title,
         headerPhotoUri: blog.headerPhotoUri || this.props.headerPhotoUri,
+        bgImgUri: blog.bgImgUri || this.props.bgImgUri,
+        bgType: blog.bgImgUri || this.props.bgImgUri ? 'img' : 'color',
         color: blog.backgroundHexCode || this.props.backgroundHexCode,
         fetchingData: false,
       })
@@ -66,14 +56,19 @@ class EditHeader extends Component {
   handlePhotoUploaded = url => {
     this.setState({ headerPhotoUri: url })
   }
-  handleColorPicked = ({ hex }) => this.setState({ color: hex })
-
+  handleColorPicked = ({ hex }) => this.setState({ color: hex, bgImgUri: '' })
+  handleBgTypeChange = e => this.setState({ bgType: e.currentTarget.value })
+  openCropModal = () => this.setState({ cropModalOpen: true })
+  handleCropModalClose = () => this.setState({ cropModalOpen: false })
+  openBgCropModal = () => this.setState({ bgCropModalOpen: true })
+  handleBgCropModalClose = () => this.setState({ bgCropModalOpen: false })
   render() {
     return (
       <div>
         <HeaderPreview
           title={this.state.title}
           headerPhotoUri={this.state.headerPhotoUri}
+          bgImgUri={this.state.bgImgUri}
           color={this.state.color}
         />
         {this.state.fetchingData && <Spinner />}
@@ -103,12 +98,10 @@ class EditHeader extends Component {
               label="Logo"
               helperText="For best results use an image with a transparent background"
             >
-              <FileInput
+              <Button
                 text="Choose file..."
                 name="headerimg"
-                onInputChange={this.handleFileUpload}
-                disabled={this.state.locked}
-                style={{ width: 250 }}
+                onClick={this.openCropModal}
               />
               <img
                 src={this.state.headerPhotoUri}
@@ -116,22 +109,42 @@ class EditHeader extends Component {
                 id="headerimg-preview"
               />
             </FormGroup>
-            <FormGroup htmlFor="color" label="Background Color">
-              <div id="colorinput">
-                <div
-                  id="colorpreview"
-                  style={{ background: this.state.color }}
-                />
-                <Popover interactionKind={PopoverInteractionKind.CLICK}>
-                  <Button onClick={this.openColorPicker}>Change</Button>
-                  <ColorPicker
-                    name="color"
-                    color={this.state.color}
-                    onChange={this.handleColorPicked}
+            <h4>Background</h4>
+            <RadioGroup
+              onChange={this.handleBgTypeChange}
+              selectedValue={this.state.bgType}
+              inline
+            >
+              <Radio label="Solid Color" value="color" />
+              <Radio label="Background Image" value="img" />
+            </RadioGroup>
+            <br />
+            {this.state.bgType === 'color' ? (
+              <FormGroup htmlFor="color" label="Solid Color">
+                <div id="colorinput">
+                  <div
+                    id="colorpreview"
+                    style={{ background: this.state.color }}
                   />
-                </Popover>
-              </div>
-            </FormGroup>
+                  <Popover interactionKind={PopoverInteractionKind.CLICK}>
+                    <Button>Change</Button>
+                    <ColorPicker
+                      name="color"
+                      color={this.state.color}
+                      onChange={this.handleColorPicked}
+                    />
+                  </Popover>
+                </div>
+              </FormGroup>
+            ) : (
+              <FormGroup htmlFor="bgimg" label="Background Image ">
+                <Button
+                  text="Choose file..."
+                  name="bgimg"
+                  onClick={this.openBgCropModal}
+                />
+              </FormGroup>
+            )}
             <br />
             <Button
               large
@@ -143,6 +156,25 @@ class EditHeader extends Component {
             </Button>
           </div>
         </div>
+        {/* Modals */}
+        <CropImgUploader
+          isOpen={this.state.cropModalOpen}
+          handleClose={this.handleCropModalClose}
+          client={this.client}
+          fileLabel="Header Photo"
+          onConfirmCrop={url =>
+            this.setState({ headerPhotoUri: url, cropModalOpen: false })
+          }
+        />
+        <CropImgUploader
+          isOpen={this.state.bgCropModalOpen}
+          handleClose={this.handleBgCropModalClose}
+          client={this.client}
+          fileLabel="Background Image"
+          onConfirmCrop={url =>
+            this.setState({ bgImgUri: url, bgCropModalOpen: false })
+          }
+        />
       </div>
     )
   }

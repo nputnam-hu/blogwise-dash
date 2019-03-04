@@ -3,10 +3,12 @@
   #overview-cards
     display: flex
     flex-direction: row
-    justify-content: center
+    justify-content: space-between
     flex-wrap: wrap
     .overview-column
-      width: 49%
+      display: flex
+      flex-direction: column
+      width: 47%
       @media only screen and (max-width: 1000px)
         width: 500px
       .overview-card
@@ -21,5 +23,10 @@
           border-radius: 2px
 
       .overview-spinner
-        margin-left: 200px
-        margin-top: 40px
+        display: flex
+        align-self: flex-center
+        padding-top: 30px
+
+      .headline-container
+        margin-bottom: 20px
+        font-size: 18px

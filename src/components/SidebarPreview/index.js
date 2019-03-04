@@ -1,5 +1,7 @@
 import React from 'react'
-import { TwitterIcon, FacebookIcon, LinkedinIcon } from 'react-share'
+import linkedin from './linkedin.png'
+import facebook from './facebook.png'
+import twitter from './twitter.png'
 import './styles.sass'
 
 const SidebarPreview = ({
@@ -9,6 +11,7 @@ const SidebarPreview = ({
   twitterUrl,
   facebookUrl,
   linkedinUrl,
+  companyName,
 }) => (
   <div id="previewcontent">
     <div id="preview">
@@ -28,36 +31,40 @@ const SidebarPreview = ({
               </React.Fragment>
             )}
           </div>
-          <h2 className="rightheader">About</h2>
+          <h2 className="rightheader">About {companyName}</h2>
           {logoUri && <img alt="Logo Preview" src={logoUri} id="rightlogo" />}
           <div id="blogdescription">{description}</div>
-          <span id="moreonblog">Read More &gt;</span>
+          <span id="moreonblog">READ MORE &gt;</span>
+          <h2 className="rightheader">Find us on</h2>
           <div id="sociallinks">
             {twitterUrl && (
               <a
-                href={`https://www.twitter.com/${twitterUrl}`}
+                className="right-sociallink"
+                href={twitterUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <TwitterIcon size={32} round />
+                <img src={twitter} alt="twitter" />
               </a>
             )}
             {facebookUrl && (
               <a
-                href={`https://www.facebook.com/${facebookUrl}`}
+                className="right-sociallink"
+                href={facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <FacebookIcon size={32} round />
+                <img src={facebook} alt="facebook" />
               </a>
             )}
             {linkedinUrl && (
               <a
-                href={`https://www.linkedin.com/${linkedinUrl}`}
+                className="right-sociallink"
+                href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <LinkedinIcon size={32} round />
+                <img src={linkedin} alt="linkedin" />
               </a>
             )}
           </div>

@@ -24,22 +24,26 @@ class MyBlog extends Component {
       deploys: [],
       dataLoading: true,
       sslActivated: false,
+      headlines: [],
     }
   }
   componentDidMount() {
-    this.client.get('/blogs').then(blog => {
-      this.client.get('/blogs/deploy').then(deploys => {
-        this.setState({
-          siteUrl: blog.siteUrl,
-          sslActivated: blog.sslActivated,
-          deploys,
-          dataLoading: false,
+    this.client.post('/blogs/content').then(headlines => {
+      this.client.get('/blogs').then(blog => {
+        this.client.get('/blogs/deploy').then(deploys => {
+          this.setState({
+            siteUrl: blog.siteUrl,
+            sslActivated: blog.sslActivated,
+            deploys,
+            headlines,
+            dataLoading: false,
+          })
         })
       })
     })
   }
   render() {
-    const { siteUrl, sslActivated } = this.state
+    const { siteUrl, sslActivated, headlines } = this.state
     const cleanedSiteUrl = `${
       sslActivated ? 'https' : 'http'
     }://${siteUrl.replace(/https:\/\//g, '')}`
@@ -129,6 +133,18 @@ class MyBlog extends Component {
                 {siteUrl}/admin.
               </a>
             </Card>
+            <div className="section-header">
+              <h2>Suggested Articles</h2>
+            </div>
+            {headlines.length > 0 && (
+              <ul>
+                {headlines.map(headline => (
+                  <li className="headline-container">
+                    <span className="headline">{headline}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>

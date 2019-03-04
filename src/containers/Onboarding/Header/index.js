@@ -20,6 +20,7 @@ class Header extends Component {
         headerPhotoUri: state.headerPhotoUri,
         sidebarPhotoUri: state.headerPhotoUri,
         backgroundHexCode: state.color,
+        bgImgUri: state.bgImgUri,
       })
       this.props.history.push('/onboarding/2', {
         ...this.props.location.state,
@@ -39,8 +40,8 @@ class Header extends Component {
         onBackButtonClick={this.onBackButtonClick}
         buttonText="Next Step"
         title="Your Title Here"
-        headerPhotoUri="https://s3.amazonaws.com/megaphone-logo-uploads/1549559463864_blogwise_logo.png"
-        color="#E6E6E6"
+        headerPhotoUri=""
+        color="#fffff"
         topPart={
           <>
             <div className="onboarding-stepcounter">Step 2 of 4</div>

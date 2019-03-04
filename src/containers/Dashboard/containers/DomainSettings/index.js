@@ -12,13 +12,14 @@ import {
 import './styles.sass'
 import QuestionHint from '../../../../components/QuestionHint'
 import Client from '../../../../client'
+import errorMessage from '../../../../errorMessage'
 
 function getRecordNameFromUrl(url) {
   const urlParts = url.split('.')
-  if (urlParts.length === 0) {
-    return '@'
+  if (urlParts.length <= 2) {
+    return null
   }
-  urlParts.splice(-1)
+  urlParts.splice(-2)
   return urlParts.join('.')
 }
 
@@ -65,7 +66,12 @@ class DomainSettings extends Component {
     this.setState({ modalOpen: false })
   }
   updateSiteUrl = () => {
-    this.client
+    if (getRecordNameFromUrl(this.state.newSiteUrl) === null) {
+      return errorMessage(
+        'Blogwise does not support root domains, please input a subdomain such as `blog.example.com`',
+      )
+    }
+    return this.client
       .put('/blogs', { siteUrl: this.state.newSiteUrl, sslActivated: false })
       .then(() => {
         this.setState({
@@ -107,11 +113,7 @@ class DomainSettings extends Component {
                   {this.state.siteUrl}
                 </a>
               </p>
-              <Button
-                icon="exchange"
-                onClick={this.onClick}
-                intent={Intent.PRIMARY}
-              >
+              <Button onClick={this.onClick} intent={Intent.PRIMARY}>
                 Change
               </Button>
             </Card>

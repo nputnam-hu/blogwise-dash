@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { FormGroup, FileInput } from '@blueprintjs/core'
+import { FormGroup, Button } from '@blueprintjs/core'
 import QuestionHint from '../../../../../../components/QuestionHint'
-import Client, { uploadFileToS3 } from '../../../../../../client'
+import CropImgUploader from '../../../../../../components/CropImgUploader'
+import Client from '../../../../../../client'
 import './styles.sass'
 
 class General extends Component {
@@ -10,6 +11,7 @@ class General extends Component {
     this.client = new Client()
     this.state = {
       faviconPhotoUri: '',
+      cropModalOpen: false,
     }
   }
   componentDidMount() {
@@ -17,18 +19,10 @@ class General extends Component {
       this.setState({ faviconPhotoUri: blog.faviconPhotoUri })
     })
   }
-  handleFileUpload = evt => {
-    const { files } = evt.target
-    const file = files[0]
-    if (file) {
-      uploadFileToS3(file, this.client).then(url =>
-        this.handlePhotoUploaded(url.split('?')[0]),
-      )
-    }
-  }
-
+  openCropModal = () => this.setState({ cropModalOpen: true })
+  handleCropModalClose = () => this.setState({ cropModalOpen: false })
   handlePhotoUploaded = async url => {
-    this.setState({ faviconPhotoUri: url })
+    this.setState({ faviconPhotoUri: url, cropModalOpen: false })
     await this.client.put('/blogs', {
       faviconPhotoUri: this.state.faviconPhotoUri,
     })
@@ -45,7 +39,7 @@ class General extends Component {
           />
         </div>
         <FormGroup
-          htmlFor="Favicon Photo"
+          htmlFor="favicon"
           label=""
           helperText="For best results, please use a small (32px by 32px) png or ico asset"
         >
@@ -63,11 +57,21 @@ class General extends Component {
               <br />
             </div>
           )}
-          <FileInput
+          <Button
             text="Choose file..."
-            onInputChange={this.handleFileUpload}
+            name="favicon"
+            onClick={this.openCropModal}
           />
         </FormGroup>
+        {/* Modals */}
+        <CropImgUploader
+          isOpen={this.state.cropModalOpen}
+          handleClose={this.handleCropModalClose}
+          client={this.client}
+          aspectRatio={1}
+          fileLabel="Favicon"
+          onConfirmCrop={this.handlePhotoUploaded}
+        />
       </div>
     )
   }

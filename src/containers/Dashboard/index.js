@@ -18,7 +18,7 @@ class Dashboard extends Component {
       tabId:
         props.location.state && props.location.state.tabId
           ? props.location.state.tabId
-          : 'ac',
+          : 'in',
       welcomeModalOpen: firstTime,
     }
   }

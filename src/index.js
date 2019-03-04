@@ -1,8 +1,9 @@
+/* eslint-disable import/extensions */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './all.sass'
-import 'typeface-roboto'
-import 'typeface-lato'
+import 'typeface-nunito'
+import 'typeface-pt-sans'
 import '@blueprintjs/core/lib/css/blueprint.css'
 
 import App from './App'

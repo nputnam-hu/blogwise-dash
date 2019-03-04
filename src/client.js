@@ -81,7 +81,7 @@ class Client {
 }
 
 export async function uploadFileToS3(file, client) {
-  const url = await client.put('/s3/logo', {
+  const url = await client.put('/s3/upload', {
     fileName: `${Date.now()}_${file.name}`,
     contentType: file.type,
   })

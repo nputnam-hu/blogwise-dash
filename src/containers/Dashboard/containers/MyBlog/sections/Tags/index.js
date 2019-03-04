@@ -20,7 +20,7 @@ class Tags extends Component {
   }
   componentDidMount() {
     this.client.get('/blogs').then(blog => {
-      this.setState({ tags: blog.tags })
+      this.setState({ tags: blog.tags || {} })
     })
   }
   openModalEdit = tagKey =>

@@ -14,6 +14,7 @@ class HomeHeader extends Component {
         title: state.title,
         headerPhotoUri: state.headerPhotoUri,
         backgroundHexCode: state.color,
+        bgImgUri: state.bgImgUri,
       })
       this.props.history.push('/dashboard', {
         tabId: 'si',
