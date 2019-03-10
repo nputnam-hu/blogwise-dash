@@ -5,7 +5,7 @@ import { uploadFileToS3 } from '../../client'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cropperjs/dist/cropper.css'
 import './styles.sass'
-import errorMessage from '../../errorMessage'
+import errorMessage from '../../toaster'
 
 function dataURItoBlob(dataURI) {
   // convert base64 to raw binary data held in a string

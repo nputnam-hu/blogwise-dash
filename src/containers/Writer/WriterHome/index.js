@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Spinner } from '@blueprintjs/core'
-import EditModal from '../../../components/EditModal'
+import EditModal from '../../../components/EditUserModal'
 import Client from '../../../client'
 import './styles.sass'
 

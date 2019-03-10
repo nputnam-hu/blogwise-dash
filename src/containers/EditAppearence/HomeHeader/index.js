@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import EditHeader from '../../../components/EditHeader'
 import Client from '../../../client'
-import errorMessage from '../../../errorMessage'
+import errorMessage from '../../../toaster'
 
 class HomeHeader extends Component {
   constructor() {
@@ -16,15 +16,17 @@ class HomeHeader extends Component {
         backgroundHexCode: state.color,
         bgImgUri: state.bgImgUri,
       })
-      this.props.history.push('/dashboard', {
-        tabId: 'si',
+      this.props.history.push('/dashboard/myblog', {
+        tabId: 'third',
       })
     } catch (err) {
       errorMessage('Failed to update blog')
     }
   }
   onBackButtonClick = () => {
-    this.props.history.push('/dashboard')
+    this.props.history.push('/dashboard/myblog', {
+      tabId: 'third',
+    })
   }
   render() {
     return (

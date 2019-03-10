@@ -10,7 +10,7 @@ import {
 import store from 'store'
 import GoTrue from 'gotrue-js'
 import Client from '../../../client'
-import errorMessage from '../../../errorMessage'
+import errorMessage, { validateState } from '../../../toaster'
 import lowerSwoosh from './lower_swoosh.png'
 import upperSwoosh from './upper_swoosh.png'
 import girlPainting from './girl_painting.png'
@@ -30,7 +30,7 @@ class Register extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onRadioChange = e => this.setState({ surveyAnswer: e.target.value })
   onClick = async () => {
-    if (!this.state.name || !this.state.email) {
+    if (!validateState(['name', 'email', 'password'], this.state)) {
       return
     }
     try {
@@ -62,7 +62,20 @@ class Register extends Component {
         })
       }
     } catch (err) {
-      errorMessage('An account with that email already exists')
+      let msg
+      switch (err.error.code) {
+        case 1005:
+          msg = 'There is already an account registered with that email'
+          break
+        case 3002:
+          msg =
+            'Our servers are currently undergoing maintenance - please try again in a couple of hours. Sorry for the inconvenience!'
+          break
+        default:
+          msg = 'There was a problem creating your account'
+          break
+      }
+      errorMessage(msg)
     }
   }
   onKeyDown = e => {

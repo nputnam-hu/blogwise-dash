@@ -3,6 +3,7 @@ import { Button, Card, H5 } from '@blueprintjs/core'
 import TagModal from './components/TagModal'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import Client from '../../../../../../client'
+import { validateState } from '../../../../../../toaster'
 import './styles.sass'
 
 class Tags extends Component {
@@ -40,6 +41,9 @@ class Tags extends Component {
       modalTagKey: '',
     })
   modifyTag = async (tagKey, newTag) => {
+    if (!validateState(['name'], newTag)) {
+      return
+    }
     const newTags = { ...this.state.tags, [tagKey]: newTag }
     await this.client.put('/blogs', { tags: newTags })
     this.setState({

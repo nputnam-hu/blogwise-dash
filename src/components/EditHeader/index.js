@@ -23,7 +23,7 @@ class EditHeader extends Component {
     this.state = {
       title: props.title,
       headerPhotoUri: props.headerPhotoUri,
-      color: props.color,
+      backgroundHexCode: props.backgroundHexCode,
       bgImgUri: props.bgImgUri,
       cropModalOpen: false,
       bgCropModalOpen: false,
@@ -38,7 +38,8 @@ class EditHeader extends Component {
         headerPhotoUri: blog.headerPhotoUri || this.props.headerPhotoUri,
         bgImgUri: blog.bgImgUri || this.props.bgImgUri,
         bgType: blog.bgImgUri || this.props.bgImgUri ? 'img' : 'color',
-        color: blog.backgroundHexCode || this.props.backgroundHexCode,
+        backgroundHexCode:
+          blog.backgroundHexCode || this.props.backgroundHexCode,
         fetchingData: false,
       })
     })
@@ -56,7 +57,8 @@ class EditHeader extends Component {
   handlePhotoUploaded = url => {
     this.setState({ headerPhotoUri: url })
   }
-  handleColorPicked = ({ hex }) => this.setState({ color: hex, bgImgUri: '' })
+  handleColorPicked = ({ hex }) =>
+    this.setState({ backgroundHexCode: hex, bgImgUri: '' })
   handleBgTypeChange = e => this.setState({ bgType: e.currentTarget.value })
   openCropModal = () => this.setState({ cropModalOpen: true })
   handleCropModalClose = () => this.setState({ cropModalOpen: false })
@@ -64,16 +66,16 @@ class EditHeader extends Component {
   handleBgCropModalClose = () => this.setState({ bgCropModalOpen: false })
   render() {
     return (
-      <div>
+      <div style={{ marginTop: '25px' }}>
         <HeaderPreview
           title={this.state.title}
           headerPhotoUri={this.state.headerPhotoUri}
           bgImgUri={this.state.bgImgUri}
-          color={this.state.color}
+          color={this.state.backgroundHexCode}
         />
         {this.state.fetchingData && <Spinner />}
         <br />
-        <div className="onboarding-container">
+        <div className="onboarding-container editheader">
           <Button
             small
             icon="arrow-left"
@@ -84,67 +86,73 @@ class EditHeader extends Component {
             Back
           </Button>
           {this.props.topPart}
-          <div className="onboarding-form">
-            <FormGroup htmlFor="title" label="Title">
-              <InputGroup
-                name="title"
-                value={this.state.title}
-                onChange={this.onChange}
-                autoFocus
-              />
-            </FormGroup>
-            <FormGroup
-              htmlFor="headerimg"
-              label="Logo"
-              helperText="For best results use an image with a transparent background"
-            >
-              <Button
-                text="Choose file..."
-                name="headerimg"
-                onClick={this.openCropModal}
-              />
-              <img
-                src={this.state.headerPhotoUri}
-                alt="logo preview"
-                id="headerimg-preview"
-              />
-            </FormGroup>
-            <h4>Background</h4>
-            <RadioGroup
-              onChange={this.handleBgTypeChange}
-              selectedValue={this.state.bgType}
-              inline
-            >
-              <Radio label="Solid Color" value="color" />
-              <Radio label="Background Image" value="img" />
-            </RadioGroup>
-            <br />
-            {this.state.bgType === 'color' ? (
-              <FormGroup htmlFor="color" label="Solid Color">
-                <div id="colorinput">
-                  <div
-                    id="colorpreview"
-                    style={{ background: this.state.color }}
+          <div className="onboarding-form editheader">
+            <div className="editheader-inputs">
+              <div style={{ flexDirection: 'column' }}>
+                <FormGroup htmlFor="title" label="Title">
+                  <InputGroup
+                    name="title"
+                    value={this.state.title}
+                    onChange={this.onChange}
+                    autoFocus
                   />
-                  <Popover interactionKind={PopoverInteractionKind.CLICK}>
-                    <Button>Change</Button>
-                    <ColorPicker
-                      name="color"
-                      color={this.state.color}
-                      onChange={this.handleColorPicked}
+                </FormGroup>
+                <FormGroup
+                  htmlFor="headerimg"
+                  label="Logo"
+                  helperText="For best results use an image with a transparent background"
+                >
+                  <Button
+                    text="Choose file..."
+                    name="headerimg"
+                    onClick={this.openCropModal}
+                  />
+                  <img
+                    src={this.state.headerPhotoUri}
+                    alt="logo preview"
+                    id="headerimg-preview"
+                  />
+                </FormGroup>
+              </div>
+              <div style={{ flexDirection: 'column' }}>
+                <h4>Background</h4>
+                <RadioGroup
+                  onChange={this.handleBgTypeChange}
+                  selectedValue={this.state.bgType}
+                  inline
+                >
+                  <Radio label="Solid Color" value="color" />
+                  <Radio label="Background Image" value="img" />
+                </RadioGroup>
+                <br />
+                {this.state.bgType === 'color' ? (
+                  <FormGroup htmlFor="color" label="Solid Color">
+                    <div id="colorinput">
+                      <div
+                        id="colorpreview"
+                        style={{ background: this.state.backgroundHexCode }}
+                      />
+                      <Popover interactionKind={PopoverInteractionKind.CLICK}>
+                        <Button>Change</Button>
+                        <ColorPicker
+                          name="color"
+                          color={this.state.backgroundHexCode}
+                          onChange={this.handleColorPicked}
+                        />
+                      </Popover>
+                    </div>
+                  </FormGroup>
+                ) : (
+                  <FormGroup htmlFor="bgimg" label="Background Image ">
+                    <Button
+                      text="Choose file..."
+                      name="bgimg"
+                      onClick={this.openBgCropModal}
                     />
-                  </Popover>
-                </div>
-              </FormGroup>
-            ) : (
-              <FormGroup htmlFor="bgimg" label="Background Image ">
-                <Button
-                  text="Choose file..."
-                  name="bgimg"
-                  onClick={this.openBgCropModal}
-                />
-              </FormGroup>
-            )}
+                  </FormGroup>
+                )}
+              </div>
+            </div>
             <br />
             <Button
               large

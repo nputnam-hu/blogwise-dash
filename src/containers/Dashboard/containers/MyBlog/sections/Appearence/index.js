@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Card, Elevation } from '@blueprintjs/core'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import sidebar from './sidebar.png'
@@ -10,44 +11,44 @@ const Appearence = () => (
   <div id="appearence-container">
     <div className="section-header">
       <a href="#appearence" name="appearence">
-        <h2>Customize Appearence</h2>
+        <h2>Customize Appearance</h2>
       </a>
       <QuestionHint
-        title="Customize Appearence"
+        title="Customize Appearance"
         helperText="You can customize the appearence of your blog by uploading images, choosing colors, including links to your social media accounts, and more."
       />
     </div>
     <div id="appearence-cards">
-      <a href="/edit/header">
+      <Link to="/edit/header">
         <Card
           className="uicomponent-card"
           interactive
           elevation={Elevation.TWO}
         >
-          <h2>Homepage Header</h2>
           <img src={header} alt="Header" />
+          <h2>Homepage Header</h2>
         </Card>
-      </a>
-      <a href="/edit/sidebar">
+      </Link>
+      <Link to="/edit/sidebar">
         <Card
           className="uicomponent-card"
           interactive
           elevation={Elevation.TWO}
         >
-          <h2>Homepage Sidebar</h2>
           <img src={sidebar} alt="Sidebar" />
+          <h2>Homepage Sidebar</h2>
         </Card>
-      </a>
-      <a href="/edit/navbar">
+      </Link>
+      <Link to="/edit/navbar">
         <Card
           className="uicomponent-card"
           interactive
           elevation={Elevation.TWO}
         >
-          <h2>Navigation Bar</h2>
           <img src={navbar} alt="Navbar" />
+          <h2>Navigation Bar</h2>
         </Card>
-      </a>
+      </Link>
     </div>
   </div>
 )

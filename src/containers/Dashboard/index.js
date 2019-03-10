@@ -1,84 +1,66 @@
-import React, { Component } from 'react'
-import store from 'store'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import Account from './containers/Account'
-import DomainSettings from './containers/DomainSettings'
 import Overview from './containers/Overview'
 import MyBlog from './containers/MyBlog'
-import WelcomeModal from '../../components/WelcomeModal'
+import MyPosts from './containers/MyPosts'
 
-import { Tab, Tabs } from '@blueprintjs/core'
+import { Tabs } from '@blueprintjs/core'
 import './styles.sass'
 
-class Dashboard extends Component {
-  constructor(props) {
-    super(props)
-    const firstTime = store.get('firstTime')
-    if (firstTime) store.remove('firstTime')
-    this.state = {
-      tabId:
-        props.location.state && props.location.state.tabId
-          ? props.location.state.tabId
-          : 'in',
-      welcomeModalOpen: firstTime,
-    }
-  }
-  handleTabChange = tabId => {
-    this.setState({ tabId })
-  }
-  handleWelcomeModalClose = () => this.setState({ welcomeModalOpen: false })
-  manageSettings = () => this.setState({ tabId: 'us' })
-  viewOptions = () => this.setState({ tabId: 'si' })
-  render() {
-    return (
-      <div id="index-container" className="tab-container">
-        <Tabs
-          id="TabsExample"
-          className="dashboard-tabs"
-          onChange={this.handleTabChange}
-          selectedTabId={this.state.tabId}
-          large
-        >
-          <Tab
-            className="dashboard-tab"
-            id="in"
-            title="Overview"
-            panel={
-              <Overview
-                manageSettings={this.manageSettings}
-                viewOptions={this.viewOptions}
-              />
-            }
-          />
-          <Tab
-            className="dashboard-tab"
-            id="si"
-            title="My Blog"
-            panel={<MyBlog />}
-          />
-          <Tab
-            className="dashboard-tab"
-            id="us"
-            title="Domain Settings"
-            panel={<DomainSettings />}
-          />
-          <Tab
-            className="dashboard-tab"
-            id="ac"
-            title="Account"
-            panel={<Account />}
-          />
-          <Tabs.Expander />
-        </Tabs>
-        <WelcomeModal
-          isOpen={this.state.welcomeModalOpen}
-          handleClose={this.handleWelcomeModalClose}
-          siteUrl={
-            this.props.location.state && this.props.location.state.siteUrl
-          }
-        />
-      </div>
-    )
-  }
-}
+const Dashboard = ({ children, activeTab }) => (
+  <div id="index-container" className="tab-container">
+    <Tabs id="TabsExample" className="dashboard-tabs" large>
+      <Link
+        className={activeTab === 'overview' ? 'active' : undefined}
+        to="/dashboard"
+      >
+        Overview
+      </Link>
+      <Link
+        className={activeTab === 'myblog' ? 'active' : undefined}
+        to="/dashboard/myblog"
+      >
+        My Blog
+      </Link>
+      <Link
+        className={activeTab === 'myposts' ? 'active' : undefined}
+        to="/dashboard/myposts"
+      >
+        My Posts
+      </Link>
+      <Link
+        className={activeTab === 'account' ? 'active' : undefined}
+        to="/dashboard/account"
+      >
+        Account
+      </Link>
+      <Tabs.Expander />
+    </Tabs>
+    <div className="tab-content">{children}</div>
+  </div>
+)
 
-export default Dashboard
+export const OverviewView = props => (
+  <Dashboard activeTab="overview">
+    <Overview {...props} />
+  </Dashboard>
+)
+
+export const MyBlogView = props => (
+  <Dashboard activeTab="myblog">
+    <MyBlog {...props} />
+  </Dashboard>
+)
+
+export const MyPostsView = props => (
+  <Dashboard activeTab="myposts">
+    <MyPosts {...props} />
+  </Dashboard>
+)
+
+export const AccountView = props => (
+  <Dashboard activeTab="account">
+    <Account {...props} />
+  </Dashboard>
+)

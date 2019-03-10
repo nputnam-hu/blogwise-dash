@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import EditSidebar from '../../../components/EditSidebar'
 import Client from '../../../client'
-import errorMessage from '../../../errorMessage'
+import errorMessage from '../../../toaster'
 
 class HomeSidebar extends Component {
   constructor() {
@@ -11,15 +11,17 @@ class HomeSidebar extends Component {
   onSubmit = async state => {
     try {
       await this.client.put('/blogs', state)
-      this.props.history.push('/dashboard', {
-        tabId: 'si',
+      this.props.history.push('/dashboard/myblog', {
+        tabId: 'third',
       })
     } catch (err) {
       errorMessage('Failed to update blog')
     }
   }
   onBackButtonClick = () => {
-    this.props.history.push('/dashboard')
+    this.props.history.push('/dashboard/myblog', {
+      tabId: 'third',
+    })
   }
   render() {
     return (

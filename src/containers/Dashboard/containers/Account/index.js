@@ -47,7 +47,7 @@ class Account extends Component {
         <Dialog
           isOpen={this.state.modalOpen}
           onClose={this.handleModalClose}
-          style={{ padding: 20, width: '700px' }}
+          style={{ padding: 20, width: '95%' }}
         >
           <h2>Choose a Plan</h2>
           <PlanComp onChoose={this.onPlanChoose} />

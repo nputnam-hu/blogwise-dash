@@ -8,7 +8,7 @@ import {
 } from '@blueprintjs/core'
 import uuid from 'uuid/v4'
 import Client from '../../../client'
-import errorMessage from '../../../errorMessage'
+import errorMessage from '../../../toaster'
 import './styles.sass'
 
 function genPlaceholder(index) {

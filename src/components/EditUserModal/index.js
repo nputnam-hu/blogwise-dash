@@ -121,6 +121,7 @@ class EditModal extends Component {
           handleClose={this.handleCropModalClose}
           client={this.client}
           fileLabel="Headshot Photo"
+          aspectRatio={1 / 1}
           onConfirmCrop={url =>
             this.setState({ headshotUri: url, cropModalOpen: false })
           }

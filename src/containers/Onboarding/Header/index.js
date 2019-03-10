@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import EditHeader from '../../../components/EditHeader'
+import config from '../../../config'
 import Client from '../../../client'
-import errorMessage from '../../../errorMessage'
+import errorMessage from '../../../toaster'
 
 class Header extends Component {
   constructor() {
@@ -40,8 +41,8 @@ class Header extends Component {
         onBackButtonClick={this.onBackButtonClick}
         buttonText="Next Step"
         title="Your Title Here"
-        headerPhotoUri=""
-        color="#fffff"
+        headerPhotoUri={config.defaultLogo}
+        backgroundHexCode="#ffffff"
         topPart={
           <>
             <div className="onboarding-stepcounter">Step 2 of 4</div>

@@ -9,14 +9,15 @@ import {
   FormGroup,
   InputGroup,
 } from '@blueprintjs/core'
+import isValidDomain from 'is-valid-domain'
 import './styles.sass'
-import QuestionHint from '../../../../components/QuestionHint'
-import Client from '../../../../client'
-import errorMessage from '../../../../errorMessage'
+import QuestionHint from '../../../../../../components/QuestionHint'
+import Client from '../../../../../../client'
+import errorMessage from '../../../../../../toaster'
 
 function getRecordNameFromUrl(url) {
   const urlParts = url.split('.')
-  if (urlParts.length <= 2) {
+  if (urlParts.length < 3) {
     return null
   }
   urlParts.splice(-2)
@@ -68,7 +69,12 @@ class DomainSettings extends Component {
   updateSiteUrl = () => {
     if (getRecordNameFromUrl(this.state.newSiteUrl) === null) {
       return errorMessage(
-        'Blogwise does not support root domains, please input a subdomain such as `blog.example.com`',
+        'blogwise does not support root domains, please input a subdomain such as `blog.example.com`',
+      )
+    }
+    if (!isValidDomain(this.state.newSiteUrl)) {
+      return errorMessage(
+        'Invalid domain inputted, please be sure to not put in any special characters or `https://`',
       )
     }
     return this.client

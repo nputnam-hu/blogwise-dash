@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, FormGroup, InputGroup } from '@blueprintjs/core'
 import store from 'store'
-import errorMessage from '../../errorMessage'
+import errorMessage, { validateState } from '../../toaster'
 import Client from '../../client'
 import './styles.sass'
 
@@ -22,10 +22,8 @@ class Login extends Component {
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onClick = async () => {
-    if (!this.state.email || !this.state.password) {
-      return errorMessage(
-        `Please enter a ${this.state.email ? 'password' : 'email'}`,
-      )
+    if (!validateState(['email', 'password'], this.state)) {
+      return
     }
     try {
       const user = await this.client.post('/auth/login', { ...this.state })
@@ -69,6 +67,12 @@ class Login extends Component {
           <Button large rightIcon="arrow-right" onClick={this.onClick}>
             Login
           </Button>
+          <button
+            onClick={() => this.props.history.push('/forgotpassword')}
+            className="onboarding-setuplater"
+          >
+            Forgot Password?
+          </button>
         </div>
       </div>
     )

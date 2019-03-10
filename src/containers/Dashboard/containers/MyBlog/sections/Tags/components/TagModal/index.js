@@ -16,7 +16,6 @@ class TagModal extends Component {
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onClick = () =>
-    this.state.name &&
     this.props.modifyTag(this.props.modalTagKey || uuid(), this.state)
   render() {
     const { isOpen, handleClose, isEdit } = this.props

@@ -42,19 +42,21 @@ class BlogNavbar extends Component {
     this.state = {
       backgroundHexCode: '',
       logoUri: '',
-      customNavbarLinks: [{ name: '', link: '', order: 1 }],
+      customNavbarLinks: [{ name: '', link: '', order: 0 }],
       dataLoading: true,
       order: 1,
     }
   }
   componentDidMount() {
     this.client.get('/blogs').then(blog => {
+      const { customNavbarLinks = [] } = blog
+      const newLinks = customNavbarLinks.map((el, i) => ({ ...el, order: i }))
       this.setState({
         backgroundHexCode: blog.backgroundHexCode,
         logoUri: blog.headerPhotoUri,
         customNavbarLinks: [
-          ...(blog.customNavbarLinks || []),
-          { name: '', link: '', order: 1 },
+          ...customNavbarLinks,
+          { name: '', link: '', order: newLinks.length },
         ],
         dataLoading: false,
       })
@@ -71,13 +73,17 @@ class BlogNavbar extends Component {
     })
   }
   onBackButtonClick = () => {
-    this.props.history.push('/dashboard')
+    this.props.history.push('/dashboard/myblog', {
+      tabId: 'third',
+    })
   }
   onClick = async () => {
     await this.client.put('/blogs', {
       customNavbarLinks: this.state.customNavbarLinks,
     })
-    this.props.history.push('/dashboard')
+    this.props.history.push('/dashboard/myblog', {
+      tabId: 'third',
+    })
   }
   addLink = () => {
     const navLinks = this.state.customNavbarLinks.sort(

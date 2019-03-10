@@ -8,9 +8,9 @@ import {
   InputGroup,
   HTMLSelect,
 } from '@blueprintjs/core'
-import EditModal from '../../../../../../components/EditModal'
+import EditModal from '../../../../../../components/EditUserModal'
 import QuestionHint from '../../../../../../components/QuestionHint'
-import errorMessage from '../../../../../../errorMessage'
+import errorMessage, { validateState } from '../../../../../../toaster'
 import Client from '../../../../../../client'
 import './styles.sass'
 
@@ -39,11 +39,6 @@ class Users extends Component {
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onSelectChange = e => this.setState({ newRole: e.currentTarget.value })
-  onClick = () => {
-    this.props.history.push('/onboarding/4', {
-      ...this.props.location.state,
-    })
-  }
 
   openModal = () => this.setState({ modalIsOpen: true })
   handleModalClose = () =>
@@ -54,10 +49,10 @@ class Users extends Component {
       newRole: '',
     })
   inviteNewUser = async () => {
-    const { newName, newRole, newEmail, users } = this.state
-    if (!newName || !newEmail) {
+    if (!validateState(['newName', 'newEmail'], this.state)) {
       return
     }
+    const { newName, newRole, newEmail, users } = this.state
     try {
       const { user } = await this.client.post('/users/invite', {
         name: newName,
@@ -73,21 +68,21 @@ class Users extends Component {
         users: [...users, user],
       })
     } catch (err) {
+      let msg
       switch (err.error.code) {
         case 1006:
-          errorMessage('A user with that email already exists')
+          msg = 'A user with that email already exists'
           break
         case 1008:
-          errorMessage(
-            'Your plan has reached the max number of staff users, please upgrade to invite more users',
-          )
+          msg =
+            'Your plan has reached the max number of staff users, please upgrade to invite more users'
           break
         default:
-          errorMessage(
-            'There was a problem inviting that user, if the problem continues contact support',
-          )
+          msg =
+            'There was a problem inviting that user, if the problem continues contact support'
           break
       }
+      errorMessage(msg)
     }
   }
 

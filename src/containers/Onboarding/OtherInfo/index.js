@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import store from 'store'
 import EditSidebar from '../../../components/EditSidebar'
 import Client from '../../../client'
-import errorMessage from '../../../errorMessage'
+import errorMessage from '../../../toaster'
 
 class OtherInfo extends Component {
   constructor() {

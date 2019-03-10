@@ -10,9 +10,7 @@ const Navbar = () => (
       <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
     </a>
     <Button
-      large
       className="logout-button"
-      icon="log-out"
       onClick={() => {
         store.remove('user')
         store.remove('blog')

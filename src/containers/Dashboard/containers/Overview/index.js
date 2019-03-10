@@ -6,8 +6,10 @@ import {
   ButtonGroup,
   Spinner,
 } from '@blueprintjs/core'
+import store from 'store'
 import moment from 'moment'
 import QuestionHint from '../../../../components/QuestionHint'
+import WelcomeModal from '../../../../components/WelcomeModal'
 import Client from '../../../../client'
 import './styles.sass'
 
@@ -15,11 +17,16 @@ function trimString(str) {
   return str ? `${str.slice(0, 27)}...` : ''
 }
 
-class MyBlog extends Component {
+class Overview extends Component {
   constructor() {
     super()
     this.client = new Client()
+    const firstTime = store.get('firstTime')
+    if (firstTime) {
+      store.remove('firstTime')
+    }
     this.state = {
+      welcomeModalOpen: firstTime,
       siteUrl: '',
       deploys: [],
       dataLoading: true,
@@ -42,6 +49,7 @@ class MyBlog extends Component {
       })
     })
   }
+  handleWelcomeModalClose = () => this.setState({ welcomeModalOpen: false })
   render() {
     const { siteUrl, sslActivated, headlines } = this.state
     const cleanedSiteUrl = `${
@@ -56,7 +64,7 @@ class MyBlog extends Component {
                 <span role="img" aria-label="computer">
                   💻
                 </span>{' '}
-                Your Blog
+                View Your Blog
               </h2>
               Your blog is located at:{' '}
               <a
@@ -64,14 +72,30 @@ class MyBlog extends Component {
                 rel="noopener noreferrer"
                 href={cleanedSiteUrl}
               >
-                {siteUrl}
+                {siteUrl || <br />}
               </a>
               <br />
               <ButtonGroup>
-                <Button large icon="cog" onClick={this.props.manageSettings}>
+                <Button
+                  large
+                  icon="cog"
+                  onClick={() =>
+                    this.props.history.push('/dashboard/myblog', {
+                      tabId: 'fourth',
+                    })
+                  }
+                >
                   Domain Settings
                 </Button>
-                <Button large icon="edit" onClick={this.props.viewOptions}>
+                <Button
+                  large
+                  icon="edit"
+                  onClick={() =>
+                    this.props.history.push('/dashboard/myblog', {
+                      tabId: 'third',
+                    })
+                  }
+                >
                   Customize
                 </Button>
               </ButtonGroup>
@@ -121,16 +145,19 @@ class MyBlog extends Component {
                 <span role="img" aria-label="memo">
                   📝
                 </span>{' '}
-                Your Posts
+                Manage Your Posts
               </h2>
               Writers and admins can manage blog posts through the Content
               Management Service (CMS), located at:{' '}
               <a
                 target="_blank"
                 rel="noopener noreferrer"
+                className="opencms-button"
                 href={`${cleanedSiteUrl}/admin`}
               >
-                {siteUrl}/admin.
+                <Button large icon="document">
+                  Manage Posts
+                </Button>
               </a>
             </Card>
             <div className="section-header">
@@ -147,9 +174,17 @@ class MyBlog extends Component {
             )}
           </div>
         </div>
+        {/* Modals */}
+        <WelcomeModal
+          isOpen={this.state.welcomeModalOpen}
+          handleClose={this.handleWelcomeModalClose}
+          siteUrl={
+            this.props.location.state && this.props.location.state.siteUrl
+          }
+        />
       </div>
     )
   }
 }
 
-export default MyBlog
+export default Overview

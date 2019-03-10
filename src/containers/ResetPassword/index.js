@@ -1,23 +1,24 @@
 import React, { Component } from 'react'
 import { InputGroup, FormGroup, Button, Intent } from '@blueprintjs/core'
-import GoTrue from 'gotrue-js'
 import qs from 'qs'
+// import GoTrue from 'gotrue-js'
 import store from 'store'
-import Client from '../../../client'
-import errorMessage, { validateState } from '../../../toaster'
+import Client from '../../client'
+import errorMessage, { validateState } from '../../toaster'
 
-class WriterRegister extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props)
     this.client = new Client()
-    const { id } = qs.parse(props.location.search.slice(1))
+    const { token, email } = qs.parse(props.location.search.slice(1))
     this.state = {
       password: '',
       passwordConfirm: '',
-      id,
+      token,
+      email,
     }
-    if (!id) {
-      return this.props.history.push('/login')
+    if (!token || !email) {
+      return this.props.history.push('/forgotpassword')
     }
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
@@ -30,30 +31,21 @@ class WriterRegister extends Component {
       return
     }
     try {
-      const { token, type, netlifyUrl, email } = await this.client.put(
-        '/users/invite',
-        {
-          password: this.state.password,
-          id: this.state.id,
-        },
-      )
-      store.set('user', { token })
-      const auth = new GoTrue({
-        APIUrl: `${netlifyUrl}/.netlify/identity`,
-        setCookie: false,
+      const { token, type } = await this.client.put('/auth/reset', {
+        email: this.state.email,
+        token: this.state.token,
+        newPassword: this.state.password,
       })
-      auth.signup(email, this.state.password)
+      store.set('user', { token })
       if (type === 'ADMIN') {
-        this.props.history.push('/dashboard', {
-          firstTime: true,
-          siteUrl: netlifyUrl,
-        })
+        this.props.history.push('/dashboard')
       } else {
-        this.props.history.push('/writer/onboarding/1')
+        this.props.history.push('/writer')
       }
     } catch (err) {
+      console.error(err)
       errorMessage(
-        'Error creating account, if this problem persists contact support',
+        'Error resetting password, if this problem persists contact support',
       )
     }
   }
@@ -67,12 +59,8 @@ class WriterRegister extends Component {
   render() {
     return (
       <div className="onboarding-container">
-        <div className="onboarding-stepcounter">Step 1 of 2</div>
-        <h2>Welcome To Blogwise</h2>
-        <span className="onboarding-subheader">
-          Follow the steps to complete the registration of your blogwise account
-        </span>
-        <div className="onboarding-form login">
+        <h2>Choose a New Password</h2>
+        <div className="onboarding-form">
           <FormGroup htmlFor="password" label="Choose a Password">
             <InputGroup
               name="password"
@@ -99,7 +87,7 @@ class WriterRegister extends Component {
             onClick={this.onClick}
             intent={Intent.PRIMARY}
           >
-            Create Account
+            Reset Password
           </Button>
         </div>
       </div>
@@ -107,4 +95,4 @@ class WriterRegister extends Component {
   }
 }
 
-export default WriterRegister
+export default ResetPassword
