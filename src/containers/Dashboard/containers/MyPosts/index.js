@@ -5,7 +5,8 @@ import './styles.sass'
 const MyPosts = ({ history }) => (
   <div id="myposts-container">
     <h1>My Posts</h1>
-    <Button onClick={() => history.push('/calendar/new')}>New Calendar</Button>
+    <h2>Feature Coming Soon</h2>
+    {/* <Button onClick={() => history.push('/calendar/new')}>New Calendar</Button> */}
   </div>
 )
 
