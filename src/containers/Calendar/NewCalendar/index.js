@@ -62,32 +62,53 @@ class NewCalendar extends Component {
       postCount,
     })
   }
-  onClick = () => {
+  onClick = async () => {
     if (
       !validateState([['postCount', 'Post Count']], this.state) ||
       !validateState(
         [['0', 'Start Date'], ['1', 'End Date']],
         this.state.dateRange,
       ) ||
-      !validateState([['0', 'Assigned Users']], this.state.emails)
+      !validateState([['0', 'Assigned Users']], this.state.selectedUsers)
     ) {
       return
     }
     if (
-      !moment(this.state.dateRange[1]).diff(
-        moment(this.state.dateRange[0], 'days') > this.state.postCount,
-      )
+      moment(this.state.dateRange[1]).diff(
+        moment(this.state.dateRange[0]),
+        'days',
+      ) < this.state.postCount
     ) {
       errorMessage('Posts cannot be scheduled for more than once a day')
       return
     }
-    this.props.history.push('/calendar/tasks', { ...this.state })
+    try {
+      await this.client.post('/calendars', {
+        startDate: this.state.dateRange[0],
+        endDate: this.state.dateRange[1],
+        users: this.state.users.map(u => u.value),
+      })
+      this.props.history.push('/calendar/tasks', {
+        postCount: this.state.postCount,
+      })
+    } catch (err) {
+      errorMessage('There was a problem creating your calendar')
+    }
   }
   render() {
     return (
       <div id="newcalendar-container">
         <div style={{ height: '40px' }} />
         <div className="onboarding-container">
+          <Button
+            small
+            icon="arrow-left"
+            className="onboarding-backbutton"
+            minimal
+            onClick={() => this.props.history.push('/dashboard/myposts')}
+          >
+            Back
+          </Button>
           <h2>New Content Strategy</h2>
           <span className="onboarding-subheader">
             Studies show that blogging is most effective when it is consistent.

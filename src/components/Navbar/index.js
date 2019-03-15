@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from '@blueprintjs/core'
 import store from 'store'
 import logo from './logo.png'
+import yellowLogo from './logo-yellow.png'
 import './styles.sass'
 
 const Navbar = () => (
@@ -28,7 +29,7 @@ export const ReducedNavbar = () => (
     style={{ background: 'white', borderBottom: 'none' }}
   >
     <a href="/">
-      <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
+      <img src={yellowLogo} alt="Blogwise Logo" id="navbar-logo" />
     </a>
   </div>
 )

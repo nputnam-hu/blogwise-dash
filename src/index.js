@@ -6,6 +6,7 @@ import 'typeface-nunito'
 import 'typeface-pt-sans'
 import '@blueprintjs/core/lib/css/blueprint.css'
 import '@blueprintjs/datetime/lib/css/blueprint-datetime.css'
+import 'fullcalendar-reactwrapper/dist/css/fullcalendar.min.css'
 
 import App from './App'
 import * as serviceWorker from './serviceWorker'

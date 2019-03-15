@@ -7,7 +7,6 @@ export default function errorMessage(message) {
     message,
     position: Position.TOP,
     intent: Intent.DANGER,
-    icon: 'cross',
   })
 }
 

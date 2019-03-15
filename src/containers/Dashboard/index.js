@@ -4,6 +4,7 @@ import Account from './containers/Account'
 import Overview from './containers/Overview'
 import MyBlog from './containers/MyBlog'
 import MyPosts from './containers/MyPosts'
+import CalendarHome from './containers/CalendarHome'
 
 import { Tabs } from '@blueprintjs/core'
 import './styles.sass'
@@ -27,7 +28,7 @@ const Dashboard = ({ children, activeTab }) => (
         className={activeTab === 'myposts' ? 'active' : undefined}
         to="/dashboard/myposts"
       >
-        My Posts
+        Post Genius
       </Link>
       <Link
         className={activeTab === 'account' ? 'active' : undefined}
@@ -62,5 +63,11 @@ export const MyPostsView = props => (
 export const AccountView = props => (
   <Dashboard activeTab="account">
     <Account {...props} />
+  </Dashboard>
+)
+
+export const CalendarView = props => (
+  <Dashboard activeTab="myposts">
+    <CalendarHome {...props} />
   </Dashboard>
 )

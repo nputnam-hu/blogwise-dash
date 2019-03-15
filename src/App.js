@@ -12,6 +12,7 @@ import {
   MyBlogView,
   AccountView,
   MyPostsView,
+  CalendarView,
 } from './containers/Dashboard/'
 import HomeHeader from './containers/EditAppearence/HomeHeader'
 import Login from './containers/Login'
@@ -94,6 +95,7 @@ class App extends Component {
             <NoBar path="/edit/navbar" component={BlogNavbar} />
             <PrivateRoute path="/calendar/new" component={NewCalendar} />
             <PrivateRoute path="/calendar/tasks" component={NewTasks} />
+            <PrivateRoute path="/calendar" component={CalendarView} />
             <PrivateRoute path="/dashboard/account" component={AccountView} />
             <PrivateRoute path="/dashboard/myposts" component={MyPostsView} />
             <PrivateRoute path="/dashboard/myblog" component={MyBlogView} />

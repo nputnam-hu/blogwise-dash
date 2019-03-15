@@ -6,6 +6,7 @@
     "@blueprintjs/core": "^3.10.0",
     "@blueprintjs/datetime": "^3.7.2",
     "axios": "^0.18.0",
+    "fullcalendar-reactwrapper": "^1.0.7",
     "gotrue-js": "^0.9.24",
     "is-valid-domain": "0.0.7",
     "moment": "^2.24.0",
