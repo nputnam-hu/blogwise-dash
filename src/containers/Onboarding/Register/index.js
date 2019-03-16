@@ -48,19 +48,11 @@ class Register extends Component {
       })
       auth.signup(this.state.email, this.state.password)
       store.set('user', { token })
-      if (!this.props.location.state || !this.props.location.state.plan) {
-        this.props.history.push('/plans', {
-          surveyAnswer: this.state.surveyAnswer,
-          name: this.state.name,
-          email: this.state.email,
-        })
-      } else {
-        this.props.history.push('/onboarding/1', {
-          surveyAnswer: this.state.surveyAnswer,
-          name: this.state.name,
-          email: this.state.email,
-        })
-      }
+      this.props.history.push('/onboarding/1', {
+        surveyAnswer: this.state.surveyAnswer,
+        name: this.state.name,
+        email: this.state.email,
+      })
     } catch (err) {
       let msg
       switch (err.error.code) {

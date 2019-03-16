@@ -1,8 +1,6 @@
 #myposts-container
-  min-height: 60vh
-
-#emptystate-container
-  margin-top: 50px
+  min-height: 80vh
+  margin-top: 30px
   #robot-container
     display: flex
     flex-direction: row
@@ -33,5 +31,37 @@
         margin-left: -20px
       p
         font-size: 18px
-      button
+      .emptystate__buttoncontainer
         align-self: center
+        display: flex
+        flex-direction: row
+        button
+          margin-right: 7px
+
+      .firstpost__buttons
+        align-self: center
+        margin-top: auto
+        padding-top: 20px
+  .headline-container
+    margin-bottom: 20px
+    font-size: 18px
+  
+  .myposts__bottomcontent
+    margin-top: 20px
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    .bottomcontent__col
+      flex-direction: column
+      width: 49%
+      border: 1px solid #DFE4E7
+      border-radius: 10px
+      min-height: 40vh
+      .section-header
+        text-align: center
+        justify-content: center
+        padding: 0px 30px
+        margin-top: 20px
+      .bottomcontent__tweets
+        height: 400px
+        overflow-y: scroll

@@ -1,38 +1,22 @@
 import React, { Component } from 'react'
 import { Dialog, Button, Intent } from '@blueprintjs/core'
+import writing from './writing.svg'
+import dashboard from './dashboard.svg'
 import robot from './robot.png'
-import peopleworking from './peopleworking.png'
 import './styles.sass'
 
-const PanelOne = ({ onClick }) => (
+const PanelOne = ({ onClick, siteUrl }) => (
   <div className="panel-container">
     <h1>
-      Congratulations{' '}
+      <span role="img" aria-label="Confetti">
+        🎉
+      </span>{' '}
+      Welcome to blogwise!{' '}
       <span role="img" aria-label="Confetti">
         🎉
       </span>
     </h1>
     <img alt="Blogwise Robot" src={robot} />
-    <h2>You have officially signed up for Blogwise!</h2>
-    <Button
-      className="panel-button"
-      large
-      intent={Intent.SUCCESS}
-      rightIcon="arrow-right"
-      onClick={onClick}
-    >
-      Learn More
-    </Button>
-  </div>
-)
-
-const PanelTwo = ({
-  onClick,
-  siteUrl = 'https://nervous-ardinghelli-e6d896.netlify.com',
-}) => (
-  <div className="panel-container">
-    <h1>Your Blog</h1>
-    <img alt="People Working" src={peopleworking} />
     <p>
       Your blog is live! It's been set up based off of the infromation provided
       when you registered your account. You can access it{' '}
@@ -44,7 +28,7 @@ const PanelTwo = ({
     <Button
       className="panel-button"
       large
-      intent={Intent.PRIMARY}
+      intent={Intent.SUCCESS}
       rightIcon="arrow-right"
       onClick={onClick}
     >
@@ -53,30 +37,39 @@ const PanelTwo = ({
   </div>
 )
 
-const PanelThree = ({
-  onClick,
-  siteUrl = 'https://nervous-ardinghelli-e6d896.netlify.com',
-}) => (
+const PanelThree = ({ onClick, siteUrl }) => (
   <div className="panel-container">
     <h1>Manage Your Content</h1>
     <p>There are two places to manage your blog:</p>
-    <ul>
-      <li>
-        <b>The Admin Dashboard</b>, located at app.blogwise.co, is accessible
-        only to team admins and is where one can customize the appearance of the
-        blog, invite users, and manage organizational settings
-      </li>
-      <li>
-        <b>The Blog Content Management Service (CMS)</b>, located at
-        your_blog.com/admin, is accessible by admins and writers, and is where
-        new blog posts are written and published to the blog. You can check it
-        out right now{' '}
-        <a href={`${siteUrl}/admin`} rel="noopener noreferrer" target="_blank">
-          here
-        </a>
-        .
-      </li>
-    </ul>
+    <div className="panelthree__graphics">
+      <div className="panelthree__graphic">
+        <img className="graphic__img" alt="Dashboard" src={dashboard} />
+        <h3>The Admin Dashboard</h3>
+        <br />
+        <p>
+          Located here at app.blogwise.co, the dashboard is accessible only to
+          team admins and is where you can customize the appearance of the blog,
+          invite users, and manage organizational settings
+        </p>
+      </div>
+      <div className="panelthree__graphic">
+        <img className="graphic__img" alt="Pen" src={writing} />
+        <h3>The Blog Content Management Service (CMS)</h3>
+        <p>
+          Located at your_blog.com/admin, the blog CMS is accessible by admins
+          and writers, and is where new blog posts are written and published to
+          the blog. You can check it out right now{' '}
+          <a
+            href={`${siteUrl}/admin`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            here
+          </a>
+          .
+        </p>
+      </div>
+    </div>
     <Button
       className="panel-button"
       large
@@ -92,9 +85,8 @@ class WelcomeModal extends Component {
   constructor(props) {
     super(props)
     this.panels = [
-      <PanelOne onClick={this.nextPanel(0)} />,
-      <PanelTwo onClick={this.nextPanel(1)} siteUrl={props.siteUrl} />,
-      <PanelThree onClick={this.nextPanel(2)} siteUrl={props.siteUrl} />,
+      <PanelOne onClick={this.nextPanel(0)} siteUrl={props.siteUrl} />,
+      <PanelThree onClick={this.nextPanel(1)} siteUrl={props.siteUrl} />,
     ]
     this.state = {
       currentPanel: 0,

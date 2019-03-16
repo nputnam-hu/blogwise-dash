@@ -27,10 +27,35 @@
         align-self: flex-center
         padding-top: 30px
 
-      .headline-container
-        margin-bottom: 20px
-        font-size: 18px
-
       .opencms-button
         text-decoration: none
         margin-top: 20px
+    .overviewrobot-container
+      margin-top: 30px
+      display: flex
+      flex-direction: row
+      .postgenius-robot
+        margin-left: auto
+        width: 120px
+      .speech-bubble 
+        position: relative
+        background: #EAF5FD
+        border-radius: .4em
+        width: calc(100% - 140px)
+        height: 170px
+        &:after
+          content: ''
+          position: absolute
+          right: 0
+          top: 50%
+          width: 0
+          height: 0
+          border: 20px solid transparent
+          border-left-color: #EAF5FD
+          border-right: 0
+          border-bottom: 0
+          margin-top: -10px
+          margin-right: -20px
+        p
+          padding: 20px
+          font-size: 18px

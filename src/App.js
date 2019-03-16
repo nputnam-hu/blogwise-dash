@@ -20,7 +20,6 @@ import WriterRegister from './containers/Writer/WriterRegister'
 import WriterInfo from './containers/Writer/WriterInfo'
 import WriterHome from './containers/Writer/WriterHome'
 import Register from './containers/Onboarding/Register'
-import Plans from './containers/Onboarding/Plans'
 import Header from './containers/Onboarding/Header'
 import Tags from './containers/Onboarding/Tags'
 import OtherInfo from './containers/Onboarding/OtherInfo'
@@ -89,7 +88,6 @@ class App extends Component {
             <ReducedBar path="/onboarding/2" component={Tags} />
             <ReducedBar path="/onboarding/1" component={Header} />
             <ReducedBar path="/register" component={Register} />
-            <ReducedBar path="/plans" component={Plans} />
             <NoBar path="/edit/header" component={HomeHeader} />
             <NoBar path="/edit/sidebar" component={HomeSidebar} />
             <NoBar path="/edit/navbar" component={BlogNavbar} />

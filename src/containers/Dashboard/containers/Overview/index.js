@@ -11,6 +11,7 @@ import moment from 'moment'
 import QuestionHint from '../../../../components/QuestionHint'
 import WelcomeModal from '../../../../components/WelcomeModal'
 import Client from '../../../../client'
+import robot from '../../postgenius.svg'
 import './styles.sass'
 
 function trimString(str) {
@@ -27,22 +28,22 @@ class Overview extends Component {
     }
     this.state = {
       welcomeModalOpen: firstTime,
+      tip: '',
       siteUrl: '',
       deploys: [],
       dataLoading: true,
       sslActivated: false,
-      headlines: [],
     }
   }
   componentDidMount() {
-    this.client.post('/blogs/content').then(headlines => {
-      this.client.get('/blogs').then(blog => {
+    this.client.get('/blogs').then(blog => {
+      this.client.get('/blogs/tip').then(tip => {
         this.client.get('/blogs/deploy').then(deploys => {
           this.setState({
             siteUrl: blog.siteUrl,
             sslActivated: blog.sslActivated,
             deploys,
-            headlines,
+            tip,
             dataLoading: false,
           })
         })
@@ -51,7 +52,7 @@ class Overview extends Component {
   }
   handleWelcomeModalClose = () => this.setState({ welcomeModalOpen: false })
   render() {
-    const { siteUrl, sslActivated, headlines } = this.state
+    const { siteUrl, sslActivated } = this.state
     const cleanedSiteUrl = `${
       sslActivated ? 'https' : 'http'
     }://${siteUrl.replace(/https:\/\//g, '')}`
@@ -161,17 +162,20 @@ class Overview extends Component {
               </a>
             </Card>
             <div className="section-header">
-              <h2>Suggested Articles</h2>
+              <h2>Post Genius Tip of the Day</h2>
             </div>
-            {headlines.length > 0 && (
-              <ul>
-                {headlines.map(headline => (
-                  <li className="headline-container">
-                    <span className="headline">{headline}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="overviewrobot-container">
+              <div className="speech-bubble">
+                <p>
+                  <i>{this.state.tip}</i>
+                </p>
+              </div>
+              <img
+                alt="Post Genius Robot"
+                src={robot}
+                className="postgenius-robot"
+              />
+            </div>
           </div>
         </div>
         {/* Modals */}
