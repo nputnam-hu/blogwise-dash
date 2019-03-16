@@ -1,4 +1,5 @@
 import React from 'react'
+import QuestionHint from '../QuestionHint'
 import linkedin from './linkedin.png'
 import facebook from './facebook.png'
 import twitter from './twitter.png'
@@ -13,9 +14,16 @@ const SidebarPreview = ({
   linkedinUrl,
   companyName,
 }) => (
-  <div id="previewcontent">
-    <div id="preview">
-      {
+  <div className="preview-container">
+    <div className="section-header">
+      <h2>Preview</h2>
+      <QuestionHint
+        title="Sidebar Preview"
+        helperText="This page lets your preview changes to the sidebar of your homepage. The preview below is what the sidebar of the homepage of your blog will look like."
+      />
+    </div>
+    <div id="previewcontent">
+      <div id="preview">
         <div id="previewitems">
           <div id="explore-container">
             {tags.length > 0 && (
@@ -69,7 +77,7 @@ const SidebarPreview = ({
             )}
           </div>
         </div>
-      }
+      </div>
     </div>
   </div>
 )

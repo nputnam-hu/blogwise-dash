@@ -68,7 +68,6 @@ class General extends Component {
           isOpen={this.state.cropModalOpen}
           handleClose={this.handleCropModalClose}
           client={this.client}
-          aspectRatio={1}
           fileLabel="Favicon"
           onConfirmCrop={this.handlePhotoUploaded}
         />

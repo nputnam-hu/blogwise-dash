@@ -49,7 +49,7 @@ class BlogNavbar extends Component {
   }
   componentDidMount() {
     this.client.get('/blogs').then(blog => {
-      const { customNavbarLinks = [] } = blog
+      const { customNavbarLinks } = blog
       const newLinks = customNavbarLinks.map((el, i) => ({ ...el, order: i }))
       this.setState({
         backgroundHexCode: blog.backgroundHexCode,
