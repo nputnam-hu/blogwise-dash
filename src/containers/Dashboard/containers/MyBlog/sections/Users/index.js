@@ -87,7 +87,15 @@ class Users extends Component {
   }
 
   editUser = user =>
-    this.setState({ editModalIsOpen: true, editModalUser: user })
+    this.setState({
+      editModalIsOpen: true,
+      editModalUser: {
+        name: user.name || '',
+        type: user.type,
+        bio: user.bio || '',
+        headshotUri: user.headshotUri,
+      },
+    })
   handleEditModalClose = () =>
     this.setState({ editModalIsOpen: false, editModalUser: {} })
   handleUserEdit = user => {

@@ -301,6 +301,7 @@ class NewPost extends Component {
                   value={
                     this.state.publishDate && this.state.publishDate.toDate()
                   }
+                  maxDate={new Date()}
                   formatDate={date => moment(date).format('LL')}
                   parseDate={str => moment(str).toDate()}
                   onChange={publishDate =>
@@ -349,8 +350,8 @@ class NewPost extends Component {
                   theme="snow"
                   style={{ height: '500px' }}
                   value={this.state.htmlBody}
-                  onChange={htmlBody =>
-                    this.setState({ htmlBody, postModified: true })
+                  onChange={(htmlBody, _, source) =>
+                    this.setState({ htmlBody, postModified: source === 'user' })
                   }
                   placeholder="Start telling your story..."
                   modules={this.modules}
