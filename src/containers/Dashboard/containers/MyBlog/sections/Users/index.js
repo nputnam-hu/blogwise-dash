@@ -90,6 +90,7 @@ class Users extends Component {
     this.setState({
       editModalIsOpen: true,
       editModalUser: {
+        id: user.id,
         name: user.name || '',
         type: user.type,
         bio: user.bio || '',
