@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
-import { Dialog, FormGroup, FileInput, Button } from '@blueprintjs/core'
+import {
+  Dialog,
+  FormGroup,
+  FileInput,
+  Button,
+  Spinner,
+} from '@blueprintjs/core'
 import Cropper from 'react-cropper'
 import { uploadFileToS3 } from '../../client'
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -63,6 +69,7 @@ class CropImgUploader extends Component {
         isCropping: true,
         contentType: file.type,
         fileName: file.name,
+        dataUploading: false,
       })
     }
     reader.readAsDataURL(file)
@@ -78,6 +85,7 @@ class CropImgUploader extends Component {
     this.props.handleClose()
   }
   confirmCrop = async () => {
+    this.setState({ dataUploading: true })
     const dataURI = this.cropImage()
     if (!dataURI) {
       errorMessage('Could not save photo')
@@ -87,7 +95,7 @@ class CropImgUploader extends Component {
       type: this.state.contentType,
     })
     const url = await uploadFileToS3(croppedImg, this.client)
-    this.setState({ src: null, isCropping: false })
+    this.setState({ src: null, isCropping: false, dataUploading: false })
     return this.props.onConfirmCrop(url.split('?')[0])
   }
   render() {
@@ -129,12 +137,18 @@ class CropImgUploader extends Component {
             </FormGroup>
           ) : (
             <div id="cropmodal-buttons">
-              <Button large onClick={this.cancelCrop}>
-                Cancel
-              </Button>
-              <Button large onClick={this.confirmCrop}>
-                Confirm
-              </Button>
+              {this.state.dataUploading ? (
+                <Spinner />
+              ) : (
+                <>
+                  <Button large onClick={this.cancelCrop}>
+                    Cancel
+                  </Button>
+                  <Button large onClick={this.confirmCrop}>
+                    Confirm
+                  </Button>
+                </>
+              )}
             </div>
           )}
         </div>

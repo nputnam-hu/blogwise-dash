@@ -150,7 +150,7 @@ class NewTasks extends Component {
                     </FormGroup>
                     <div style={{ width: '40px' }} />
                     <FormGroup
-                      htmlFor="tags"
+                      htmlFor="currentTags"
                       label="Tags"
                       labelInfo="(optional)"
                     >

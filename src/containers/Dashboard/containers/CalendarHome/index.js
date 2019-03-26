@@ -101,7 +101,7 @@ class CalendarHome extends Component {
           small
           icon="arrow-left"
           minimal
-          onClick={() => this.props.history.push('/dashboard/myposts')}
+          onClick={() => this.props.history.push('/dashboard/postgenius')}
         >
           Back to Post Genius
         </Button>
@@ -161,6 +161,7 @@ class CalendarHome extends Component {
             </FormGroup>
             <FormGroup htmlFor="duedate-picker" label="Due Date">
               <DateInput
+                name="duedate-picker"
                 value={
                   this.state.eventToEdit.start &&
                   this.state.eventToEdit.start.toDate()

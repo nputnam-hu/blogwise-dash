@@ -105,7 +105,7 @@ class NewCalendar extends Component {
             icon="arrow-left"
             className="onboarding-backbutton"
             minimal
-            onClick={() => this.props.history.push('/dashboard/myposts')}
+            onClick={() => this.props.history.push('/dashboard/postgenius')}
           >
             Back
           </Button>

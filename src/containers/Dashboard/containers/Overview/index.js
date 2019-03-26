@@ -37,13 +37,12 @@ class Overview extends Component {
   }
   componentDidMount() {
     this.client.get('/blogs').then(blog => {
+      this.setState({ siteUrl: blog.siteUrl, sslActivated: blog.sslActivated })
       this.client.get('/blogs/tip').then(tip => {
+        this.setState({ tip })
         this.client.get('/blogs/deploy').then(deploys => {
           this.setState({
-            siteUrl: blog.siteUrl,
-            sslActivated: blog.sslActivated,
             deploys,
-            tip,
             dataLoading: false,
           })
         })
@@ -150,16 +149,14 @@ class Overview extends Component {
               </h2>
               Writers and admins can manage blog posts through the Content
               Management Service (CMS), located at:{' '}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
+              <Button
+                large
+                icon="document"
                 className="opencms-button"
-                href={`${cleanedSiteUrl}/admin`}
+                onClick={() => this.props.history.push('/dashboard/myposts')}
               >
-                <Button large icon="document">
-                  Manage Posts
-                </Button>
-              </a>
+                Manage Posts
+              </Button>
             </Card>
             <div className="section-header">
               <h2>Post Genius Tip of the Day</h2>
