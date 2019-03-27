@@ -14,12 +14,13 @@ import {
   AccountView,
   PostGeniusView,
   CalendarView,
+  PaymentDashView,
+  WriterView,
 } from './containers/Dashboard/'
 import HomeHeader from './containers/EditAppearence/HomeHeader'
 import Login from './containers/Login'
 import WriterRegister from './containers/Writer/WriterRegister'
 import WriterInfo from './containers/Writer/WriterInfo'
-import WriterHome from './containers/Writer/WriterHome'
 import Register from './containers/Onboarding/Register'
 import Header from './containers/Onboarding/Header'
 import Tags from './containers/Onboarding/Tags'
@@ -75,7 +76,7 @@ class App extends Component {
           <Switch>
             <ReducedBar path="/writer/register" component={WriterRegister} />
             <ReducedBar path="/writer/onboarding/1" component={WriterInfo} />
-            <PrivateRoute path="/writer" component={WriterHome} />
+            <PrivateRoute path="/writer" component={WriterView} />
             <ReducedBar path="/login" component={Login} />
             <ReducedBar path="/forgotpassword" component={ForgotPassword} />
             <ReducedBar path="/resetpassword" component={ResetPassword} />
@@ -106,6 +107,10 @@ class App extends Component {
             <PrivateRoute path="/calendar/new" component={NewCalendar} />
             <PrivateRoute path="/calendar/tasks" component={NewTasks} />
             <PrivateRoute path="/calendar" component={CalendarView} />
+            <PrivateRoute
+              path="/dashboard/payment"
+              component={PaymentDashView}
+            />
             <PrivateRoute path="/dashboard/account" component={AccountView} />
             <PrivateRoute
               path="/dashboard/postgenius"

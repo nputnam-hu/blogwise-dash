@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { InputGroup, FormGroup, Button, Intent } from '@blueprintjs/core'
-import GoTrue from 'gotrue-js'
 import qs from 'qs'
 import store from 'store'
 import Client from '../../../client'
@@ -30,19 +29,14 @@ class WriterRegister extends Component {
       return
     }
     try {
-      const { token, type, netlifyUrl, email } = await this.client.put(
+      const { token, type, netlifyUrl } = await this.client.put(
         '/users/invite',
         {
           password: this.state.password,
           id: this.state.id,
         },
       )
-      store.set('user', { token })
-      const auth = new GoTrue({
-        APIUrl: `${netlifyUrl}/.netlify/identity`,
-        setCookie: false,
-      })
-      auth.signup(email, this.state.password)
+      store.set('user', { token, type })
       if (type === 'ADMIN') {
         this.props.history.push('/dashboard', {
           firstTime: true,

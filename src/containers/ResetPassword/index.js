@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { InputGroup, FormGroup, Button, Intent } from '@blueprintjs/core'
 import qs from 'qs'
-// import GoTrue from 'gotrue-js'
-import store from 'store'
 import Client from '../../client'
-import errorMessage, { validateState } from '../../toaster'
+import errorMessage, { validateState, alertUser } from '../../toaster'
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -31,17 +29,13 @@ class ResetPassword extends Component {
       return
     }
     try {
-      const { token, type } = await this.client.put('/auth/reset', {
+      await this.client.put('/auth/reset', {
         email: this.state.email,
         token: this.state.token,
         newPassword: this.state.password,
       })
-      store.set('user', { token })
-      if (type === 'ADMIN') {
-        this.props.history.push('/dashboard')
-      } else {
-        this.props.history.push('/writer')
-      }
+      alertUser('Password Reset!')
+      this.props.history.push('/login')
     } catch (err) {
       console.error(err)
       errorMessage(

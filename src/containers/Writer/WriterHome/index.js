@@ -28,7 +28,7 @@ class WriterHome extends Component {
   handleEditModalClose = () => this.setState({ editModalIsOpen: false })
   render() {
     return (
-      <div className="onboarding-container">
+      <div className="writerhome-container">
         {Object.keys(this.state.user).length === 0 ? (
           <Spinner />
         ) : (
