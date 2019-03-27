@@ -352,11 +352,11 @@ class NewPost extends Component {
                 labelInfo="(optional)"
                 helperText="If no thumbnail is provided, will default to cover photo"
               >
-                {this.state.coverPhotoUri && (
+                {this.state.thumbnailUri && (
                   <>
                     <img
                       src={this.state.thumbnailUri}
-                      alt="Cover Preview"
+                      alt="Thumbnail Preview"
                       className="inputscover__preview"
                     />
                     <br />
