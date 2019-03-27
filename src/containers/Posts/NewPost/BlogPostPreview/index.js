@@ -53,7 +53,7 @@ const BlogPostPreview = ({
       )}
     <div className="article">
       <h1 id="article-title">{title}</h1>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div className="author">
         {author && (
           <img
             className="authorimg"

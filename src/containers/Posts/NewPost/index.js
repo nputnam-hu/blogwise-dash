@@ -30,6 +30,7 @@ class NewPost extends Component {
     this.state = {
       title: '',
       coverPhotoUri: '',
+      thumbnailUri: '',
       description: '',
       htmlBody: '',
       tags: [],
@@ -45,7 +46,8 @@ class NewPost extends Component {
       savingPost: false,
       postLastSaved: null,
       postIsNew: props.match.params.id === 'new',
-      cropModalOpen: false,
+      coverCropModalOpen: false,
+      thumbCropModalOpen: false,
       newDraftModalOpen: false,
       unsavedChangesModalOpen: false,
       schedulePostModalOpen: false,
@@ -75,6 +77,7 @@ class NewPost extends Component {
         this.setState({
           title: blogPost.title || '',
           coverPhotoUri: blogPost.coverPhotoUri || '',
+          thumbnailUri: blogPost.thumbnailUri || '',
           publishDate: blogPost.publishDate
             ? moment(blogPost.publishDate)
             : null,
@@ -112,8 +115,10 @@ class NewPost extends Component {
   onChange = e =>
     this.setState({ [e.target.name]: e.target.value, postModified: true })
 
-  openCropModal = () => this.setState({ cropModalOpen: true })
-  handleCropModalClose = () => this.setState({ cropModalOpen: false })
+  openCoverCropModal = () => this.setState({ coverCropModalOpen: true })
+  handleCoverCropModalClose = () => this.setState({ coverCropModalOpen: false })
+  openThumbCropModal = () => this.setState({ thumbCropModalOpen: true })
+  handleThumbCropModalClose = () => this.setState({ thumbCropModalOpen: false })
   openNewDraftModal = () => this.setState({ newDraftModalOpen: true })
   handleNewDraftModalClose = () => this.setState({ newDraftModalOpen: false })
   openUnsavedChangesModal = () =>
@@ -144,6 +149,7 @@ class NewPost extends Component {
       title: this.state.title,
       description: this.state.description,
       coverPhotoUri: this.state.coverPhotoUri,
+      thumbnailUri: this.state.thumbnailUri,
       htmlBody: this.state.htmlBody,
       publishDate: this.state.publishDate,
       tags: this.state.tags,
@@ -318,7 +324,7 @@ class NewPost extends Component {
               </FormGroup>
               <FormGroup
                 htmlFor="coverPhotoUri"
-                label="Cover Photo/Thumbnail"
+                label="Cover Photo"
                 labelInfo="(optional)"
               >
                 {this.state.coverPhotoUri && (
@@ -336,7 +342,31 @@ class NewPost extends Component {
                     this.state.coverPhotoUri ? 'Change File' : 'Choose file...'
                   }
                   name="coverPhotoUri"
-                  onClick={this.openCropModal}
+                  onClick={this.openCoverCropModal}
+                />
+              </FormGroup>
+              <FormGroup
+                htmlFor="thumbnailUri"
+                label="Thumbnail"
+                labelInfo="(optional)"
+                helperText="If no thumbnail is provided, will default to cover photo"
+              >
+                {this.state.coverPhotoUri && (
+                  <>
+                    <img
+                      src={this.state.coverPhotoUri}
+                      alt="Cover Preview"
+                      className="inputscover__preview"
+                    />
+                    <br />
+                  </>
+                )}
+                <Button
+                  text={
+                    this.state.thumbnailUri ? 'Change File' : 'Choose file...'
+                  }
+                  name="thumbnailUri"
+                  onClick={this.openThumbCropModal}
                 />
               </FormGroup>
               <FormGroup htmlFor="description" label="Description">
@@ -393,14 +423,28 @@ class NewPost extends Component {
         </div>
         {/* Modals */}
         <CropImgUploader
-          isOpen={this.state.cropModalOpen}
-          handleClose={this.handleCropModalClose}
+          isOpen={this.state.coverCropModalOpen}
+          handleClose={this.handleCoverCropModalClose}
           client={this.client}
           fileLabel="Cover Photo"
           onConfirmCrop={url =>
             this.setState({
               coverPhotoUri: url,
-              cropModalOpen: false,
+              coverCropModalOpen: false,
+              postModified: true,
+            })
+          }
+        />
+        <CropImgUploader
+          aspectRatio={153 / 133}
+          isOpen={this.state.thumbCropModalOpen}
+          handleClose={this.handleThumbCropModalClose}
+          client={this.client}
+          fileLabel="Thumbnail"
+          onConfirmCrop={url =>
+            this.setState({
+              thumbnailUri: url,
+              thumbCropModalOpen: false,
               postModified: true,
             })
           }

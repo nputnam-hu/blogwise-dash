@@ -79,7 +79,7 @@ class MyPosts extends Component {
           </div>
           <div className="myposts__list">
             {this.state.dataLoading && <Spinner />}
-            {this.state.blogPosts.length === 0 && (
+            {this.state.blogPosts.length === 0 && !this.state.dataLoading && (
               <div style={{ paddingTop: '70px', textAlign: 'center' }}>
                 <h1>Looks Like you don't have any blog posts yet</h1>
                 <p>Click the button above to get started</p>
@@ -93,21 +93,31 @@ class MyPosts extends Component {
                 onClick={() => this.props.history.push(`/posts/${post.id}`)}
                 className="list__card"
               >
-                {!post.hasBeenPublished && (
-                  <span className="card__drafttext">(DRAFT)</span>
-                )}
-                <h2>{post.title || 'Untitled Post'}</h2>
-                {post.publishDate && (
-                  <span className="card__infotext">
-                    • {moment(post.publishDate).format('LL')}
-                  </span>
-                )}
-                {post.description && (
-                  <span className="card__infotext cutoff">
-                    • <i>{post.description}</i>
-                  </span>
-                )}
-                <div style={{ width: '5px' }} />
+                <div
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  {!post.hasBeenPublished && (
+                    <span className="card__drafttext">(DRAFT)</span>
+                  )}
+                  <h2>{post.title || 'Untitled Post'}</h2>
+                  {post.publishDate && (
+                    <span className="card__infotext">
+                      • {moment(post.publishDate).format('LL')}
+                    </span>
+                  )}
+                  {post.description && (
+                    <span className="card__infotext cutoff">
+                      • <i>{post.description}</i>
+                    </span>
+                  )}
+                </div>
+                <div style={{ width: '10px' }} />
                 <Popover
                   isOpen={this.state.dropDownsOpen[post.id] || false}
                   position={Position.BOTTOM}
