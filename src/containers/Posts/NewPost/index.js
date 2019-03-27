@@ -158,7 +158,11 @@ class NewPost extends Component {
       } else {
         await this.client.put('/blogs/posts', { ...updateBody, id })
       }
-      this.setState({ savingPost: false, postLastSaved: moment() })
+      this.setState({
+        savingPost: false,
+        postIsNew: false,
+        postLastSaved: moment(),
+      })
     } catch (err) {
       errorMessage('Failed to save blog post')
     }
