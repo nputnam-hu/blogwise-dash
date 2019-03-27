@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import store from 'store'
 import Account from './containers/Account'
@@ -13,59 +13,70 @@ import WriterHome from '../Writer/WriterHome'
 import { Tabs } from '@blueprintjs/core'
 import './styles.sass'
 
-const Dashboard = ({ children, activeTab }) => {
-  const isAdmin = store.get('user').type === 'ADMIN'
-  return (
-    <div id="index-container" className="tab-container">
-      <Tabs id="TabsExample" className="dashboard-tabs" large>
-        {isAdmin ? (
+class Dashboard extends Component {
+  componentDidMount() {
+    window.intercomSettings = {
+      app_id: 'bnz5sax3',
+    }
+    const s = document.createElement('script')
+    s.innerHTML = `(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/bnz5sax3';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();`
+    document.body.appendChild(s)
+  }
+  render() {
+    const { children, activeTab } = this.props
+    const isAdmin = store.get('user').type === 'ADMIN'
+    return (
+      <div id="index-container" className="tab-container">
+        <Tabs id="TabsExample" className="dashboard-tabs" large>
+          {isAdmin ? (
+            <Link
+              className={activeTab === 'overview' ? 'active' : undefined}
+              to="/dashboard"
+            >
+              Overview
+            </Link>
+          ) : (
+            <Link
+              className={activeTab === 'writer' ? 'active' : undefined}
+              to="/writer"
+            >
+              Home
+            </Link>
+          )}
+          {isAdmin && (
+            <Link
+              className={activeTab === 'myblog' ? 'active' : undefined}
+              to="/dashboard/myblog"
+            >
+              My Blog
+            </Link>
+          )}
           <Link
-            className={activeTab === 'overview' ? 'active' : undefined}
-            to="/dashboard"
+            className={activeTab === 'myposts' ? 'active' : undefined}
+            to="/dashboard/myposts"
           >
-            Overview
+            My Posts
           </Link>
-        ) : (
           <Link
-            className={activeTab === 'writer' ? 'active' : undefined}
-            to="/writer"
+            className={activeTab === 'postgenius' ? 'active' : undefined}
+            to="/dashboard/postgenius"
           >
-            Home
+            Post Genius
           </Link>
-        )}
-        {isAdmin && (
-          <Link
-            className={activeTab === 'myblog' ? 'active' : undefined}
-            to="/dashboard/myblog"
-          >
-            My Blog
-          </Link>
-        )}
-        <Link
-          className={activeTab === 'myposts' ? 'active' : undefined}
-          to="/dashboard/myposts"
-        >
-          My Posts
-        </Link>
-        <Link
-          className={activeTab === 'postgenius' ? 'active' : undefined}
-          to="/dashboard/postgenius"
-        >
-          Post Genius
-        </Link>
-        {isAdmin && (
-          <Link
-            className={activeTab === 'account' ? 'active' : undefined}
-            to="/dashboard/account"
-          >
-            Account
-          </Link>
-        )}
-        <Tabs.Expander />
-      </Tabs>
-      <div className="tab-content">{children}</div>
-    </div>
-  )
+          {isAdmin && (
+            <Link
+              className={activeTab === 'account' ? 'active' : undefined}
+              to="/dashboard/account"
+            >
+              Account
+            </Link>
+          )}
+          <Tabs.Expander />
+        </Tabs>
+        <div className="tab-content">{children}</div>
+      </div>
+    )
+  }
 }
 export const OverviewView = props => (
   <Dashboard activeTab="overview">
