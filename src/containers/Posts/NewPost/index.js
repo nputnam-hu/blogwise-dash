@@ -149,7 +149,8 @@ class NewPost extends Component {
       title: this.state.title,
       description: this.state.description,
       coverPhotoUri: this.state.coverPhotoUri,
-      thumbnailUri: this.state.thumbnailUri,
+      // if no thumbnail but cover photo make thumb cover photo
+      thumbnailUri: this.state.thumbnailUri || this.state.coverPhotoUri,
       htmlBody: this.state.htmlBody,
       publishDate: this.state.publishDate,
       tags: this.state.tags,
@@ -354,7 +355,7 @@ class NewPost extends Component {
                 {this.state.coverPhotoUri && (
                   <>
                     <img
-                      src={this.state.coverPhotoUri}
+                      src={this.state.thumbnailUri}
                       alt="Cover Preview"
                       className="inputscover__preview"
                     />
