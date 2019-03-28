@@ -148,7 +148,7 @@ class Overview extends Component {
                 Manage Your Posts
               </h2>
               Writers and admins can manage blog posts through the Content
-              Management Service (CMS), located at:{' '}
+              Management Service (CMS).
               <Button
                 large
                 icon="document"

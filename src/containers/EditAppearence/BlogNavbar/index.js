@@ -6,6 +6,7 @@ import {
   Intent,
   Spinner,
 } from '@blueprintjs/core'
+import normalizeUrl from 'normalize-url'
 import Client from '../../../client'
 import './styles.sass'
 
@@ -78,8 +79,12 @@ class BlogNavbar extends Component {
     })
   }
   onClick = async () => {
+    const normalizedLinks = this.state.customNavbarLinks.map(navLink => ({
+      name: navLink.name,
+      link: normalizeUrl(navLink.link),
+    }))
     await this.client.put('/blogs', {
-      customNavbarLinks: this.state.customNavbarLinks,
+      customNavbarLinks: normalizedLinks,
     })
     this.props.history.push('/dashboard/myblog', {
       tabId: 'third',

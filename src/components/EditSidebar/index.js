@@ -8,6 +8,7 @@ import {
   ControlGroup,
   Spinner,
 } from '@blueprintjs/core'
+import normalizeUrl from 'normalize-url'
 import CropImgUploader from '../CropImgUploader'
 import SidebarPreview from '../SidebarPreview'
 import './styles.sass'
@@ -45,6 +46,11 @@ class EditSidebar extends Component {
     })
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
+  onClick = () => {
+    const sidebar = { ...this.state }
+    sidebar.mainSiteUrl = normalizeUrl(sidebar.mainSiteUrl)
+    this.props.onSubmit(sidebar)
+  }
   openCropModal = () => this.setState({ cropModalOpen: true })
   handleCropModalClose = () => this.setState({ cropModalOpen: false })
   render() {
@@ -178,7 +184,7 @@ class EditSidebar extends Component {
                 large
                 rightIcon={this.props.rightIcon || 'arrow-right'}
                 intent={Intent.PRIMARY}
-                onClick={() => this.props.onSubmit(this.state)}
+                onClick={this.onClick}
               >
                 {this.props.buttonText}
               </Button>

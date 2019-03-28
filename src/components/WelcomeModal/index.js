@@ -47,18 +47,18 @@ const PanelThree = ({ onClick, siteUrl }) => (
         <h3>The Admin Dashboard</h3>
         <br />
         <p>
-          Located here at app.blogwise.co, the dashboard is accessible only to
-          team admins and is where you can customize the appearance of the blog,
-          invite users, and manage organizational settings
+          The dashboard is accessible only to team admins and is where you can
+          customize the appearance of the blog, invite users, and manage
+          organizational settings
         </p>
       </div>
       <div className="panelthree__graphic">
         <img className="graphic__img" alt="Pen" src={writing} />
         <h3>The Blog Content Management Service (CMS)</h3>
         <p>
-          Located at your_blog.com/admin, the blog CMS is accessible by admins
-          and writers, and is where new blog posts are written and published to
-          the blog. You can check it out right now{' '}
+          The blog CMS is accessible by admins and writers, and is where new
+          blog posts are written and published to the blog. You can check it out
+          under the `My Posts` tab
           <a
             href={`${siteUrl}/admin`}
             rel="noopener noreferrer"
