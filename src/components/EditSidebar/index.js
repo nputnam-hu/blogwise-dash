@@ -48,7 +48,11 @@ class EditSidebar extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onClick = () => {
     const sidebar = { ...this.state }
-    sidebar.mainSiteUrl = normalizeUrl(sidebar.mainSiteUrl)
+    try {
+      sidebar.mainSiteUrl = normalizeUrl(sidebar.mainSiteUrl)
+    } catch (e) {
+      sidebar.mainSiteUrl = ''
+    }
     this.props.onSubmit(sidebar)
   }
   openCropModal = () => this.setState({ cropModalOpen: true })

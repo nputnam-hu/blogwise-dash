@@ -1,20 +1,15 @@
 import React from 'react'
 import { Alert, Intent } from '@blueprintjs/core'
 
-const UnsavedChangesModal = ({
-  isOpen,
-  handleClose,
-  saveAsDraft,
-  discardChanges,
-}) => (
+const UnsavedChangesModal = ({ isOpen, handleClose, discardChanges }) => (
   <Alert
     isOpen={isOpen}
     icon="warning-sign"
     intent={Intent.WARNING}
     onClose={handleClose}
-    onCancel={saveAsDraft}
+    onCancel={handleClose}
     onConfirm={discardChanges}
-    cancelButtonText="Save Changes"
+    cancelButtonText="Cancel"
     confirmButtonText="Discard Changes"
   >
     <p>

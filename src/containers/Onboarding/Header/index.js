@@ -20,7 +20,7 @@ class Header extends Component {
         title: state.title,
         headerPhotoUri: state.headerPhotoUri,
         sidebarPhotoUri: state.headerPhotoUri,
-        backgroundHexCode: state.color,
+        backgroundHexCode: state.backgroundHexCode,
         bgImgUri: state.bgImgUri,
       })
       this.props.history.push('/onboarding/2', {

@@ -79,10 +79,18 @@ class BlogNavbar extends Component {
     })
   }
   onClick = async () => {
-    const normalizedLinks = this.state.customNavbarLinks.map(navLink => ({
-      name: navLink.name,
-      link: normalizeUrl(navLink.link),
-    }))
+    const normalizedLinks = this.state.customNavbarLinks.map(navLink => {
+      let normalizedLink
+      try {
+        normalizedLink = normalizeUrl(navLink.link)
+      } catch (e) {
+        normalizedLink = ''
+      }
+      return {
+        name: navLink.name,
+        link: normalizedLink,
+      }
+    })
     await this.client.put('/blogs', {
       customNavbarLinks: normalizedLinks,
     })

@@ -13,7 +13,7 @@ class HomeHeader extends Component {
       await this.client.put('/blogs', {
         title: state.title,
         headerPhotoUri: state.headerPhotoUri,
-        backgroundHexCode: state.color,
+        backgroundHexCode: state.backgroundHexCode,
         bgImgUri: state.bgImgUri,
       })
       this.props.history.push('/dashboard/myblog', {

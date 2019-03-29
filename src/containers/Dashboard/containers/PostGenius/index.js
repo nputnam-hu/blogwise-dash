@@ -124,26 +124,29 @@ class PostGenius extends Component {
                 {headlines.length > 0 && (
                   <ul>
                     {headlines.map(headline => (
-                      <Popover
-                        interactionKind={PopoverInteractionKind.HOVER}
-                        position={Position.TOP}
-                        key={headline}
-                      >
-                        <li className="headline-container">
-                          <span className="headline">{headline}</span>
-                        </li>
-                        <Button
-                          rightIcon="document-open"
-                          onClick={() =>
-                            this.props.history.push('/posts/new', {
-                              title: headline,
-                            })
-                          }
+                      <>
+                        <Popover
+                          interactionKind={PopoverInteractionKind.HOVER}
+                          position={Position.TOP}
+                          key={headline}
                         >
-                          {' '}
-                          Write This
-                        </Button>
-                      </Popover>
+                          <li className="headline-container">
+                            <span className="headline">{headline}</span>
+                          </li>
+                          <Button
+                            rightIcon="document-open"
+                            onClick={() =>
+                              this.props.history.push('/posts/new', {
+                                title: headline,
+                              })
+                            }
+                          >
+                            {' '}
+                            Write This
+                          </Button>
+                        </Popover>
+                        <br />
+                      </>
                     ))}
                   </ul>
                 )}

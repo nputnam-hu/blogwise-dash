@@ -78,7 +78,7 @@ const BlogPostPreview = ({
       <br />
       <br />
       <div
-        className="bodytext"
+        className="bodytext ql-editor"
         dangerouslySetInnerHTML={{ __html: htmlBody }}
       />
       {tags && tags.length > 0 ? (

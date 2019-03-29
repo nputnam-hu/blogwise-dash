@@ -241,6 +241,7 @@ class NewPost extends Component {
     toolbar: [
       [{ header: [1, 2, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ align: [] }],
       [
         { list: 'ordered' },
         { list: 'bullet' },
@@ -255,6 +256,7 @@ class NewPost extends Component {
     'header',
     'bold',
     'italic',
+    'align',
     'underline',
     'strike',
     'blockquote',
@@ -469,11 +471,6 @@ class NewPost extends Component {
         <UnsavedChangesModal
           isOpen={this.state.unsavedChangesModalOpen}
           handleClose={this.handleUnsavedChangesModalClose}
-          saveAsDraft={async () => {
-            await this.saveDraft()
-            this.setState({ unsavedChangesModalOpen: false })
-            this.props.history.push('/dashboard/myposts')
-          }}
           discardChanges={() => {
             this.setState({ unsavedChangesModalOpen: false })
             this.props.history.push('/dashboard/myposts')

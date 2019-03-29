@@ -20,6 +20,7 @@ class OtherInfo extends Component {
       return
     }
     const { siteUrl } = await this.client.put('/blogs', state)
+    await this.client.post('/blogs/deploy')
     store.set('firstTime', true)
     this.props.history.push('/dashboard', {
       tabId: 'si',

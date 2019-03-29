@@ -26,7 +26,7 @@ const HeaderPreview = ({ title, headerPhotoUri, color, bgImgUri }) => (
         <img id="headerimg" alt="Your Logo Here" src={headerPhotoUri} />
         <br />
         <span style={{ color: getColorByBgColor(color) }} id="headertext">
-          {title}
+          <i>{title}</i>
         </span>
       </div>
     </div>

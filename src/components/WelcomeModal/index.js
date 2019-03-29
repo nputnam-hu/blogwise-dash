@@ -58,15 +58,7 @@ const PanelThree = ({ onClick, siteUrl }) => (
         <p>
           The blog CMS is accessible by admins and writers, and is where new
           blog posts are written and published to the blog. You can check it out
-          under the `My Posts` tab
-          <a
-            href={`${siteUrl}/admin`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            here
-          </a>
-          .
+          under the `My Posts` tab.
         </p>
       </div>
     </div>
