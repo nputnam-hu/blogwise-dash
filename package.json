@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/core": "^3.14.1",
     "@blueprintjs/datetime": "^3.7.2",
+    "@sentry/browser": "^4.6.6",
     "axios": "^0.18.0",
     "fullcalendar-reactwrapper": "^1.0.7",
     "is-valid-domain": "0.0.7",
@@ -21,12 +22,14 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.5",
     "react-select": "^2.4.1",
+    "react-twitter-auth": "0.0.13",
     "react-twitter-embed": "^2.0.4",
     "request-promise": "^4.2.2",
     "store": "^2.0.12",
     "typeface-nunito": "0.0.72",
     "typeface-pt-sans": "0.0.72",
     "typeface-rubik": "0.0.72",
+    "unsplash-js": "^5.0.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
