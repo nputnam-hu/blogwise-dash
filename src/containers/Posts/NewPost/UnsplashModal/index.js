@@ -59,10 +59,11 @@ class UnsplashModal extends Component {
       return {
         src: image.urls.regular,
         thumbnail: image.urls.thumb,
-        thumbnailWidth: 200 * aspectRatio,
-        thumbnailHeight: 200,
-        caption: `By ${image.user.username} on unsplash`,
+        thumbnailWidth: 300 * aspectRatio,
+        thumbnailHeight: 300,
+        username: image.user.username,
         downloadLink: image.links.download,
+        alt: image.alt_description,
       }
     })
   selectImage = index => {
@@ -123,6 +124,31 @@ class UnsplashModal extends Component {
               >
                 Use This Photo
               </Button>
+              {this.state.selectedIndex > -1 && (
+                <>
+                  <div style={{ width: '15px' }} />
+                  <span>
+                    Photo by{' '}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`http://unsplash.com/${
+                        this.state.images[this.state.selectedIndex].username
+                      }`}
+                    >
+                      {this.state.images[this.state.selectedIndex].username}
+                    </a>{' '}
+                    on{' '}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="http://unsplash.com"
+                    >
+                      Unsplash
+                    </a>
+                  </span>
+                </>
+              )}
             </div>
           </div>
         )}

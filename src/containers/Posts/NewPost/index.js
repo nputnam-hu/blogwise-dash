@@ -366,9 +366,9 @@ class NewPost extends Component {
                   name="coverPhotoUri"
                   onClick={this.openCoverCropModal}
                 />
-                {/* <Button onClick={this.openUnsplashModal} icon="media">
+                <Button onClick={this.openUnsplashModal} icon="media">
                   Search professional cover photos
-                </Button> */}
+                </Button>
               </FormGroup>
               <FormGroup
                 htmlFor="thumbnailUri"
