@@ -16,6 +16,7 @@ import BlogPostPreview from './BlogPostPreview'
 import NewDraftModal from './NewDraftModal'
 import UnsavedChangesModal from './UnsavedChangesModal'
 import SchedulePostModal from './SchedulePostModal'
+import UnsplashModal from './UnsplashModal'
 import Client from '../../../client'
 import errorMessage, { validateState, alertUser } from '../../../toaster'
 import './styles.sass'
@@ -51,6 +52,8 @@ class NewPost extends Component {
       newDraftModalOpen: false,
       unsavedChangesModalOpen: false,
       schedulePostModalOpen: false,
+      unsplashModalOpen: false,
+      unsplashQuery: '',
       // let links pass in default state params
       ...(props.location.state || {}),
     }
@@ -128,6 +131,9 @@ class NewPost extends Component {
   openSchedulePostModal = () => this.setState({ schedulePostModalOpen: true })
   handleSchedulePostModalClose = () =>
     this.setState({ schedulePostModalOpen: false })
+  openUnsplashModal = () =>
+    this.setState({ unsplashModalOpen: true, unsplashQuery: this.state.title })
+  handleUnsplashModalClose = () => this.setState({ unsplashModalOpen: false })
 
   backtoDash = () => {
     if (this.state.postIsNew) {
@@ -237,6 +243,15 @@ class NewPost extends Component {
     this.setState({ hasBeenPublished: false, savingPost: false })
     alertUser('Post Unpublished')
   }
+  unsplashOnConfirmImage = image => {
+    this.setState({ coverPhotoUri: image.downloadLink, postModified: true })
+  }
+  removeCoverPhoto = () => {
+    this.setState({ coverPhotoUri: '', postModified: true })
+  }
+  removeThumbnail = () => {
+    this.setState({ thumbnailUri: '', postModified: true })
+  }
   modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
@@ -332,6 +347,12 @@ class NewPost extends Component {
               >
                 {this.state.coverPhotoUri && (
                   <>
+                    <button
+                      onClick={this.removeCoverPhoto}
+                      className="cover__xbutton"
+                    >
+                      <b>X</b>
+                    </button>
                     <img
                       src={this.state.coverPhotoUri}
                       alt="Cover Preview"
@@ -341,12 +362,13 @@ class NewPost extends Component {
                   </>
                 )}
                 <Button
-                  text={
-                    this.state.coverPhotoUri ? 'Change File' : 'Choose file...'
-                  }
+                  text="Choose file..."
                   name="coverPhotoUri"
                   onClick={this.openCoverCropModal}
                 />
+                <Button onClick={this.openUnsplashModal} icon="media">
+                  Search professional cover photos
+                </Button>
               </FormGroup>
               <FormGroup
                 htmlFor="thumbnailUri"
@@ -356,6 +378,12 @@ class NewPost extends Component {
               >
                 {this.state.thumbnailUri && (
                   <>
+                    <button
+                      onClick={this.removeThumbnail}
+                      className="cover__xbutton"
+                    >
+                      <b>X</b>
+                    </button>
                     <img
                       src={this.state.thumbnailUri}
                       alt="Thumbnail Preview"
@@ -480,6 +508,12 @@ class NewPost extends Component {
           isOpen={this.state.schedulePostModalOpen}
           handleClose={this.handleSchedulePostModalClose}
           schedulePostPublish={this.schedulePostPublish}
+        />
+        <UnsplashModal
+          isOpen={this.state.unsplashModalOpen}
+          handleClose={this.handleUnsplashModalClose}
+          query={this.state.unsplashQuery}
+          onConfirmImage={this.unsplashOnConfirmImage}
         />
       </>
     )

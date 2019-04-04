@@ -7,6 +7,7 @@ import {
   FormGroup,
   InputGroup,
   HTMLSelect,
+  Spinner,
 } from '@blueprintjs/core'
 import EditModal from '../../../../../../components/EditUserModal'
 import QuestionHint from '../../../../../../components/QuestionHint'
@@ -30,11 +31,12 @@ class Users extends Component {
       modalIsOpen: false,
       editModalIsOpen: false,
       editModalUser: {},
+      dataLoading: true,
     }
   }
   componentDidMount() {
     this.client.get('/organizations/users').then(users => {
-      this.setState({ users })
+      this.setState({ users, dataLoading: false })
     })
   }
   onChange = e => this.setState({ [e.target.name]: e.target.value })
@@ -127,34 +129,38 @@ class Users extends Component {
               helperText="New users can be assigned one of two roles: Admin and Writer. Writers can write new content for the blog and publish new posts. Admins, in addition to having the same writing power as Writers, can also manage the blog content and settings on the blogwise dashboard."
             />
           </div>
-          <table className="bp3-html-table bp3-html-table-striped bp3-interactive users-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Bio</th>
-                <th>Invite Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map(user => {
-                const { name, email, type, token, id, bio } = user
-                return (
-                  <tr key={id} onClick={() => this.editUser(user)}>
-                    <td>{name}</td>
-                    <td>{email}</td>
-                    <td>{type === 'ADMIN' ? 'Admin' : 'Writer'}</td>
-                    <td>{trimString(bio)}</td>
-                    <td>{token ? 'Accepted' : 'Pending'}</td>
-                    <td>
-                      <Icon icon="edit" />
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          {this.state.dataLoading ? (
+            <Spinner />
+          ) : (
+            <table className="bp3-html-table bp3-html-table-striped bp3-interactive users-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Bio</th>
+                  <th>Invite Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map(user => {
+                  const { name, email, type, token, id, bio } = user
+                  return (
+                    <tr key={id} onClick={() => this.editUser(user)}>
+                      <td>{name}</td>
+                      <td>{email}</td>
+                      <td>{type === 'ADMIN' ? 'Admin' : 'Writer'}</td>
+                      <td>{trimString(bio)}</td>
+                      <td>{token ? 'Accepted' : 'Pending'}</td>
+                      <td>
+                        <Icon icon="edit" />
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          )}
           <Button
             style={{
               alignSelf: 'flex-start',
