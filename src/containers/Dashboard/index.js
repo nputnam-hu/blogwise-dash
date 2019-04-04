@@ -32,15 +32,18 @@ class Dashboard extends Component {
     const s = document.createElement('script')
     s.innerHTML = `(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/bnz5sax3';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();`
     document.body.appendChild(s)
-    this.client
-      .get('/blogs/updates')
-      .then(hasUpdates => this.setState({ hasUpdates }))
+    const hasUpdates = store.get('hasUpdates')
+    if (!hasUpdates) {
+      this.client
+        .get('/blogs/updates')
+        .then(blogHasUpdates => store.set('hasUpdates', blogHasUpdates))
+    }
   }
   onClick = async () => {
     this.setState({ dataSending: true })
     try {
       await this.client.post('/blogs/deploy')
-      this.setState({ hasUpdates: false })
+      store.set('hasUpdates', false)
       alertUser('Success! Updates are building on our servers right now')
     } catch (err) {
       errorMessage('Error publishing updates')
@@ -50,6 +53,7 @@ class Dashboard extends Component {
   }
   render() {
     const { children, activeTab } = this.props
+    const hasUpdates = store.get('hasUpdates')
     const isAdmin = store.get('user').type === 'ADMIN'
     return (
       <div id="index-container" className="tab-container">
@@ -97,7 +101,7 @@ class Dashboard extends Component {
               Account
             </Link>
           )}
-          {this.state.hasUpdates &&
+          {hasUpdates &&
             (this.state.dataSending ? (
               <Spinner size={Spinner.SIZE_SMALL} />
             ) : (
@@ -110,7 +114,6 @@ class Dashboard extends Component {
                   Publish Updates
                 </Button>
                 <QuestionHint
-                  dashboard
                   style={{
                     padding: 0,
                     boxSizing: 'initial',

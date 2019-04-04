@@ -50,6 +50,7 @@ class Client {
   put(stub, body = {}, options = {}) {
     if (stub === '/blogs') {
       store.remove('blog')
+      store.set('hasUpdates', true)
       return rp({
         uri: config.apiUrl + stub,
         method: 'PUT',

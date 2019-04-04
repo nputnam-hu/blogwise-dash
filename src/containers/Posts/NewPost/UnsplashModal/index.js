@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { Component } from 'react'
 import { Drawer, Spinner, Intent, Button, InputGroup } from '@blueprintjs/core'
 import Unsplash, { toJson } from 'unsplash-js'
@@ -108,13 +109,15 @@ class UnsplashModal extends Component {
                 <div style={{ height: '30px' }} />
                 <Spinner />
               </>
-            ) : (
+            ) : this.state.images.length > 0 ? (
               <Gallery
                 images={this.state.images}
                 enableLightbox={false}
                 onSelectImage={this.selectImage}
                 onClickThumbnail={this.selectImage}
               />
+            ) : (
+              <h2>No Results</h2>
             )}
             <div className="photos__footer">
               <Button
