@@ -13,8 +13,8 @@ const UnsavedChangesModal = ({ isOpen, handleClose, discardChanges }) => (
     confirmButtonText="Discard Changes"
   >
     <p>
-      You have unsaved changes. Do you want to discard these changes or save as
-      a draft?
+      You have unsaved changes. Do you want to discard these changes or continue
+      on this page?
     </p>
   </Alert>
 )
