@@ -15,6 +15,8 @@ class HomeHeader extends Component {
         headerPhotoUri: state.headerPhotoUri,
         backgroundHexCode: state.backgroundHexCode,
         bgImgUri: state.bgImgUri,
+        navbarHexCode: state.navbarHexCode,
+        headerTextColor: state.headerTextColor,
       })
       this.props.history.push('/dashboard/myblog', {
         tabId: 'third',

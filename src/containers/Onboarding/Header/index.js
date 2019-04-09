@@ -22,6 +22,8 @@ class Header extends Component {
         sidebarPhotoUri: state.headerPhotoUri,
         backgroundHexCode: state.backgroundHexCode,
         bgImgUri: state.bgImgUri,
+        navbarHexCode: state.navbarHexCode,
+        headerTextColor: state.headerTextColor,
       })
       this.props.history.push('/onboarding/2', {
         ...this.props.location.state,
@@ -43,6 +45,7 @@ class Header extends Component {
         title="Your Title Here"
         headerPhotoUri={config.defaultLogo}
         backgroundHexCode="#ffffff"
+        headerTextColor="#000000"
         topPart={
           <>
             <div className="onboarding-stepcounter">Step 2 of 4</div>
