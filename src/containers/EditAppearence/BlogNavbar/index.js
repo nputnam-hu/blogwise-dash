@@ -145,7 +145,7 @@ class BlogNavbar extends Component {
             Back
           </Button>
           <h2>Customize Navbar</h2>
-          <FormGroup htmlFor="headerTextColor" label="Title Text Color">
+          <FormGroup htmlFor="headerTextColor" label="Background Color">
             <div className="colorinput">
               <div
                 className="colorpreview"
