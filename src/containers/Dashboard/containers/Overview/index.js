@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
-import {
-  Card,
-  Elevation,
-  Button,
-  ButtonGroup,
-  Spinner,
-} from '@blueprintjs/core'
+import { Card, Button, ButtonGroup, Spinner } from '@blueprintjs/core'
 import store from 'store'
 import moment from 'moment'
 import QuestionHint from '../../../../components/QuestionHint'
 import WelcomeModal from '../../../../components/WelcomeModal'
 import Client from '../../../../client'
+import picture from './picture.svg'
+import copy from './copy.svg'
 import robot from '../../postgenius.svg'
 import './styles.sass'
 
@@ -59,23 +55,27 @@ class Overview extends Component {
       <div id="overview-container">
         <div id="overview-cards">
           <div className="overview-column">
-            <Card className="overview-card" elevation={Elevation.ONE}>
-              <h2>
-                <span role="img" aria-label="computer">
-                  💻
-                </span>{' '}
-                View Your Blog
-              </h2>
-              Your blog is located at:{' '}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={cleanedSiteUrl}
-              >
-                {siteUrl || <br />}
-              </a>
-              <br />
-              <ButtonGroup>
+            <Card className="overview-card">
+              <div className="overview-card__top">
+                <img
+                  src={picture}
+                  alt="Clouds"
+                  className="overview-card__icon"
+                />
+                <h2>View Your Blog</h2>
+              </div>
+              <div style={{ padding: '0px 100px' }}>
+                Your blog is located at:{' '}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={cleanedSiteUrl}
+                  style={{ color: '#447ADD' }}
+                >
+                  {siteUrl || <br />}
+                </a>
+              </div>
+              <div className="overview-card__buttons">
                 <Button
                   large
                   icon="cog"
@@ -98,7 +98,7 @@ class Overview extends Component {
                 >
                   Customize
                 </Button>
-              </ButtonGroup>
+              </div>
             </Card>
             <div className="section-header">
               <h2>Recent Deployments</h2>
@@ -140,15 +140,19 @@ class Overview extends Component {
             )}
           </div>
           <div className="overview-column">
-            <Card className="overview-card" elevation={Elevation.ONE}>
-              <h2>
-                <span role="img" aria-label="memo">
-                  📝
-                </span>{' '}
-                Manage Your Posts
-              </h2>
-              Writers and admins can manage blog posts through the Content
-              Management Service (CMS).
+            <Card className="overview-card">
+              <div className="overview-card__top">
+                <img
+                  src={copy}
+                  alt="Document"
+                  className="overview-card__icon"
+                />
+                <h2>Manage Your Posts</h2>
+              </div>
+              <div style={{ padding: '0px 100px' }}>
+                Writers and admins can manage blog posts through the Content
+                Management Service (CMS).
+              </div>
               <Button
                 large
                 icon="document"

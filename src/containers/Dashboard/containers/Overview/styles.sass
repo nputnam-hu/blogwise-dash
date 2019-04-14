@@ -12,15 +12,34 @@
       @media only screen and (max-width: 1000px)
         width: 500px
       .overview-card
-        border-radius: 10px
+        border: 0.5px solid rgba(68,122,220, 0.2)
+        border-radius: 5px
+        padding: 20px 0px
         display: flex
         flex-direction: column
-        align-items: flex-start
-        height: 215px
+        align-items: center
         margin: 10px
         font-size: 16px
+        text-align: center
+        .overview-card__top
+          display: flex
+          flex-direction: row
+          align-items: center
+          padding-bottom: 25px
+        h2
+          font-size: 20px
+          font-weight: 400
+          color: #447ADD
         button
           border-radius: 2px
+        .overview-card__icon
+          height: 30px
+          width: 30px
+          margin-top: -3px
+          margin-right: 10px
+        .overview-card__buttons
+          padding-top: 33px
+
 
       .overview-spinner
         display: flex

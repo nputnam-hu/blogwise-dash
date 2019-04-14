@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from '@blueprintjs/core'
+import { Link } from 'react-router-dom'
 import store from 'store'
 import logo from './logo.png'
 import yellowLogo from './logo-yellow.png'
@@ -7,9 +8,9 @@ import './styles.sass'
 
 const Navbar = () => (
   <div id="navbar-container">
-    <a href="/dashboard">
-      <img src={logo} alt="Blogwise Logo" id="navbar-logo" />
-    </a>
+    <Link to="/dashboard" className="navbar-container">
+      <img src={logo} alt="Blogwise Logo" className="navbar-logo" />
+    </Link>
     <Button
       className="logout-button"
       onClick={() => {

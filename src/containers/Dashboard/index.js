@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
-import { Tabs, Button, Intent, Spinner } from '@blueprintjs/core'
+import {
+  Popover,
+  Icon,
+  H5,
+  PopoverInteractionKind,
+  Spinner,
+} from '@blueprintjs/core'
 import { Link } from 'react-router-dom'
 import store from 'store'
-import QuestionHint from '../../components/QuestionHint'
 import Account from './containers/Account'
 import Overview from './containers/Overview'
 import MyBlog from './containers/MyBlog'
@@ -57,7 +62,7 @@ class Dashboard extends Component {
     const isAdmin = store.get('user').type === 'ADMIN'
     return (
       <div id="index-container" className="tab-container">
-        <Tabs id="TabsExample" className="dashboard-tabs" large>
+        <div className="dashboard-tabs">
           {isAdmin ? (
             <Link
               className={activeTab === 'overview' ? 'active' : undefined}
@@ -91,7 +96,7 @@ class Dashboard extends Component {
             className={activeTab === 'postgenius' ? 'active' : undefined}
             to="/dashboard/postgenius"
           >
-            Post Genius
+            PostGenius
           </Link>
           {isAdmin && (
             <Link
@@ -101,31 +106,42 @@ class Dashboard extends Component {
               Account
             </Link>
           )}
-          {hasUpdates &&
-            (this.state.dataSending ? (
-              <Spinner size={Spinner.SIZE_SMALL} />
-            ) : (
-              <div className="publishupdates">
-                <span className="publishupdates__text">
-                  {' '}
-                  you have unpublished changes
-                </span>
-                <Button intent={Intent.SUCCESS} onClick={this.onClick}>
-                  Publish Updates
-                </Button>
-                <QuestionHint
+          {this.state.dataSending ? (
+            <Spinner size={Spinner.SIZE_SMALL} />
+          ) : (
+            <div
+              className="publishupdates"
+              style={{ visibility: hasUpdates ? 'visible' : 'hidden' }}
+            >
+              <button onClick={this.onClick}>Publish Updates</button>
+              <Popover
+                interactionKind={PopoverInteractionKind.HOVER}
+                className="publishupdates__popover"
+                minimal
+              >
+                <Icon
+                  icon="help"
+                  iconSize={15}
                   style={{
-                    padding: 0,
+                    // padding: 0,
                     boxSizing: 'initial',
-                    marginLeft: '-30px',
+                    marginLeft: '-25px',
                   }}
-                  title="Publish Updates"
-                  helperText="When you make changes to your blog on the admin dashboard, they are saved, but not published to your live blog immediately. Once you are done making changes, click `Publish Updates` to make your changes live. Each update takes about 2 minutes to be published live."
                 />
-              </div>
-            ))}
-          <Tabs.Expander />
-        </Tabs>
+                <div id="popover-container">
+                  <H5>Publish Updates</H5>
+                  <p>
+                    When you make changes to your blog on the admin dashboard,
+                    they are saved, but not published to your live blog
+                    immediately. Once you are done making changes, click
+                    `Publish Updates` to make your changes live. Each update
+                    takes about 2 minutes to be published live.
+                  </p>
+                </div>
+              </Popover>
+            </div>
+          )}
+        </div>
         <div className="tab-content">{children}</div>
       </div>
     )
