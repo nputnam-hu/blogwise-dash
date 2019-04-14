@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
-import { Card, Button, ButtonGroup, Spinner } from '@blueprintjs/core'
+import { Card, Spinner } from '@blueprintjs/core'
 import store from 'store'
 import moment from 'moment'
+import BlueButton from '../../../../components/BlueButton'
 import QuestionHint from '../../../../components/QuestionHint'
 import WelcomeModal from '../../../../components/WelcomeModal'
 import Client from '../../../../client'
 import picture from './picture.svg'
 import copy from './copy.svg'
 import robot from '../../postgenius.svg'
+import tipIcon from './tipIcon.svg'
+import rightArrowIcon from './rightArrowIcon.svg'
 import './styles.sass'
 
 function trimString(str) {
-  return str ? `${str.slice(0, 27)}...` : ''
+  return str ? `${str.slice(0, 22)}...` : ''
 }
 
 class Overview extends Component {
@@ -76,9 +79,8 @@ class Overview extends Component {
                 </a>
               </div>
               <div className="overview-card__buttons">
-                <Button
-                  large
-                  icon="cog"
+                <BlueButton
+                  icon="gear"
                   onClick={() =>
                     this.props.history.push('/dashboard/myblog', {
                       tabId: 'fourth',
@@ -86,10 +88,11 @@ class Overview extends Component {
                   }
                 >
                   Domain Settings
-                </Button>
-                <Button
+                </BlueButton>
+                <div style={{ width: '10px' }} />
+                <BlueButton
                   large
-                  icon="edit"
+                  icon="pencil"
                   onClick={() =>
                     this.props.history.push('/dashboard/myblog', {
                       tabId: 'third',
@@ -97,47 +100,51 @@ class Overview extends Component {
                   }
                 >
                   Customize
-                </Button>
+                </BlueButton>
               </div>
             </Card>
-            <div className="section-header">
-              <h2>Recent Deployments</h2>
-              <QuestionHint
-                title="Deployments"
-                helperText="Deployments are updates pushed to your website after you make changes in the admin dashboard, or after new posts are pushed to your blog via the CMS."
-              />
-            </div>
-            {!this.state.dataLoading ? (
-              <table className="bp3-html-table bp3-html-table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Deployed At</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {this.state.deploys.map(deploy => (
-                    <tr key={deploy.id}>
-                      <td>
-                        <b>{trimString(deploy.title)}</b>
-                      </td>
-                      <td>
-                        {deploy.state === 'ready' ? 'Done' : deploy.state}
-                      </td>
-                      <td>
-                        {moment(
-                          deploy.published_at || deploy.created_at,
-                        ).format('LLLL')}
-                      </td>
+            <div className="overview__bottom">
+              <div className="section-header">
+                <img src={rightArrowIcon} alt="Deployments" />
+                <div style={{ width: '10px' }} />
+                <h2>Recent Deployments</h2>
+                <QuestionHint
+                  title="Deployments"
+                  helperText="Deployments are updates pushed to your website after you make changes in the admin dashboard, or after new posts are pushed to your blog via the CMS."
+                />
+              </div>
+              {!this.state.dataLoading ? (
+                <table className="bp3-html-table bp3-html-table-striped">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>Deployed At</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <Spinner className="overview-spinner" />
-            )}
+                  </thead>
+
+                  <tbody>
+                    {this.state.deploys.map(deploy => (
+                      <tr key={deploy.id}>
+                        <td>
+                          <b>{trimString(deploy.title)}</b>
+                        </td>
+                        <td>
+                          {deploy.state === 'ready' ? 'Done' : deploy.state}
+                        </td>
+                        <td>
+                          {moment(
+                            deploy.published_at || deploy.created_at,
+                          ).format('LLLL')}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <Spinner className="overview-spinner" />
+              )}
+            </div>
           </div>
           <div className="overview-column">
             <Card className="overview-card">
@@ -153,29 +160,32 @@ class Overview extends Component {
                 Writers and admins can manage blog posts through the Content
                 Management Service (CMS).
               </div>
-              <Button
-                large
-                icon="document"
-                className="opencms-button"
-                onClick={() => this.props.history.push('/dashboard/myposts')}
-              >
-                Manage Posts
-              </Button>
-            </Card>
-            <div className="section-header">
-              <h2>Post Genius Tip of the Day</h2>
-            </div>
-            <div className="overviewrobot-container">
-              <div className="speech-bubble">
-                <p>
-                  <i>{this.state.tip}</i>
-                </p>
+              <div className="overview-card__buttons">
+                <BlueButton
+                  icon="bookmark"
+                  className="opencms-button"
+                  onClick={() => this.props.history.push('/dashboard/myposts')}
+                >
+                  Manage Posts
+                </BlueButton>
               </div>
-              <img
-                alt="Post Genius Robot"
-                src={robot}
-                className="postgenius-robot"
-              />
+            </Card>
+            <div className="overview__bottom">
+              <div className="section-header">
+                <img src={tipIcon} alt="Tip" />
+                <div style={{ width: '10px' }} />
+                <h2>Post Genius Tip of the Day</h2>
+              </div>
+              <div className="overviewrobot-container">
+                <div className="speech-bubble">
+                  <p>{this.state.tip}</p>
+                </div>
+                <img
+                  alt="Post Genius Robot"
+                  src={robot}
+                  className="postgenius-robot"
+                />
+              </div>
             </div>
           </div>
         </div>
