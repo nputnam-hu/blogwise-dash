@@ -26,11 +26,11 @@ const Navbar = () => (
 
 export const ReducedNavbar = () => (
   <div
-    id="navbar-container"
+    className="navbar-container--reduced"
     style={{ background: 'white', borderBottom: 'none' }}
   >
     <a href="/">
-      <img src={yellowLogo} alt="Blogwise Logo" id="navbar-logo" />
+      <img src={yellowLogo} alt="Blogwise Logo" className="navbar-logo" />
     </a>
   </div>
 )

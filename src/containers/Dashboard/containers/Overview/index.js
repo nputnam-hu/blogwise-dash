@@ -91,7 +91,6 @@ class Overview extends Component {
                 </BlueButton>
                 <div style={{ width: '10px' }} />
                 <BlueButton
-                  large
                   icon="pencil"
                   onClick={() =>
                     this.props.history.push('/dashboard/myblog', {

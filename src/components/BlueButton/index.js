@@ -54,10 +54,24 @@ const genIcon = icon => {
   }
 }
 
-const BlueButton = ({ icon, children, onClick }) => {
+const genButtonStyle = large =>
+  large
+    ? {
+        padding: '12px 15px',
+        fontSize: '14px',
+      }
+    : {
+        padding: '8px 12px',
+      }
+
+const BlueButton = ({ icon, children, onClick, large = false }) => {
   const iconProps = genIcon(icon)
   return (
-    <button className="bluebutton" onClick={onClick}>
+    <button
+      className="bluebutton"
+      onClick={onClick}
+      style={genButtonStyle(large)}
+    >
       {/* eslint-disable-next-line jsx-a11y/alt-text */}
       {iconProps && <img {...iconProps} className="bluebutton__icon" />}
       {children}

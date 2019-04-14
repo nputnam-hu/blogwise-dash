@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import {
   Icon,
-  Button,
   Intent,
   Dialog,
+  Button,
   FormGroup,
   InputGroup,
   HTMLSelect,
   Spinner,
 } from '@blueprintjs/core'
+import BlueButton from '../../../../../../components/BlueButton'
 import EditModal from '../../../../../../components/EditUserModal'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import errorMessage, { validateState } from '../../../../../../toaster'
 import Client from '../../../../../../client'
+import userIcon from './user.svg'
 import './styles.sass'
 
 function trimString(str) {
@@ -120,10 +122,10 @@ class Users extends Component {
     return (
       <div id="users-container">
         <div id="inputcontent">
-          <div className="section-header">
-            <a href="#users-roles" name="users-roles">
-              <h2>Users & Roles</h2>
-            </a>
+          <div className="section-header users">
+            <img src={userIcon} alt="Users" />
+            <div style={{ width: '10px' }} />
+            <h2>Users & Roles</h2>
             <QuestionHint
               title="Users"
               helperText="New users can be assigned one of two roles: Admin and Writer. Writers can write new content for the blog and publish new posts. Admins, in addition to having the same writing power as Writers, can also manage the blog content and settings on the blogwise dashboard."
@@ -161,16 +163,16 @@ class Users extends Component {
               </tbody>
             </table>
           )}
-          <Button
+          <BlueButton
             style={{
               alignSelf: 'flex-start',
             }}
             large
-            icon="new-person"
+            icon="inviteUser"
             onClick={this.openModal}
           >
             Invite User
-          </Button>
+          </BlueButton>
         </div>
         {/* Modals */}
         <Dialog
