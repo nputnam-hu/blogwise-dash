@@ -32,7 +32,7 @@ class MyBlog extends Component {
           <Tab id="second" title="Tags" panel={<Tags />} />
           <Tab id="third" title="Appearance" panel={<Appearence />} />
           <Tab id="fourth" title="Domain Settings" panel={<DomainSettings />} />
-          <Tab id="fifth" title="General" panel={<General />} />
+          <Tab id="fifth" title="Favicon" panel={<General />} />
         </Tabs>
       </div>
     )

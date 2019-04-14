@@ -16,6 +16,13 @@ import HeaderPreview from '../HeaderPreview'
 import { uploadFileToS3 } from '../../client'
 import './styles.sass'
 
+function getColorByBgColor(bgColor) {
+  if (!bgColor) {
+    return ''
+  }
+  return parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff'
+}
+
 class EditHeader extends Component {
   constructor(props) {
     super(props)
@@ -25,6 +32,8 @@ class EditHeader extends Component {
       headerPhotoUri: props.headerPhotoUri,
       backgroundHexCode: props.backgroundHexCode,
       bgImgUri: props.bgImgUri,
+      navbarHexCode: props.navbarHexCode,
+      headerTextColor: props.headerTextColor,
       cropModalOpen: false,
       bgCropModalOpen: false,
       fetchingData: props.fetchData,
@@ -40,6 +49,8 @@ class EditHeader extends Component {
         bgType: blog.bgImgUri || this.props.bgImgUri ? 'img' : 'color',
         backgroundHexCode:
           blog.backgroundHexCode || this.props.backgroundHexCode,
+        navbarHexCode: blog.navbarHexCode || this.props.navbarHexCode,
+        headerTextColor: blog.headerTextColor || this.props.headerTextColor,
         fetchingData: false,
       })
     })
@@ -57,8 +68,12 @@ class EditHeader extends Component {
   handlePhotoUploaded = url => {
     this.setState({ headerPhotoUri: url })
   }
-  handleColorPicked = ({ hex }) =>
-    this.setState({ backgroundHexCode: hex, bgImgUri: '' })
+  handleColorPicked = ({ hex }) => {
+    const newState = { backgroundHexCode: hex, bgImgUri: '' }
+    newState.headerTextColor = getColorByBgColor(hex)
+    this.setState(newState)
+  }
+  handleTextColorPicked = ({ hex }) => this.setState({ headerTextColor: hex })
   handleBgTypeChange = e => this.setState({ bgType: e.currentTarget.value })
   openCropModal = () => this.setState({ cropModalOpen: true })
   handleCropModalClose = () => this.setState({ cropModalOpen: false })
@@ -72,6 +87,7 @@ class EditHeader extends Component {
           headerPhotoUri={this.state.headerPhotoUri}
           bgImgUri={this.state.bgImgUri}
           color={this.state.backgroundHexCode}
+          headerTextColor={this.state.headerTextColor}
         />
         {this.state.fetchingData && <Spinner />}
         <br />
@@ -96,6 +112,22 @@ class EditHeader extends Component {
                     onChange={this.onChange}
                     autoFocus
                   />
+                </FormGroup>
+                <FormGroup htmlFor="headerTextColor" label="Title Text Color">
+                  <div className="colorinput">
+                    <div
+                      className="colorpreview"
+                      style={{ background: this.state.headerTextColor }}
+                    />
+                    <Popover interactionKind={PopoverInteractionKind.CLICK}>
+                      <Button>Change</Button>
+                      <ColorPicker
+                        name="color"
+                        color={this.state.headerTextColor}
+                        onChange={this.handleTextColorPicked}
+                      />
+                    </Popover>
+                  </div>
                 </FormGroup>
                 <FormGroup
                   htmlFor="headerimg"
@@ -127,9 +159,9 @@ class EditHeader extends Component {
                 <br />
                 {this.state.bgType === 'color' ? (
                   <FormGroup htmlFor="color" label="Solid Color">
-                    <div id="colorinput">
+                    <div className="colorinput">
                       <div
-                        id="colorpreview"
+                        className="colorpreview"
                         style={{ background: this.state.backgroundHexCode }}
                       />
                       <Popover interactionKind={PopoverInteractionKind.CLICK}>

@@ -5,7 +5,11 @@ import {
   Button,
   Intent,
   Spinner,
+  PopoverInteractionKind,
+  Popover,
 } from '@blueprintjs/core'
+import { ChromePicker as ColorPicker } from 'react-color'
+
 import normalizeUrl from 'normalize-url'
 import Client from '../../../client'
 import './styles.sass'
@@ -17,8 +21,8 @@ function getColorByBgColor(bgColor) {
   return parseInt(bgColor.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff'
 }
 
-const NavbarPreview = ({ backgroundHexCode, logoUri, customNavbarLinks }) => (
-  <div id="navbar-preview" style={{ background: backgroundHexCode }}>
+const NavbarPreview = ({ navbarHexCode, logoUri, customNavbarLinks }) => (
+  <div id="navbar-preview" style={{ background: navbarHexCode }}>
     <img id="navbar-logo" src={logoUri} alt="Kaldi" />
     <div id="navbar-links">
       {customNavbarLinks.map(({ link, name }) => (
@@ -27,7 +31,7 @@ const NavbarPreview = ({ backgroundHexCode, logoUri, customNavbarLinks }) => (
           rel="noopener noreferrer"
           href={link}
           alt={name}
-          style={{ color: getColorByBgColor(backgroundHexCode) }}
+          style={{ color: getColorByBgColor(navbarHexCode) }}
         >
           {name}
         </a>
@@ -41,7 +45,7 @@ class BlogNavbar extends Component {
     super()
     this.client = new Client()
     this.state = {
-      backgroundHexCode: '',
+      navbarHexCode: '',
       logoUri: '',
       customNavbarLinks: [{ name: '', link: '', order: 0 }],
       dataLoading: true,
@@ -53,7 +57,7 @@ class BlogNavbar extends Component {
       const { customNavbarLinks } = blog
       const newLinks = customNavbarLinks.map((el, i) => ({ ...el, order: i }))
       this.setState({
-        backgroundHexCode: blog.backgroundHexCode,
+        navbarHexCode: blog.navbarHexCode,
         logoUri: blog.headerPhotoUri,
         customNavbarLinks: [
           ...customNavbarLinks,
@@ -93,11 +97,16 @@ class BlogNavbar extends Component {
     })
     await this.client.put('/blogs', {
       customNavbarLinks: normalizedLinks,
+      navbarHexCode: this.state.navbarHexCode,
     })
     this.props.history.push('/dashboard/myblog', {
       tabId: 'third',
     })
   }
+  handleColorPicked = ({ hex }) =>
+    this.setState({
+      navbarHexCode: hex,
+    })
   addLink = () => {
     const navLinks = this.state.customNavbarLinks.sort(
       (a, b) => -b.order + a.order,
@@ -120,7 +129,7 @@ class BlogNavbar extends Component {
           <Spinner />
         ) : (
           <NavbarPreview
-            backgroundHexCode={this.state.backgroundHexCode}
+            navbarHexCode={this.state.navbarHexCode}
             logoUri={this.state.logoUri}
             customNavbarLinks={this.state.customNavbarLinks}
           />
@@ -136,9 +145,22 @@ class BlogNavbar extends Component {
             Back
           </Button>
           <h2>Customize Navbar</h2>
-          <span className="onboarding-subheader">
-            Put in custom navbar links to direct users to your main site
-          </span>
+          <FormGroup htmlFor="headerTextColor" label="Background Color">
+            <div className="colorinput">
+              <div
+                className="colorpreview"
+                style={{ background: this.state.navbarHexCode }}
+              />
+              <Popover interactionKind={PopoverInteractionKind.CLICK}>
+                <Button>Change</Button>
+                <ColorPicker
+                  name="color"
+                  color={this.state.navbarHexCode}
+                  onChange={this.handleColorPicked}
+                />
+              </Popover>
+            </div>
+          </FormGroup>
           <br />
           <br />
           <div className="onboarding-form blognavbar">
