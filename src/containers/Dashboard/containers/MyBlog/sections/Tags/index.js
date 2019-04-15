@@ -1,12 +1,20 @@
 import React, { Component } from 'react'
 import { Button, H5 } from '@blueprintjs/core'
-import _ from 'lodash'
 import TagModal from './components/TagModal'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import Client from '../../../../../../client'
 import { validateState } from '../../../../../../toaster'
 import tagIcon from './tagIcon.svg'
 import './styles.sass'
+import BlueButton from '../../../../../../components/BlueButton'
+
+const splitArrayInThree = arr => {
+  const retArrays = [[], [], []]
+  for (let i = 0; i < arr.length; i += 1) {
+    retArrays[i % 3].push(arr[i])
+  }
+  return retArrays
+}
 
 const TagColumn = ({ tagKeys, tags, onClickKey }) => (
   <div className="tags__col">
@@ -74,9 +82,8 @@ class Tags extends Component {
   }
   handleClose = () => this.setState({ modalOpen: false })
   render() {
-    const [tags1 = [], tags2 = [], tags3 = []] = _.chunk(
+    const [tags1, tags2, tags3] = splitArrayInThree(
       Object.keys(this.state.tags).sort(),
-      3,
     )
     return (
       <>
@@ -89,6 +96,15 @@ class Tags extends Component {
               title="Tags"
               helperText="Tags are used to categorize your posts into different topics. The tags for each post will be displayed at the bottom of the page, and users can search articles by tag."
             />
+            <BlueButton
+              onClick={this.openModalNew}
+              icon="plus"
+              disabled={this.state.locked}
+              className="myblog__button"
+              large
+            >
+              New Tag
+            </BlueButton>
           </div>
           <div className="tags">
             <TagColumn
@@ -107,14 +123,6 @@ class Tags extends Component {
               onClickKey={this.openModalEdit}
             />
           </div>
-          <Button
-            onClick={this.openModalNew}
-            icon="add"
-            disabled={this.state.locked}
-            large
-          >
-            New Tag
-          </Button>
         </div>
         {/* Modals */}
         <TagModal

@@ -128,8 +128,6 @@ class Dashboard extends Component {
                   icon="help"
                   iconSize={15}
                   style={{
-                    // padding: 0,
-                    // boxSizing: 'initial',
                     marginLeft: '-25px',
                   }}
                 />

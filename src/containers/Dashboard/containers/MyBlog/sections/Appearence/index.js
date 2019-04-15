@@ -5,19 +5,23 @@ import QuestionHint from '../../../../../../components/QuestionHint'
 import sidebar from './sidebar.png'
 import navbar from './navbar.png'
 import header from './header.png'
+import appearenceIcon from './appearenceIcon.svg'
 import './styles.sass'
 
 const Appearence = () => (
   <div id="appearence-container">
-    <div className="section-header">
+    <div className="section-header myblog">
+      <img src={appearenceIcon} alt="Users" />
+      <div style={{ width: '10px' }} />
       <a href="#appearence" name="appearence">
-        <h2>Customize Appearance</h2>
+        <h2>Appearance</h2>
       </a>
       <QuestionHint
         title="Customize Appearance"
         helperText="You can customize the appearence of your blog by uploading images, choosing colors, including links to your social media accounts, and more."
       />
     </div>
+    <h3 className="appearence__subheader">CUSTOM ELEMENTS</h3>
     <div id="appearence-cards">
       <Link to="/edit/header">
         <Card
@@ -26,7 +30,7 @@ const Appearence = () => (
           elevation={Elevation.TWO}
         >
           <img src={header} alt="Header" />
-          <h2>Homepage Header</h2>
+          <span>Homepage Header</span>
         </Card>
       </Link>
       <Link to="/edit/sidebar">
@@ -36,7 +40,7 @@ const Appearence = () => (
           elevation={Elevation.TWO}
         >
           <img src={sidebar} alt="Sidebar" />
-          <h2>Homepage Sidebar</h2>
+          <span>Homepage Sidebar</span>
         </Card>
       </Link>
       <Link to="/edit/navbar">
@@ -46,7 +50,7 @@ const Appearence = () => (
           elevation={Elevation.TWO}
         >
           <img src={navbar} alt="Navbar" />
-          <h2>Navigation Bar</h2>
+          <span>Navigation Bar</span>
         </Card>
       </Link>
     </div>

@@ -9,7 +9,6 @@
     "axios": "^0.18.0",
     "fullcalendar-reactwrapper": "^1.0.7",
     "is-valid-domain": "0.0.7",
-    "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "normalize-url": "^4.2.0",

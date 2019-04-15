@@ -44,15 +44,26 @@ const genButtonStyle = large =>
         fontSize: '13px',
       }
 
-const BlueButton = ({ icon, children, onClick, large = false }) => {
+const BlueButton = ({
+  icon,
+  children,
+  text,
+  onClick,
+  large = false,
+  style,
+  className,
+  ...rest
+}) => {
   const IconComponent = genIcon(icon)
   return (
     <button
-      className="bluebutton"
+      className={`bluebutton${className ? ` ${className}` : ''}`}
       onClick={onClick}
-      style={genButtonStyle(large)}
+      style={{ ...genButtonStyle(large), ...style }}
+      {...rest}
     >
       {IconComponent && <IconComponent />}
+      {text || null}
       {children}
     </button>
   )

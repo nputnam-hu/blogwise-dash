@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   Spinner,
   Card,
-  Button,
   Elevation,
   Intent,
   Dialog,
@@ -10,10 +9,12 @@ import {
   InputGroup,
 } from '@blueprintjs/core'
 import isValidDomain from 'is-valid-domain'
-import './styles.sass'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import Client from '../../../../../../client'
 import errorMessage from '../../../../../../toaster'
+import settingsIcon from './settingsIcon.svg'
+import './styles.sass'
+import BlueButton from '../../../../../../components/BlueButton'
 
 function getRecordNameFromUrl(url) {
   const urlParts = url.split('.')
@@ -98,7 +99,9 @@ class DomainSettings extends Component {
     return (
       <>
         <div id="domainsettings-container">
-          <div className="section-header">
+          <div className="section-header myblog">
+            <img src={settingsIcon} alt="Settings" />
+            <div style={{ width: '10px' }} />
             <h2>Domain Settings</h2>
             <QuestionHint
               title="Domain Settings"
@@ -110,7 +113,7 @@ class DomainSettings extends Component {
           ) : (
             <Card className="domain-card" elevation={Elevation.ONE}>
               <p>
-                Your blog is currently hosted at{' '}
+                Your blog is currently hosted at <br />
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -119,9 +122,12 @@ class DomainSettings extends Component {
                   {this.state.siteUrl}
                 </a>
               </p>
-              <Button onClick={this.onClick} intent={Intent.PRIMARY}>
+              <BlueButton
+                onClick={this.onClick}
+                style={{ alignSelf: 'center' }}
+              >
                 Change
-              </Button>
+              </BlueButton>
             </Card>
           )}
           {this.state.siteUrl !== this.state.netlifyUrl && (
@@ -190,16 +196,16 @@ class DomainSettings extends Component {
                 click below to activate SSL for your website. SSL increases your
                 blog's security, and will show up as `Secure` in Web Browsers.
               </p>
-              <Button
+              <BlueButton
                 onClick={this.activateSSL}
                 intent={
                   this.state.sslActivated ? Intent.SUCCESS : Intent.PRIMARY
                 }
-                icon={this.state.sslActivated && 'confirm'}
+                icon={this.state.sslActivated && 'checkmark'}
                 locked={this.state.sslActivated}
               >
                 {this.state.sslActivated ? 'SSL Acctivated' : 'Activate SSL'}
-              </Button>
+              </BlueButton>
             </div>
           )}
         </div>
@@ -225,13 +231,9 @@ class DomainSettings extends Component {
                 onChange={e => this.setState({ newSiteUrl: e.target.value })}
               />
             </FormGroup>
-            <Button
-              intent={Intent.PRIMARY}
-              icon="confirm"
-              onClick={this.updateSiteUrl}
-            >
+            <BlueButton icon="checkmark" onClick={this.updateSiteUrl}>
               Confirm
-            </Button>
+            </BlueButton>
           </div>
         </Dialog>
       </>

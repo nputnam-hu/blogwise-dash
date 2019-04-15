@@ -11,7 +11,7 @@ class MyBlog extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tabId: (props.location.state && props.location.state.tabId) || 'second',
+      tabId: (props.location.state && props.location.state.tabId) || 'first',
     }
   }
   handleTabChange = tabId => {
