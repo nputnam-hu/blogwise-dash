@@ -9,6 +9,7 @@ import {
 } from '@blueprintjs/core'
 import store from 'store'
 import Client from '../../../client'
+import config from '../../../config'
 import errorMessage, { validateState } from '../../../toaster'
 import lowerSwoosh from './lower_swoosh.png'
 import upperSwoosh from './upper_swoosh.png'
@@ -42,6 +43,7 @@ class Register extends Component {
         },
       })
       store.set('user', user)
+      await store.set('sessionExpires', config.logoutTime())
       this.props.history.push('/onboarding/1', {
         surveyAnswer: this.state.surveyAnswer,
         name: this.state.name,
