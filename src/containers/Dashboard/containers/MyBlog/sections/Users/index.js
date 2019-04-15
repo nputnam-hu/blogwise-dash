@@ -122,7 +122,7 @@ class Users extends Component {
     return (
       <div id="users-container">
         <div id="inputcontent">
-          <div className="section-header users">
+          <div className="section-header myblog">
             <img src={userIcon} alt="Users" />
             <div style={{ width: '10px' }} />
             <h2>Users & Roles</h2>

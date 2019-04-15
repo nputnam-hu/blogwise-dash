@@ -1,5 +1,33 @@
 #tags-container
   padding-bottom: 40px
-  .tag-container
-    width: 400px
-    margin-bottom: 20px
+  .tags
+    display: flex
+    flex-direction: row
+    .tags__col
+      display: flex
+      flex-direction: column
+      flex-wrap: wrap
+      .tag
+        width: 275px
+        background: #ECF5FC
+        margin-bottom: 20px
+        border-radius: 5px
+        display: flex
+        flex-direction: row
+        .tag__buttons
+          padding: 5px
+          margin-left: auto
+          margin-bottom: auto
+          button
+            span
+              color: #447ADD
+        .tag__text
+          display: flex
+          flex-direction: column
+          padding: 20px
+
+          h5
+            font-weight: 300
+            font-size: 16px
+          p
+            font-size: 14px

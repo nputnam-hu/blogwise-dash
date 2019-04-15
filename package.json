@@ -9,6 +9,7 @@
     "axios": "^0.18.0",
     "fullcalendar-reactwrapper": "^1.0.7",
     "is-valid-domain": "0.0.7",
+    "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "normalize-url": "^4.2.0",
@@ -40,7 +41,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.7.0",
-    "prettier": "^1.13.5"
+    "prettier": "^1.13.5",
+    "svg-react-loader": "^0.4.6"
   },
   "scripts": {
     "start": "react-scripts start",

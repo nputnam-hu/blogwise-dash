@@ -59,14 +59,18 @@ class Dashboard extends Component {
         <div className="dashboard-tabs">
           {isAdmin ? (
             <Link
-              className={activeTab === 'overview' ? 'active' : undefined}
+              className={`dashboard-tabs__tab ${
+                activeTab === 'overview' ? 'active' : ''
+              }`}
               to="/dashboard"
             >
               Overview
             </Link>
           ) : (
             <Link
-              className={activeTab === 'writer' ? 'active' : undefined}
+              className={`dashboard-tabs__tab ${
+                activeTab === 'writer' ? 'active' : ''
+              }`}
               to="/writer"
             >
               Home
@@ -74,27 +78,35 @@ class Dashboard extends Component {
           )}
           {isAdmin && (
             <Link
-              className={activeTab === 'myblog' ? 'active' : undefined}
+              className={`dashboard-tabs__tab ${
+                activeTab === 'myblog' ? 'active' : ''
+              }`}
               to="/dashboard/myblog"
             >
               My Blog
             </Link>
           )}
           <Link
-            className={activeTab === 'myposts' ? 'active' : undefined}
+            className={`dashboard-tabs__tab ${
+              activeTab === 'myposts' ? 'active' : ''
+            }`}
             to="/dashboard/myposts"
           >
             My Posts
           </Link>
           <Link
-            className={activeTab === 'postgenius' ? 'active' : undefined}
+            className={`dashboard-tabs__tab ${
+              activeTab === 'postgenius' ? 'active' : ''
+            }`}
             to="/dashboard/postgenius"
           >
             PostGenius
           </Link>
           {isAdmin && (
             <Link
-              className={activeTab === 'account' ? 'active' : undefined}
+              className={`dashboard-tabs__tab ${
+                activeTab === 'account' ? 'active' : ''
+              }`}
               to="/dashboard/account"
             >
               Account
@@ -111,14 +123,13 @@ class Dashboard extends Component {
               <Popover
                 interactionKind={PopoverInteractionKind.HOVER}
                 className="publishupdates__popover"
-                minimal
               >
                 <Icon
                   icon="help"
                   iconSize={15}
                   style={{
                     // padding: 0,
-                    boxSizing: 'initial',
+                    // boxSizing: 'initial',
                     marginLeft: '-25px',
                   }}
                 />

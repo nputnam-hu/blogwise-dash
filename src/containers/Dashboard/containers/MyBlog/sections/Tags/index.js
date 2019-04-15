@@ -1,10 +1,31 @@
 import React, { Component } from 'react'
-import { Button, Card, H5 } from '@blueprintjs/core'
+import { Button, H5 } from '@blueprintjs/core'
+import _ from 'lodash'
 import TagModal from './components/TagModal'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import Client from '../../../../../../client'
 import { validateState } from '../../../../../../toaster'
+import tagIcon from './tagIcon.svg'
 import './styles.sass'
+
+const TagColumn = ({ tagKeys, tags, onClickKey }) => (
+  <div className="tags__col">
+    {tagKeys.map(key => {
+      const { name, description } = tags[key]
+      return (
+        <div key={key} className="tag">
+          <div className="tag__text">
+            <H5>{name}</H5>
+            <p>{description}</p>
+          </div>
+          <div className="tag__buttons">
+            <Button icon="edit" onClick={onClickKey(key)} minimal />
+          </div>
+        </div>
+      )
+    })}
+  </div>
+)
 
 class Tags extends Component {
   constructor() {
@@ -24,7 +45,7 @@ class Tags extends Component {
       this.setState({ tags: blog.tags || {} })
     })
   }
-  openModalEdit = tagKey =>
+  openModalEdit = tagKey => () =>
     this.setState({
       modalOpen: true,
       modalIsEdit: true,
@@ -53,36 +74,39 @@ class Tags extends Component {
   }
   handleClose = () => this.setState({ modalOpen: false })
   render() {
+    const [tags1 = [], tags2 = [], tags3 = []] = _.chunk(
+      Object.keys(this.state.tags).sort(),
+      3,
+    )
     return (
       <>
         <div id="tags-container">
-          <div className="section-header">
-            <a href="#tags" name="tags">
-              <h2>Tags</h2>
-            </a>
+          <div className="section-header myblog">
+            <img src={tagIcon} alt="Tags" />
+            <div style={{ width: '10px' }} />
+            <h2>Tags</h2>
             <QuestionHint
               title="Tags"
               helperText="Tags are used to categorize your posts into different topics. The tags for each post will be displayed at the bottom of the page, and users can search articles by tag."
             />
           </div>
-          {Object.keys(this.state.tags)
-            .sort()
-            .map(key => {
-              const { name, description } = this.state.tags[key]
-              return (
-                <Card key={key} className="tag-container">
-                  <H5>{name}</H5>
-                  <p>{description}</p>
-                  <Button
-                    icon="edit"
-                    onClick={() => this.openModalEdit(key)}
-                    disabled={this.state.locked}
-                  >
-                    Edit
-                  </Button>
-                </Card>
-              )
-            })}
+          <div className="tags">
+            <TagColumn
+              tagKeys={tags1}
+              tags={this.state.tags}
+              onClickKey={this.openModalEdit}
+            />
+            <TagColumn
+              tagKeys={tags2}
+              tags={this.state.tags}
+              onClickKey={this.openModalEdit}
+            />
+            <TagColumn
+              tagKeys={tags3}
+              tags={this.state.tags}
+              onClickKey={this.openModalEdit}
+            />
+          </div>
           <Button
             onClick={this.openModalNew}
             icon="add"

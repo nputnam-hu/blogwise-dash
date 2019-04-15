@@ -1,11 +1,11 @@
 import React from 'react'
-import bookmark from './icons/bookmark.svg'
-import checkmark from './icons/checkmark.svg'
-import upload from './icons/upload.svg'
-import gear from './icons/gear.svg'
-import pencil from './icons/pencil.svg'
-import plus from './icons/plus.svg'
-import inviteUser from './icons/invite-user.svg'
+import Bookmark from './icons/bookmark'
+import Checkmark from './icons/checkmark'
+import Upload from './icons/upload'
+import Gear from './icons/gear'
+import Pencil from './icons/pencil'
+import Plus from './icons/plus'
+import InviteUser from './icons/inviteUser'
 import './styles.sass'
 
 const genIcon = icon => {
@@ -14,40 +14,19 @@ const genIcon = icon => {
   }
   switch (icon) {
     case 'gear':
-      return {
-        src: gear,
-        alt: 'Settings',
-      }
+      return Gear
     case 'bookmark':
-      return {
-        src: bookmark,
-        alt: 'Bookmark',
-      }
+      return Bookmark
     case 'checkmark':
-      return {
-        src: checkmark,
-        alt: 'Checkmark',
-      }
+      return Checkmark
     case 'upload':
-      return {
-        src: upload,
-        alt: 'File Upload',
-      }
+      return Upload
     case 'pencil':
-      return {
-        src: pencil,
-        alt: 'Edit',
-      }
+      return Pencil
     case 'plus':
-      return {
-        src: plus,
-        alt: 'Add',
-      }
+      return Plus
     case 'inviteUser':
-      return {
-        src: inviteUser,
-        alt: 'Invite User',
-      }
+      return InviteUser
     default:
       console.warn('Invalid icon prop given, ignored')
       return null
@@ -62,18 +41,18 @@ const genButtonStyle = large =>
       }
     : {
         padding: '8px 12px',
+        fontSize: '13px',
       }
 
 const BlueButton = ({ icon, children, onClick, large = false }) => {
-  const iconProps = genIcon(icon)
+  const IconComponent = genIcon(icon)
   return (
     <button
       className="bluebutton"
       onClick={onClick}
       style={genButtonStyle(large)}
     >
-      {/* eslint-disable-next-line jsx-a11y/alt-text */}
-      {iconProps && <img {...iconProps} className="bluebutton__icon" />}
+      {IconComponent && <IconComponent />}
       {children}
     </button>
   )
