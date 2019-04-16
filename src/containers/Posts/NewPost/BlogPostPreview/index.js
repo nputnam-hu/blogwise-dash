@@ -1,7 +1,6 @@
 /* eslint-disable react/no-danger */
 import React from 'react'
 import moment from 'moment'
-import time from './time.svg'
 import './styles.sass'
 
 const genText = function genText(date) {
@@ -21,9 +20,9 @@ const genText = function genText(date) {
   return `${roundedYears} ${roundedYears === 1 ? 'year' : 'years'} ago`
 }
 
-const Time = ({ date }) => (
+const Time = ({ date, timeIcon }) => (
   <div className="time-container">
-    <img alt={date.toString()} src={time} />
+    <img alt={date.toString()} src={timeIcon} />
     <span className="time-text" style={{ fontSize: '16px' }}>
       {genText(date)}
     </span>
@@ -38,6 +37,7 @@ const BlogPostPreview = ({
   tags,
   publishDate,
   author,
+  timeIcon,
 }) => (
   <div className="postpreview">
     {!title &&
@@ -63,7 +63,9 @@ const BlogPostPreview = ({
         )}
         <div className="authorinfo">
           {author && <div className="article-authorname">{author.name}</div>}
-          {publishDate && <Time size="large" date={publishDate} />}
+          {publishDate && (
+            <Time size="large" date={publishDate} timeIcon={timeIcon} />
+          )}
         </div>
       </div>
       <br />

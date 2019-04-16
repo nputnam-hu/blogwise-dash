@@ -9,10 +9,11 @@ import {
 } from '@blueprintjs/core'
 import { DateInput } from '@blueprintjs/datetime'
 import Select from 'react-select'
-import ReactQuill from 'react-quill'
+import ReactQuill, { Quill } from 'react-quill'
+import { ImageResize } from 'quill-image-resize-module'
 import CropImgUploader from '../../../components/CropImgUploader'
 import PostNavbar from './PostNavbar'
-import BlogPostPreview from './BlogPostPreview'
+import { Template1 } from 'blogwise-article-view'
 import NewDraftModal from './NewDraftModal'
 import UnsavedChangesModal from './UnsavedChangesModal'
 import SchedulePostModal from './SchedulePostModal'
@@ -20,6 +21,8 @@ import UnsplashModal from './UnsplashModal'
 import Client from '../../../client'
 import errorMessage, { validateState, alertUser } from '../../../toaster'
 import './styles.sass'
+
+Quill.register('modules/imageResize', ImageResize)
 
 class NewPost extends Component {
   constructor(props) {
@@ -53,10 +56,13 @@ class NewPost extends Component {
       unsavedChangesModalOpen: false,
       schedulePostModalOpen: false,
       unsplashModalOpen: false,
+      addImageModalOpen: false,
       unsplashQuery: '',
+      quill: null,
       // let links pass in default state params
       ...(props.location.state || {}),
     }
+    this.quill = React.createRef()
   }
   componentDidMount() {
     const loadData = async () => {
@@ -119,6 +125,8 @@ class NewPost extends Component {
     this.setState({ [e.target.name]: e.target.value, postModified: true })
 
   openCoverCropModal = () => this.setState({ coverCropModalOpen: true })
+  openAddImageModal = quill => this.setState({ addImageModalOpen: true, quill })
+  handleAddImageModalClose = () => this.setState({ addImageModalOpen: false })
   handleCoverCropModalClose = () => this.setState({ coverCropModalOpen: false })
   openThumbCropModal = () => this.setState({ thumbCropModalOpen: true })
   handleThumbCropModalClose = () => this.setState({ thumbCropModalOpen: false })
@@ -252,20 +260,27 @@ class NewPost extends Component {
   removeThumbnail = () => {
     this.setState({ thumbnailUri: '', postModified: true })
   }
+  imageHandler = quill => this.openAddImageModal(quill)
   modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ align: [] }],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        { indent: '-1' },
-        { indent: '+1' },
+    toolbar: {
+      handlers: {
+        image: () => this.imageHandler(this.quill),
+      },
+      container: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ align: [] }],
+        [
+          { list: 'ordered' },
+          { list: 'bullet' },
+          { indent: '-1' },
+          { indent: '+1' },
+        ],
+        ['link', 'video', 'image'],
+        ['clean'],
       ],
-      ['link', 'image'],
-      ['clean'],
-    ],
+    },
+    imageResize: {},
   }
   formats = [
     'header',
@@ -280,6 +295,7 @@ class NewPost extends Component {
     'indent',
     'link',
     'image',
+    'video',
   ]
 
   render() {
@@ -421,6 +437,7 @@ class NewPost extends Component {
                   placeholder="Start telling your story..."
                   modules={this.modules}
                   format={this.formats}
+                  ref={this.quill}
                 />
               </FormGroup>
               <div style={{ height: '40px' }} />
@@ -437,7 +454,7 @@ class NewPost extends Component {
             </div>
           )}
           {!this.state.dataLoading && (
-            <BlogPostPreview
+            <Template1
               title={this.state.title}
               coverPhotoUri={this.state.coverPhotoUri}
               description={this.state.description}
@@ -465,6 +482,20 @@ class NewPost extends Component {
               postModified: true,
             })
           }
+        />
+        <CropImgUploader
+          isOpen={this.state.addImageModalOpen}
+          handleClose={this.handleAddImageModalClose}
+          client={this.client}
+          fileLabel="Media upload"
+          onConfirmCrop={url => {
+            const quill = this.quill.current.getEditor()
+            const range = quill.getSelection() || {
+              index: 0,
+            }
+            quill.insertEmbed(range.index, 'image', url)
+            this.handleAddImageModalClose()
+          }}
         />
         <CropImgUploader
           aspectRatio={153 / 133}
