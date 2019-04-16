@@ -58,7 +58,6 @@ class NewPost extends Component {
       unsplashModalOpen: false,
       addImageModalOpen: false,
       unsplashQuery: '',
-      quill: null,
       // let links pass in default state params
       ...(props.location.state || {}),
     }
@@ -125,7 +124,7 @@ class NewPost extends Component {
     this.setState({ [e.target.name]: e.target.value, postModified: true })
 
   openCoverCropModal = () => this.setState({ coverCropModalOpen: true })
-  openAddImageModal = quill => this.setState({ addImageModalOpen: true, quill })
+  openAddImageModal = () => this.setState({ addImageModalOpen: true })
   handleAddImageModalClose = () => this.setState({ addImageModalOpen: false })
   handleCoverCropModalClose = () => this.setState({ coverCropModalOpen: false })
   openThumbCropModal = () => this.setState({ thumbCropModalOpen: true })
@@ -260,11 +259,11 @@ class NewPost extends Component {
   removeThumbnail = () => {
     this.setState({ thumbnailUri: '', postModified: true })
   }
-  imageHandler = quill => this.openAddImageModal(quill)
+  imageHandler = () => this.openAddImageModal()
   modules = {
     toolbar: {
       handlers: {
-        image: () => this.imageHandler(this.quill),
+        image: () => this.imageHandler(),
       },
       container: [
         [{ header: [1, 2, false] }],
