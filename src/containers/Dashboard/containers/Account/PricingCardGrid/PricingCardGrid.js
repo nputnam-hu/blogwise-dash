@@ -13,7 +13,7 @@ const PricingCardGrid = ({ activePlan }) => (
       userNum="2"
       pageViews="10k"
       description="for small businesses"
-      activePlan={activePlan === 'starter'}
+      activePlan={activePlan === 'STARTER'}
     />
     <PricingCard
       bgColor="rgba(103, 180, 249, 0.4)"
@@ -22,7 +22,7 @@ const PricingCardGrid = ({ activePlan }) => (
       userNum="5"
       pageViews="100k"
       description="for scaling startups"
-      activePlan={activePlan === 'growth'}
+      activePlan={activePlan === 'GROWTH'}
     />
     <PricingCard
       bgColor="rgba(59, 103, 226, 0.4)"
@@ -31,7 +31,7 @@ const PricingCardGrid = ({ activePlan }) => (
       userNum="Unlimited"
       pageViews="1 million"
       description="for businesses killing the marketing game"
-      activePlan={activePlan === 'enterprise'}
+      activePlan={activePlan === 'ENTERPRISE'}
     />
   </div>
 )
