@@ -3,6 +3,7 @@ import { FormGroup, InputGroup } from '@blueprintjs/core'
 import store from 'store'
 import errorMessage, { validateState } from '../../toaster'
 import Client from '../../client'
+import config from '../../config'
 import './styles.sass'
 import BlueButton from '../../components/BlueButton'
 
@@ -33,6 +34,7 @@ class Login extends Component {
     try {
       const user = await this.client.post('/auth/login', { ...this.state })
       store.set('user', user)
+      await store.set('sessionExpires', config.logoutTime())
       if (user.type === 'ADMIN') {
         this.props.history.push('/dashboard')
       } else {

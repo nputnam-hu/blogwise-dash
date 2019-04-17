@@ -6,6 +6,7 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom'
 import store from 'store'
+import moment from 'moment'
 import Navbar, { ReducedNavbar } from './components/Navbar'
 import {
   OverviewView,
@@ -43,17 +44,26 @@ const PrivateRoute = ({
 }) => (
   <Route
     {...rest}
-    render={props =>
-      store.get('user') ? (
-        <div style={{ position: 'relative' }}>
-          {showNav && <Navbar />}
-          <MainComponent {...props} />
-          {showNav && <Footer />}
-        </div>
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
+    render={props => {
+      const sessionExpires = store.get('sessionExpires')
+      if (
+        store.get('user') &&
+        (!sessionExpires || moment().isBefore(sessionExpires))
+      ) {
+        return (
+          <div style={{ position: 'relative' }}>
+            {showNav && <Navbar />}
+            <MainComponent {...props} />
+            {showNav && <Footer />}
+          </div>
+        )
+      }
+      // We have to remove user, since otherwise it will
+      // redirect on timeout and then try to redirect back to dashboard
+      store.remove('user')
+      store.remove('blog')
+      return <Redirect to="/login" />
+    }}
   />
 )
 
