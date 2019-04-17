@@ -52,7 +52,7 @@ class Register extends Component {
     } catch (err) {
       let msg
       switch (err.error.code) {
-        case 1005:
+        case 1006:
           msg = 'There is already an account registered with that email'
           break
         case 3002:
