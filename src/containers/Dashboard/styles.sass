@@ -1,8 +1,11 @@
 #index-container
   margin: 30px 10% 150px
-  // padding: 0px 5% 10px
+  @media (max-width: 1400px)
+    margin: 30px 2% 150px
+  @media (max-width: 900px)
+    margin: 30px 0% 150px
   
-  .dashboard-tabs
+  .dashboard
     height: 85px
     padding-left: 80px
     border-radius: 10px
@@ -15,25 +18,44 @@
     flex-direction: row
     align-items: center
     justify-content: center
-    *
+    @media (max-width: 1100px)
+        height: auto
+        padding-left: 10px
+    .dashboard__tabs
+      display: flex
+      flex-direction: row
+      align-items: center
+      justify-content: center
+      flex-wrap: wrap
+      @media (max-width: 1065px)
+        height: auto
+        align-items: flex-start
+        // padding-bottom: 100px
+    
+
+    .dashboard-tabs__tab
       font-size: 18px
       text-decoration: none
       padding: 15px 25px
       margin-right: 28px
       color: #767676
-    .active
+      @media (max-width: 1065px)
+        margin: 10px
+    .active, .dashboard-tabs__tab:hover
       border-radius: 5px
       color: #447ADD
       background: #ECF5FC
     .publishupdates
+      width: 200px
       margin-left: auto
+      margin-right: 50px
       display: flex
       flex-direction: row
       align-items: center
-      justify-content: flex-end
+      paddinig-right: 40px
       .publishupdates__popover
-        padding: 0px
-        margin-right: -190px
+        margin-left: 80px
+        color: rgba(0, 0, 0, 0.22)
       button
         height: 45px
         background: #FFC100

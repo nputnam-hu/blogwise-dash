@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Button, FormGroup, InputGroup } from '@blueprintjs/core'
+import { FormGroup, InputGroup } from '@blueprintjs/core'
 import store from 'store'
 import errorMessage, { validateState } from '../../toaster'
 import Client from '../../client'
 import './styles.sass'
+import BlueButton from '../../components/BlueButton'
 
 class Login extends Component {
   constructor() {
@@ -69,12 +70,18 @@ class Login extends Component {
               onChange={this.onChange}
               onKeyDown={this.onKeyDown}
               placeholder="**********"
+              className="login__textinput"
             />
           </FormGroup>
           <br />
-          <Button large rightIcon="arrow-right" onClick={this.onClick}>
+          <BlueButton
+            large
+            rightIcon="arrowRight"
+            onClick={this.onClick}
+            className="login__button"
+          >
             Login
-          </Button>
+          </BlueButton>
           <button
             onClick={() => this.props.history.push('/forgotpassword')}
             className="onboarding-setuplater"

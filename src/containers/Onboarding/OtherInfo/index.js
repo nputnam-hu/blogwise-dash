@@ -15,17 +15,18 @@ class OtherInfo extends Component {
     }
   }
   onSubmit = async state => {
-    if (!state.description) {
-      errorMessage('Please input a description')
-      return
+    try {
+      const { siteUrl } = await this.client.put('/blogs', state)
+      await this.client.post('/blogs/deploy')
+      store.set('firstTime', true)
+      this.props.history.push('/dashboard', {
+        tabId: 'si',
+        siteUrl,
+      })
+    } catch (err) {
+      console.error(err)
+      errorMessage('Error updating blog')
     }
-    const { siteUrl } = await this.client.put('/blogs', state)
-    await this.client.post('/blogs/deploy')
-    store.set('firstTime', true)
-    this.props.history.push('/dashboard', {
-      tabId: 'si',
-      siteUrl,
-    })
   }
   onBackButtonClick = () => {
     this.props.history.push('/onboarding/2', { ...this.props.location.state })

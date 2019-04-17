@@ -78,9 +78,9 @@ class Register extends Component {
         <img src={girlPainting} alt="Woman Painting" id="girlpainting-img" />
         <div className="onboarding-container register">
           <div className="onboarding-stepcounter">Step 1 of 4</div>
-          <h2>Let's Create Something Special</h2>
+          <h2>Build Your Blog in Minutes</h2>
           <span className="onboarding-subheader">
-            Get a world-class blog up in just minutes.
+            Start reaching the people who need to hear from you
           </span>
           <div className="onboarding-form">
             <FormGroup htmlFor="name" label="Your Name" labelInfo="(required)">
