@@ -33,7 +33,10 @@ class Header extends Component {
     }
   }
   onBackButtonClick = () => {
-    this.props.history.push('/plans', { ...this.props.location.state })
+    this.props.history.push('/plans', {
+      ...this.props.location.state,
+      ...this.state,
+    })
   }
   render() {
     return (
