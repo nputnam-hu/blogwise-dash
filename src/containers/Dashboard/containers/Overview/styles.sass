@@ -1,10 +1,14 @@
 #overview-container
   padding-bottom: 60px
+  @media (max-width: 1400px)
+      align-items: center
   #overview-cards
     display: flex
     flex-direction: row
     justify-content: space-between
     flex-wrap: wrap
+    @media only screen and (max-width: 1000px)
+      justify-content: center
     .overview-column
       display: flex
       flex-direction: column

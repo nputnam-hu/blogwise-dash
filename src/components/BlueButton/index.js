@@ -6,6 +6,7 @@ import Gear from './icons/gear'
 import Pencil from './icons/pencil'
 import Plus from './icons/plus'
 import InviteUser from './icons/inviteUser'
+import ArrowRight from './icons/arrowRight'
 import './styles.sass'
 
 const genIcon = icon => {
@@ -27,6 +28,8 @@ const genIcon = icon => {
       return Plus
     case 'inviteUser':
       return InviteUser
+    case 'arrowRight':
+      return ArrowRight
     default:
       console.warn('Invalid icon prop given, ignored')
       return null
@@ -46,6 +49,7 @@ const genButtonStyle = large =>
 
 const BlueButton = ({
   icon,
+  rightIcon,
   children,
   text,
   onClick,
@@ -55,6 +59,7 @@ const BlueButton = ({
   ...rest
 }) => {
   const IconComponent = genIcon(icon)
+  const RightIconComponent = genIcon(rightIcon)
   return (
     <button
       className={`bluebutton${className ? ` ${className}` : ''}`}
@@ -65,6 +70,7 @@ const BlueButton = ({
       {IconComponent && <IconComponent />}
       {text || null}
       {children}
+      {RightIconComponent && <RightIconComponent className="right" />}
     </button>
   )
 }

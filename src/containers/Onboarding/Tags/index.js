@@ -8,6 +8,7 @@ import {
 } from '@blueprintjs/core'
 import uuid from 'uuid/v4'
 import Client from '../../../client'
+import SidebarPreview from '../../../components/SidebarPreview'
 import errorMessage from '../../../toaster'
 import './styles.sass'
 
@@ -102,86 +103,103 @@ class Tags extends Component {
     const enteredTags = Object.values(this.state.tags).filter(({ name }) =>
       Boolean(name),
     ).length
+    const nonEmptyTags = Object.keys(this.state.tags).reduce((acc, key) => {
+      if (this.state.tags[key].name) {
+        acc[key] = { ...this.state.tags[key] }
+      }
+      return acc
+    }, {})
 
     return (
-      <div className="onboarding-container">
-        <Button
-          small
-          icon="arrow-left"
-          className="onboarding-backbutton"
-          minimal
-          onClick={this.onBackButtonClick}
-        >
-          Back
-        </Button>
-        <div className="onboarding-stepcounter">Step 3 of 4</div>
-        <h2>Create Custom Tags</h2>
-        <span className="onboarding-subheader">
-          Tags are used to group your content into different categories to help
-          users navigate your blog. We recommend you start your blog off with at
-          least 3 tags.
-        </span>
-        <ProgressBar
-          stripes={false}
-          animate={false}
-          intent={Intent.SUCCESS}
-          value={enteredTags / 3}
-        />
-        <span className="onboarding-subheader">{enteredTags}/3 Tags</span>
-        <div className="onboarding-form tags-form">
-          {/* .sort() b/c on Safari Object.keys reoreders off of inputs for some reason */}
-          {Object.keys(this.state.tags)
-            .sort()
-            .map((key, i) => {
-              const { nameHolder, descriptionHolder } = genPlaceholder(i)
-              return (
-                <div className="taginput-container" key={key}>
-                  <FormGroup htmlFor="name" label="Name">
-                    <InputGroup
-                      name="name"
-                      placeholder={nameHolder}
-                      onChange={e => this.onTagChange(e, key)}
-                      value={this.state.tags[key].name}
-                      className="name"
-                    />
-                  </FormGroup>
-                  <FormGroup
-                    htmlFor="description"
-                    label="Description"
-                    labelInfo="(optional)"
-                  >
-                    <InputGroup
-                      name="description"
-                      className="tag-description"
-                      placeholder={descriptionHolder}
-                      onChange={e => this.onTagChange(e, key)}
-                      value={this.state.tags[key].description}
-                    />
-                  </FormGroup>
-                </div>
-              )
-            })}
+      <div className="tags">
+        <div className="onboarding-container tags">
           <Button
-            style={{
-              alignSelf: 'flex-start',
-            }}
-            icon="add"
-            onClick={this.addTag}
+            small
+            icon="arrow-left"
+            className="onboarding-backbutton"
+            minimal
+            onClick={this.onBackButtonClick}
           >
-            Add Another Tag
+            Back
           </Button>
-          <Button
-            large
-            rightIcon="arrow-right"
-            intent={Intent.PRIMARY}
-            onClick={this.onClick}
-          >
-            Next Step
-          </Button>
-          <button onClick={this.onClick} className="onboarding-setuplater">
-            I'll set this up later
-          </button>
+          <div className="onboarding-stepcounter">Step 3 of 4</div>
+          <h2>Create Custom Tags</h2>
+          <span className="onboarding-subheader">
+            Tags are used to group your content into different categories to
+            help users navigate your blog. We recommend you start your blog off
+            with at least 3 tags.
+          </span>
+          <ProgressBar
+            stripes={false}
+            animate={false}
+            intent={Intent.SUCCESS}
+            value={enteredTags / 3}
+          />
+          <span className="onboarding-subheader">{enteredTags}/3 Tags</span>
+          <div className="onboarding-form tags-form">
+            {/* .sort() b/c on Safari Object.keys reoreders off of inputs for some reason */}
+            {Object.keys(this.state.tags)
+              .sort()
+              .map((key, i) => {
+                const { nameHolder, descriptionHolder } = genPlaceholder(i)
+                return (
+                  <div className="taginput-container" key={key}>
+                    <FormGroup htmlFor="name" label="Name">
+                      <InputGroup
+                        name="name"
+                        placeholder={nameHolder}
+                        onChange={e => this.onTagChange(e, key)}
+                        value={this.state.tags[key].name}
+                        className="name"
+                      />
+                    </FormGroup>
+                    <FormGroup
+                      htmlFor="description"
+                      label="Description"
+                      labelInfo="(optional)"
+                    >
+                      <InputGroup
+                        name="description"
+                        className="tag-description"
+                        placeholder={descriptionHolder}
+                        onChange={e => this.onTagChange(e, key)}
+                        value={this.state.tags[key].description}
+                      />
+                    </FormGroup>
+                  </div>
+                )
+              })}
+            <Button
+              style={{
+                alignSelf: 'flex-start',
+              }}
+              icon="add"
+              onClick={this.addTag}
+            >
+              Add Another Tag
+            </Button>
+            <Button
+              large
+              rightIcon="arrow-right"
+              intent={Intent.PRIMARY}
+              onClick={this.onClick}
+            >
+              Next Step
+            </Button>
+            <button onClick={this.onClick} className="onboarding-setuplater">
+              I'll set this up later
+            </button>
+          </div>
         </div>
+        <SidebarPreview
+          tags={Object.values(nonEmptyTags)}
+          logoUri={this.props.location.state.headerPhotoUri}
+          description=""
+          twitterUrl=""
+          facebookUrl=""
+          linkedinUrl=""
+          companyName=""
+        />
       </div>
     )
   }

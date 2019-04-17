@@ -1,11 +1,5 @@
 import React, { Component } from 'react'
-import {
-  Dialog,
-  FormGroup,
-  FileInput,
-  Button,
-  Spinner,
-} from '@blueprintjs/core'
+import { Dialog, FormGroup, FileInput, Spinner } from '@blueprintjs/core'
 import Cropper from 'react-cropper'
 import BlueButton from '../BlueButton'
 import { uploadFileToS3 } from '../../client'

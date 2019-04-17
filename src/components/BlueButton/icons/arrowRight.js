@@ -9,10 +9,10 @@ export default ({ className }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={`bluebutton__icon${className ? ` ${className}` : ''}`}
   >
-    <g id="icon/action/done_24px">
+    <g id="icon/navigation/chevron_right_24px">
       <path
-        id="icon/action/done_24px_2"
-        d="M6.60039 11.925L3.45039 8.77498L2.40039 9.82498L6.60039 14.025L15.6004 5.02498L14.5504 3.97498L6.60039 11.925Z"
+        id="icon/navigation/chevron_right_24px_2"
+        d="M7.0575 4L6 5.0575L9.435 8.5L6 11.9425L7.0575 13L11.5575 8.5L7.0575 4Z"
         fill="#447ADC"
       />
     </g>

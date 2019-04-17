@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, Button } from '@blueprintjs/core'
+import { FormGroup } from '@blueprintjs/core'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import CropImgUploader from '../../../../../../components/CropImgUploader'
 import Client from '../../../../../../client'

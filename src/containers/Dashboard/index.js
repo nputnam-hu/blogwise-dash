@@ -56,62 +56,64 @@ class Dashboard extends Component {
     const isAdmin = store.get('user').type === 'ADMIN'
     return (
       <div id="index-container" className="tab-container">
-        <div className="dashboard-tabs">
-          {isAdmin ? (
+        <div className="dashboard">
+          <div className="dashboard__tabs">
+            {isAdmin ? (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'overview' ? 'active' : ''
+                }`}
+                to="/dashboard"
+              >
+                Overview
+              </Link>
+            ) : (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'writer' ? 'active' : ''
+                }`}
+                to="/writer"
+              >
+                Home
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'myblog' ? 'active' : ''
+                }`}
+                to="/dashboard/myblog"
+              >
+                My Blog
+              </Link>
+            )}
             <Link
               className={`dashboard-tabs__tab ${
-                activeTab === 'overview' ? 'active' : ''
+                activeTab === 'myposts' ? 'active' : ''
               }`}
-              to="/dashboard"
+              to="/dashboard/myposts"
             >
-              Overview
+              My Posts
             </Link>
-          ) : (
             <Link
               className={`dashboard-tabs__tab ${
-                activeTab === 'writer' ? 'active' : ''
+                activeTab === 'postgenius' ? 'active' : ''
               }`}
-              to="/writer"
+              to="/dashboard/postgenius"
             >
-              Home
+              PostGenius
             </Link>
-          )}
-          {isAdmin && (
-            <Link
-              className={`dashboard-tabs__tab ${
-                activeTab === 'myblog' ? 'active' : ''
-              }`}
-              to="/dashboard/myblog"
-            >
-              My Blog
-            </Link>
-          )}
-          <Link
-            className={`dashboard-tabs__tab ${
-              activeTab === 'myposts' ? 'active' : ''
-            }`}
-            to="/dashboard/myposts"
-          >
-            My Posts
-          </Link>
-          <Link
-            className={`dashboard-tabs__tab ${
-              activeTab === 'postgenius' ? 'active' : ''
-            }`}
-            to="/dashboard/postgenius"
-          >
-            PostGenius
-          </Link>
-          {isAdmin && (
-            <Link
-              className={`dashboard-tabs__tab ${
-                activeTab === 'account' ? 'active' : ''
-              }`}
-              to="/dashboard/account"
-            >
-              Account
-            </Link>
-          )}
+            {isAdmin && (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'account' ? 'active' : ''
+                }`}
+                to="/dashboard/account"
+              >
+                Account
+              </Link>
+            )}
+          </div>
           {this.state.dataSending ? (
             <Spinner size={Spinner.SIZE_SMALL} />
           ) : (

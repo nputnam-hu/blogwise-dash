@@ -1,13 +1,13 @@
 import React from 'react'
 
-export default () => (
+export default ({ className }) => (
   <svg
     width="20"
     height="20"
     viewBox="0 0 13 13"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="bluebutton__icon"
+    className={`bluebutton__icon${className ? ` ${className}` : ''}`}
   >
     <g id="icon/content/add_24px">
       <path
