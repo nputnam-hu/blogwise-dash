@@ -29,20 +29,27 @@ class Overview extends Component {
       welcomeModalOpen: firstTime,
       tip: '',
       siteUrl: '',
+      netlifyUrl: '',
       deploys: [],
       dataLoading: true,
       sslActivated: false,
     }
   }
   componentDidMount() {
-    this.client.get('/blogs').then(blog => {
-      this.setState({ siteUrl: blog.siteUrl, sslActivated: blog.sslActivated })
-      this.client.get('/blogs/tip').then(tip => {
-        this.setState({ tip })
-        this.client.get('/blogs/deploy').then(deploys => {
-          this.setState({
-            deploys,
-            dataLoading: false,
+    this.client.get('/instances').then(prodInstance => {
+      this.setState({ netlifyUrl: prodInstance.netlifyUrl })
+      this.client.get('/blogs').then(blog => {
+        this.setState({
+          siteUrl: blog.siteUrl,
+          sslActivated: blog.sslActivated,
+        })
+        this.client.get('/blogs/tip').then(tip => {
+          this.setState({ tip })
+          this.client.get('/blogs/deploy').then(deploys => {
+            this.setState({
+              deploys,
+              dataLoading: false,
+            })
           })
         })
       })
@@ -50,7 +57,7 @@ class Overview extends Component {
   }
   handleWelcomeModalClose = () => this.setState({ welcomeModalOpen: false })
   render() {
-    const { siteUrl, sslActivated } = this.state
+    const { siteUrl, netlifyUrl, sslActivated } = this.state
     const cleanedSiteUrl = `${
       sslActivated ? 'https' : 'http'
     }://${siteUrl.replace(/https:\/\//g, '')}`
@@ -77,6 +84,23 @@ class Overview extends Component {
                 >
                   {siteUrl || <br />}
                 </a>
+                {siteUrl !== netlifyUrl && (
+                  <>
+                    <div style={{ height: '8px' }} />
+                    <span style={{ fontSize: '12px', color: 'black' }}>
+                      Personal URL:
+                    </span>
+                    <br />
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={netlifyUrl}
+                      style={{ color: '#447ADD', fontSize: '12px' }}
+                    >
+                      {netlifyUrl || <br />}
+                    </a>{' '}
+                  </>
+                )}
               </div>
               <div className="overview-card__buttons">
                 <BlueButton

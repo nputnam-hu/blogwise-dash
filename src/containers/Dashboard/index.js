@@ -56,50 +56,64 @@ class Dashboard extends Component {
     const isAdmin = store.get('user').type === 'ADMIN'
     return (
       <div id="index-container" className="tab-container">
-        <div className="dashboard-tabs">
-          {isAdmin ? (
+        <div className="dashboard">
+          <div className="dashboard__tabs">
+            {isAdmin ? (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'overview' ? 'active' : ''
+                }`}
+                to="/dashboard"
+              >
+                Overview
+              </Link>
+            ) : (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'writer' ? 'active' : ''
+                }`}
+                to="/writer"
+              >
+                Home
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'myblog' ? 'active' : ''
+                }`}
+                to="/dashboard/myblog"
+              >
+                My Blog
+              </Link>
+            )}
             <Link
-              className={activeTab === 'overview' ? 'active' : undefined}
-              to="/dashboard"
+              className={`dashboard-tabs__tab ${
+                activeTab === 'myposts' ? 'active' : ''
+              }`}
+              to="/dashboard/myposts"
             >
-              Overview
+              My Posts
             </Link>
-          ) : (
             <Link
-              className={activeTab === 'writer' ? 'active' : undefined}
-              to="/writer"
+              className={`dashboard-tabs__tab ${
+                activeTab === 'postgenius' ? 'active' : ''
+              }`}
+              to="/dashboard/postgenius"
             >
-              Home
+              PostGenius
             </Link>
-          )}
-          {isAdmin && (
-            <Link
-              className={activeTab === 'myblog' ? 'active' : undefined}
-              to="/dashboard/myblog"
-            >
-              My Blog
-            </Link>
-          )}
-          <Link
-            className={activeTab === 'myposts' ? 'active' : undefined}
-            to="/dashboard/myposts"
-          >
-            My Posts
-          </Link>
-          <Link
-            className={activeTab === 'postgenius' ? 'active' : undefined}
-            to="/dashboard/postgenius"
-          >
-            PostGenius
-          </Link>
-          {isAdmin && (
-            <Link
-              className={activeTab === 'account' ? 'active' : undefined}
-              to="/dashboard/account"
-            >
-              Account
-            </Link>
-          )}
+            {isAdmin && (
+              <Link
+                className={`dashboard-tabs__tab ${
+                  activeTab === 'account' ? 'active' : ''
+                }`}
+                to="/dashboard/account"
+              >
+                Account
+              </Link>
+            )}
+          </div>
           {this.state.dataSending ? (
             <Spinner size={Spinner.SIZE_SMALL} />
           ) : (
@@ -111,14 +125,11 @@ class Dashboard extends Component {
               <Popover
                 interactionKind={PopoverInteractionKind.HOVER}
                 className="publishupdates__popover"
-                minimal
               >
                 <Icon
                   icon="help"
                   iconSize={15}
                   style={{
-                    // padding: 0,
-                    boxSizing: 'initial',
                     marginLeft: '-25px',
                   }}
                 />

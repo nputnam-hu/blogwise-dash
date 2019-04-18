@@ -122,7 +122,7 @@ class Users extends Component {
     return (
       <div id="users-container">
         <div id="inputcontent">
-          <div className="section-header users">
+          <div className="section-header myblog">
             <img src={userIcon} alt="Users" />
             <div style={{ width: '10px' }} />
             <h2>Users & Roles</h2>
@@ -130,6 +130,14 @@ class Users extends Component {
               title="Users"
               helperText="New users can be assigned one of two roles: Admin and Writer. Writers can write new content for the blog and publish new posts. Admins, in addition to having the same writing power as Writers, can also manage the blog content and settings on the blogwise dashboard."
             />
+            <BlueButton
+              className="myblog__button"
+              large
+              icon="inviteUser"
+              onClick={this.openModal}
+            >
+              Invite User
+            </BlueButton>
           </div>
           {this.state.dataLoading ? (
             <Spinner />
@@ -163,16 +171,6 @@ class Users extends Component {
               </tbody>
             </table>
           )}
-          <BlueButton
-            style={{
-              alignSelf: 'flex-start',
-            }}
-            large
-            icon="inviteUser"
-            onClick={this.openModal}
-          >
-            Invite User
-          </BlueButton>
         </div>
         {/* Modals */}
         <Dialog

@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { FormGroup, Button } from '@blueprintjs/core'
+import { FormGroup } from '@blueprintjs/core'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import CropImgUploader from '../../../../../../components/CropImgUploader'
 import Client from '../../../../../../client'
+import favIcon from './favIcon.svg'
 import './styles.sass'
+import BlueButton from '../../../../../../components/BlueButton'
 
 class General extends Component {
   constructor() {
@@ -30,9 +32,10 @@ class General extends Component {
   render() {
     return (
       <div id="generalmyblog-container">
-        <h2>General Settings</h2>
-        <div className="section-header">
-          <h3>Favicon</h3>
+        <div className="section-header myblog">
+          <img src={favIcon} alt="Users" />
+          <div style={{ width: '10px' }} />
+          <h2>Favicon</h2>
           <QuestionHint
             title="Favicon"
             helperText="The favicon is the tiny icon displayed in your readers browser tabs. For best results use png or ico format."
@@ -57,7 +60,7 @@ class General extends Component {
               <br />
             </div>
           )}
-          <Button
+          <BlueButton
             text="Choose file..."
             name="favicon"
             onClick={this.openCropModal}

@@ -30,6 +30,7 @@ class UnsplashModal extends Component {
   }
   onClick = () => {
     const selectedImage = this.state.images[this.state.selectedIndex]
+    unsplash.photos.downloadPhoto(selectedImage.originialImage)
     this.props.onConfirmImage(selectedImage)
     this.props.handleClose()
   }
@@ -63,8 +64,10 @@ class UnsplashModal extends Component {
         thumbnailWidth: 300 * aspectRatio,
         thumbnailHeight: 300,
         username: image.user.username,
+        name: image.user.name,
         downloadLink: image.links.download,
         alt: image.alt_description,
+        originialImage: image,
       }
     })
   selectImage = index => {
@@ -139,7 +142,8 @@ class UnsplashModal extends Component {
                         this.state.images[this.state.selectedIndex].username
                       }`}
                     >
-                      {this.state.images[this.state.selectedIndex].username}
+                      {this.state.images[this.state.selectedIndex].name} (
+                      {this.state.images[this.state.selectedIndex].username})
                     </a>{' '}
                     on{' '}
                     <a

@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
-import { Button, Spinner } from '@blueprintjs/core'
+import { Spinner } from '@blueprintjs/core'
 import Client from '../../../../client'
+import PricingCardGrid from './PricingCardGrid'
 import './styles.sass'
+import BlueButton from '../../../../components/BlueButton'
+
+const upperFirst = str => str && `${str[0].toUpperCase()}${str.slice(1)}`
 
 class Account extends Component {
   constructor() {
@@ -14,28 +18,33 @@ class Account extends Component {
     }
   }
   componentDidMount() {
-    this.client.get('/organizations').then(org => {
-      this.setState({ plan: org.plan, dataLoading: false })
-    })
+    this.client
+      .get('/organizations')
+      .then(org => {
+        this.setState({ plan: org.plan, dataLoading: false })
+      })
+      .catch(() => this.setState({ plan: 'invalid', dataLoading: false }))
   }
   render() {
     const plan = this.state.plan.toLowerCase()
     return (
       <div id="account-container">
-        <h2>Account</h2>
         {this.state.dataLoading ? (
           <Spinner />
         ) : (
           <>
             <div>
-              Your account is on the <b>{plan}</b> plan
+              Your account is on the <br />
+              <h2 className="plan__header">{upperFirst(plan)} Plan</h2>
             </div>
             <br />
-            <Button
+            <BlueButton
               onClick={() => this.props.history.push('/dashboard/payment')}
             >
               See Payment Dashboard
-            </Button>
+            </BlueButton>
+            <div style={{ height: '70px' }} />
+            <PricingCardGrid activePlan={this.state.plan} />
           </>
         )}
       </div>

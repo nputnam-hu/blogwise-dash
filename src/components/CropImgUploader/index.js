@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
-import {
-  Dialog,
-  FormGroup,
-  FileInput,
-  Button,
-  Spinner,
-} from '@blueprintjs/core'
+import { Dialog, FormGroup, FileInput, Spinner } from '@blueprintjs/core'
 import Cropper from 'react-cropper'
+import BlueButton from '../BlueButton'
 import { uploadFileToS3 } from '../../client'
 import CropChoiceModal from './CropChoiceModal'
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -169,14 +164,15 @@ class CropImgUploader extends Component {
               {this.state.dataUploading ? (
                 <Spinner />
               ) : (
-                <>
-                  <Button large onClick={this.cancelCrop}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <BlueButton large onClick={this.cancelCrop}>
                     Cancel
-                  </Button>
-                  <Button large onClick={this.confirmCrop}>
+                  </BlueButton>
+                  <div style={{ width: '10px' }} />
+                  <BlueButton large onClick={this.confirmCrop}>
                     Confirm
-                  </Button>
-                </>
+                  </BlueButton>
+                </div>
               )}
             </div>
           )}

@@ -9,6 +9,7 @@ import {
 } from '@blueprintjs/core'
 import store from 'store'
 import Client from '../../../client'
+import config from '../../../config'
 import errorMessage, { validateState } from '../../../toaster'
 import lowerSwoosh from './lower_swoosh.png'
 import upperSwoosh from './upper_swoosh.png'
@@ -42,6 +43,7 @@ class Register extends Component {
         },
       })
       store.set('user', user)
+      await store.set('sessionExpires', config.logoutTime())
       this.props.history.push('/onboarding/1', {
         surveyAnswer: this.state.surveyAnswer,
         name: this.state.name,
@@ -50,7 +52,7 @@ class Register extends Component {
     } catch (err) {
       let msg
       switch (err.error.code) {
-        case 1005:
+        case 1006:
           msg = 'There is already an account registered with that email'
           break
         case 3002:
@@ -78,9 +80,9 @@ class Register extends Component {
         <img src={girlPainting} alt="Woman Painting" id="girlpainting-img" />
         <div className="onboarding-container register">
           <div className="onboarding-stepcounter">Step 1 of 4</div>
-          <h2>Let's Create Something Special</h2>
+          <h2>Build Your Blog in Minutes</h2>
           <span className="onboarding-subheader">
-            Get a world-class blog up in just minutes.
+            Start reaching the people who need to hear from you
           </span>
           <div className="onboarding-form">
             <FormGroup htmlFor="name" label="Your Name" labelInfo="(required)">

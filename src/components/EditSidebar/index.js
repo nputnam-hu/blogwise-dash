@@ -58,23 +58,14 @@ class EditSidebar extends Component {
   openCropModal = () => this.setState({ cropModalOpen: true })
   handleCropModalClose = () => this.setState({ cropModalOpen: false })
   render() {
-    const enteredValues =
-      this.state.description ||
-      this.state.mainSiteUrl ||
-      this.state.facebookUrl ||
-      this.state.linkedinUrl
     return (
       <>
         <div id="otherinfo-container">
           <div
             className="onboarding-container otherinfo"
-            style={
-              enteredValues
-                ? {
-                    margin: '10px 10% 0px',
-                  }
-                : {}
-            }
+            style={{
+              margin: '10px 10% 0px',
+            }}
           >
             <Button
               small
@@ -87,11 +78,7 @@ class EditSidebar extends Component {
             </Button>
             {this.props.topPart}
             <div className="onboarding-form">
-              <FormGroup
-                htmlFor="description"
-                label="Description"
-                labelInfo="(required)"
-              >
+              <FormGroup htmlFor="description" label="Description">
                 <TextArea
                   name="description"
                   value={this.state.description || ''}
@@ -193,20 +180,16 @@ class EditSidebar extends Component {
                 {this.props.buttonText}
               </Button>
             </div>
-            {enteredValues && (
-              <>
-                {this.state.fetchingData && <Spinner />}
-                <SidebarPreview
-                  tags={Object.values(this.state.tags)}
-                  logoUri={this.state.sidebarPhotoUri}
-                  description={this.state.description}
-                  twitterUrl={this.state.twitterUrl}
-                  facebookUrl={this.state.facebookUrl}
-                  linkedinUrl={this.state.linkedinUrl}
-                  companyName={this.state.companyName}
-                />
-              </>
-            )}
+            {this.state.fetchingData && <Spinner />}
+            <SidebarPreview
+              tags={Object.values(this.state.tags)}
+              logoUri={this.state.sidebarPhotoUri}
+              description={this.state.description}
+              twitterUrl={this.state.twitterUrl}
+              facebookUrl={this.state.facebookUrl}
+              linkedinUrl={this.state.linkedinUrl}
+              companyName={this.state.companyName}
+            />
           </div>
         </div>
         {/* Modals */}
