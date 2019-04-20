@@ -1,18 +1,13 @@
 import React, { Component } from 'react'
 import EditHeader from '../../../components/EditHeader'
-import config from '../../../config'
 import Client from '../../../client'
 import errorMessage from '../../../toaster'
+import EditorOnboardingModal from '../../../components/EditorOnboardingModal'
 
 class Header extends Component {
   constructor() {
     super()
     this.client = new Client()
-  }
-  componentDidMount() {
-    if (!this.props.location.state) {
-      this.props.history.push('/register')
-    }
   }
   onSubmit = async state => {
     try {
@@ -25,9 +20,7 @@ class Header extends Component {
         navbarHexCode: state.navbarHexCode,
         headerTextColor: state.headerTextColor,
       })
-      this.props.history.push('/onboarding/2', {
-        ...this.props.location.state,
-      })
+      this.props.history.push('/onboarding/3')
     } catch (err) {
       errorMessage('Failed to update blog')
     }
@@ -40,26 +33,25 @@ class Header extends Component {
   }
   render() {
     return (
-      <EditHeader
-        client={this.client}
-        onSubmit={this.onSubmit}
-        onBackButtonClick={this.onBackButtonClick}
-        buttonText="Next Step"
-        title="Your Title Here"
-        headerPhotoUri={config.defaultLogo}
-        backgroundHexCode="#ffffff"
-        headerTextColor="#000000"
-        topPart={
-          <>
-            <div className="onboarding-stepcounter">Step 2 of 4</div>
-            <h2>Build Home Page</h2>
-            <span className="onboarding-subheader">
-              Customize the home page of your blog to give customers a full
-              sense of what your blog is about
-            </span>
-          </>
-        }
-      />
+      <>
+        <EditorOnboardingModal />
+        <EditHeader
+          client={this.client}
+          onSubmit={this.onSubmit}
+          onBackButtonClick={this.onBackButtonClick}
+          buttonText="Next Step"
+          topPart={
+            <>
+              <div className="onboarding-stepcounter">Step 3 of 4</div>
+              <h2>Edit Your Homepage</h2>
+              <span className="onboarding-subheader">
+                Customize your blog's home page. Feel free to finish doing this
+                later.
+              </span>
+            </>
+          }
+        />
+      </>
     )
   }
 }

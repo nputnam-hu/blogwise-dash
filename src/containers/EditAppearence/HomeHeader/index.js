@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button } from '@blueprintjs/core'
 import EditHeader from '../../../components/EditHeader'
 import Client from '../../../client'
 import errorMessage from '../../../toaster'
@@ -36,13 +37,17 @@ class HomeHeader extends Component {
         client={this.client}
         onSubmit={this.onSubmit}
         onBackButtonClick={this.onBackButtonClick}
-        buttonText="Save"
-        rightIcon="floppy-disk"
-        fetchData
+        buttonText="Save Changes"
         topPart={
-          <>
-            <h2 style={{ marginBottom: '-15px' }}>Edit Homepage Header</h2>
-          </>
+          <Button
+            small
+            icon="arrow-left"
+            className="editheader__backbutton"
+            minimal
+            onClick={this.onBackButtonClick}
+          >
+            Back to dashboard
+          </Button>
         }
       />
     )

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button } from '@blueprintjs/core'
 import EditSidebar from '../../../components/EditSidebar'
 import Client from '../../../client'
 import errorMessage from '../../../toaster'
@@ -32,9 +33,15 @@ class HomeSidebar extends Component {
         buttonText="Save"
         rightIcon="floppy-disk"
         topPart={
-          <>
-            <h2 style={{ marginBottom: '-15px' }}>Edit Sidebar</h2>
-          </>
+          <Button
+            small
+            icon="arrow-left"
+            className="editheader__backbutton"
+            minimal
+            onClick={this.props.onBackButtonClick}
+          >
+            Back to dashboard
+          </Button>
         }
       />
     )

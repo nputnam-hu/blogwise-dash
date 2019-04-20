@@ -4,15 +4,10 @@ import EditSidebar from '../../../components/EditSidebar'
 import Client from '../../../client'
 import errorMessage from '../../../toaster'
 
-class OtherInfo extends Component {
+class Sidebar extends Component {
   constructor() {
     super()
     this.client = new Client()
-  }
-  componentDidMount() {
-    if (!this.props.location.state) {
-      this.props.history.push('/register')
-    }
   }
   onSubmit = async state => {
     try {
@@ -41,11 +36,12 @@ class OtherInfo extends Component {
         topPart={
           <>
             <div className="onboarding-stepcounter">Step 4 of 4</div>
-            <h2>Build About Section</h2>
+            <h2>Edit Your Sidebar</h2>
             <span className="onboarding-subheader">
-              Fill in a description of what your blog is about, as well as any
-              external links you want to direct readers to.
+              Customize your blog's sidebar. Feel free to finish doing this
+              later.
             </span>
+            <br />
           </>
         }
       />
@@ -53,4 +49,4 @@ class OtherInfo extends Component {
   }
 }
 
-export default OtherInfo
+export default Sidebar

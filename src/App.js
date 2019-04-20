@@ -24,9 +24,9 @@ import Login from './containers/Login'
 import WriterRegister from './containers/Writer/WriterRegister'
 import WriterInfo from './containers/Writer/WriterInfo'
 import Register from './containers/Onboarding/Register'
+import GetInfo from './containers/Onboarding/GetInfo'
 import Header from './containers/Onboarding/Header'
-import Tags from './containers/Onboarding/Tags'
-import OtherInfo from './containers/Onboarding/OtherInfo'
+import Sidebar from './containers/Onboarding/Sidebar'
 import Home from './containers/Home'
 import HomeSidebar from './containers/EditAppearence/HomeSidebar'
 import BlogNavbar from './containers/EditAppearence/BlogNavbar'
@@ -99,9 +99,9 @@ class App extends Component {
             <ReducedBar path="/login" component={Login} />
             <ReducedBar path="/forgotpassword" component={ForgotPassword} />
             <ReducedBar path="/resetpassword" component={ResetPassword} />
-            <ReducedBar path="/onboarding/3" component={OtherInfo} />
-            <ReducedBar path="/onboarding/2" component={Tags} />
-            <ReducedBar path="/onboarding/1" component={Header} />
+            <ReducedBar path="/onboarding/3" component={Sidebar} />
+            <ReducedBar path="/onboarding/2" component={Header} />
+            <ReducedBar path="/onboarding/1" component={GetInfo} />
             <ReducedBar path="/register" component={Register} />
             <PrivateRoute
               showNav={false}

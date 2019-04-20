@@ -88,7 +88,7 @@ class Overview extends Component {
                   <>
                     <div style={{ height: '8px' }} />
                     <span style={{ fontSize: '12px', color: 'black' }}>
-                      Personal URL:
+                      Secondary URL:
                     </span>
                     <br />
                     <a

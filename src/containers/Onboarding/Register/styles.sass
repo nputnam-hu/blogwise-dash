@@ -5,7 +5,7 @@
   height: 100vh
   .onboarding-container.register
     margin-top: 0px
-    z-index: 100
+    z-index: 2
     position: relative
     box-shadow: 1px 1px 1px rgba(0, 0, 0, .5)
   #lowerswoosh-img
@@ -28,3 +28,10 @@
     right: 75px
     top: 45%
     height: 45%
+
+  .register__createbutton
+    align-self: center
+
+  @media (max-width: 900px)
+    #lowerswoosh-img, #girlpainting-img, #upperswoosh-img
+      display: none
