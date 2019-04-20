@@ -38,7 +38,7 @@ class HomeSidebar extends Component {
             icon="arrow-left"
             className="editheader__backbutton"
             minimal
-            onClick={this.props.onBackButtonClick}
+            onClick={this.onBackButtonClick}
           >
             Back to dashboard
           </Button>
