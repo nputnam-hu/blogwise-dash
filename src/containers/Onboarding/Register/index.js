@@ -79,7 +79,7 @@ class Register extends Component {
         <img src={upperSwoosh} alt="Upper Swoosh" id="upperswoosh-img" />
         <img src={girlPainting} alt="Woman Painting" id="girlpainting-img" />
         <div className="onboarding-container register">
-          <div className="onboarding-stepcounter">Step 1 of 4</div>
+          <div className="onboarding-stepcounter">Step 1 of 3</div>
           <h2>Build Your Blog in Minutes</h2>
           <span className="onboarding-subheader">
             Start reaching the people who need to hear from you

@@ -32,8 +32,9 @@ const ModalTwo = ({ nextAction, isOpen, onOpening, onClosing }) => (
     <div className="editoronboarding__content">
       <h3>Fill in Your Information</h3>
       <span>
-        On the left side, you have a form to customize your blog. We've already
-        put some values in based off your answers to the questions.
+        On the left side, you can fill in the information you want to display to
+        your visitors. We've already fill in some bits based off your answers
+        from last page.
       </span>
       <Button minimal rightIcon="arrow-right" onClick={nextAction}>
         Ok
@@ -53,8 +54,8 @@ const ModalThree = ({ nextAction, isOpen, onOpening, onClosing }) => (
     <div className="editoronboarding__content">
       <h3>Preview Your Changes</h3>
       <span>
-        On the right side, there is a preview of what your blog will look like.
-        You can see what your changes will look like in real time.
+        On the right there is a preview of what your blog will look like. The
+        preview will update in real time as you make changes.
       </span>
       <Button minimal rightIcon="arrow-right" onClick={nextAction}>
         Ok
@@ -74,8 +75,8 @@ const ModalFour = ({ nextAction, isOpen, onOpening, onClosing }) => (
     <div className="editoronboarding__content">
       <h3>Save Your Changes</h3>
       <span>
-        When you're done, click this button to save your changes and proceed to
-        the next step.
+        When you're done with editing the top, click this button to save your
+        changes and proceed to the sidebar.
       </span>
       <Button minimal rightIcon="arrow-right" onClick={nextAction}>
         Ok

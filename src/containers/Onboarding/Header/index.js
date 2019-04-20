@@ -39,10 +39,10 @@ class Header extends Component {
           client={this.client}
           onSubmit={this.onSubmit}
           onBackButtonClick={this.onBackButtonClick}
-          buttonText="Next Step"
+          buttonText="Customize Sidebar"
           topPart={
             <>
-              <div className="onboarding-stepcounter">Step 3 of 4</div>
+              <div className="onboarding-stepcounter">Step 3 of 3</div>
               <h2>Edit Your Homepage</h2>
               <span className="onboarding-subheader">
                 Customize your blog's home page. Feel free to finish doing this

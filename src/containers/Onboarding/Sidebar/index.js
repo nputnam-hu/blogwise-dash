@@ -35,13 +35,12 @@ class Sidebar extends Component {
         buttonText="Submit"
         topPart={
           <>
-            <div className="onboarding-stepcounter">Step 4 of 4</div>
-            <h2>Edit Your Sidebar</h2>
+            <div className="onboarding-stepcounter">Step 3 of 3</div>
+            <h2>Edit Your Homepage</h2>
             <span className="onboarding-subheader">
               Customize your blog's sidebar. Feel free to finish doing this
               later.
             </span>
-            <br />
           </>
         }
       />

@@ -89,7 +89,7 @@ class GetInfo extends Component {
       <>
         <div className="getinfo">
           <div className="onboarding-container">
-            <div className="onboarding-stepcounter">Step 2 of 4</div>
+            <div className="onboarding-stepcounter">Step 2 of 3</div>
             <h2>Answer a Few Questions</h2>
             <span className="onboarding-subheader">
               Give us some basic information and we'll build your initial blog
