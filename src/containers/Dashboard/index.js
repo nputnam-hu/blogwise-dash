@@ -20,6 +20,7 @@ import WriterHome from '../Writer/WriterHome'
 import Client from '../../client'
 import errorMessage, { alertUser } from '../../toaster'
 import './styles.sass'
+import SocialPoster from './containers/SocialPoster'
 
 class Dashboard extends Component {
   constructor() {
@@ -203,5 +204,11 @@ export const WriterView = props => (
 export const SocialView = props => (
   <Dashboard>
     <Social {...props} />
+  </Dashboard>
+)
+
+export const SocialPosterView = props => (
+  <Dashboard>
+    <SocialPoster {...props} />
   </Dashboard>
 )

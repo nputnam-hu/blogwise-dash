@@ -18,6 +18,7 @@ import {
   PaymentDashView,
   WriterView,
   SocialView,
+  SocialPosterView,
 } from './containers/Dashboard/'
 import HomeHeader from './containers/EditAppearence/HomeHeader'
 import Login from './containers/Login'
@@ -134,6 +135,10 @@ class App extends Component {
             <PrivateRoute
               path="/dashboard/postgenius"
               component={PostGeniusView}
+            />
+            <PrivateRoute
+              path="/dashboard/socialposter"
+              component={SocialPosterView}
             />
             <PrivateRoute path="/dashboard/social" component={SocialView} />
             <PrivateRoute path="/dashboard/myposts" component={MyPostsView} />
