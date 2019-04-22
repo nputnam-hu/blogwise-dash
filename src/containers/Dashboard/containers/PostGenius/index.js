@@ -121,7 +121,28 @@ class PostGenius extends Component {
                 <div className="section-header">
                   <h2>Suggested Articles</h2>
                 </div>
-                {headlines.length > 0 && (
+                {headlines.length === 0 ? (
+                  <div
+                    style={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <h3>
+                      You need to create at least one tag to enable this feature
+                    </h3>
+                    <BlueButton
+                      onClick={() =>
+                        this.props.history.push('/dashboard/myblog', {
+                          tabId: 'second',
+                        })
+                      }
+                    >
+                      Create your first tag
+                    </BlueButton>
+                  </div>
+                ) : (
                   <ul>
                     {headlines.map(headline => (
                       <>

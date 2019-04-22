@@ -106,23 +106,41 @@ class Tags extends Component {
               New Tag
             </BlueButton>
           </div>
-          <div className="tags">
-            <TagColumn
-              tagKeys={tags1}
-              tags={this.state.tags}
-              onClickKey={this.openModalEdit}
-            />
-            <TagColumn
-              tagKeys={tags2}
-              tags={this.state.tags}
-              onClickKey={this.openModalEdit}
-            />
-            <TagColumn
-              tagKeys={tags3}
-              tags={this.state.tags}
-              onClickKey={this.openModalEdit}
-            />
-          </div>
+          {tags1.length === 0 ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                marginTop: '40px',
+              }}
+            >
+              <h2>Looks like you don't have any tags yet</h2>
+              <span>
+                Tags are used to categorize your blog posts for your viewers.
+                Click the button above to get started
+              </span>
+            </div>
+          ) : (
+            <div className="tags">
+              <TagColumn
+                tagKeys={tags1}
+                tags={this.state.tags}
+                onClickKey={this.openModalEdit}
+              />
+              <TagColumn
+                tagKeys={tags2}
+                tags={this.state.tags}
+                onClickKey={this.openModalEdit}
+              />
+              <TagColumn
+                tagKeys={tags3}
+                tags={this.state.tags}
+                onClickKey={this.openModalEdit}
+              />
+            </div>
+          )}
         </div>
         {/* Modals */}
         <TagModal

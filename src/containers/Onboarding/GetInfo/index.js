@@ -41,7 +41,7 @@ class GetInfo extends Component {
     }
     try {
       let companyName
-      let title
+      let title = 'Your Title Here'
       let headerPhotoUri
       let sidebarPhotoUri
       let backgroundHexCode

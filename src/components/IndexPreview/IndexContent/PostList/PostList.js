@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react'
 
 import PostCard from './PostCard'
@@ -18,12 +19,12 @@ class PostList extends React.Component {
       const secondHalf = posts.slice(3)
       PostCards = (
         <>
-          {firstHalf.map(() => (
-            <PostCard />
+          {firstHalf.map((_, i) => (
+            <PostCard key={i} />
           ))}
           {this.props.children}
-          {secondHalf.map(() => (
-            <PostCard />
+          {secondHalf.map((_, i) => (
+            <PostCard key={i} s />
           ))}
         </>
       )
