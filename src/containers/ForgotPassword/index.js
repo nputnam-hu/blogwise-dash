@@ -56,12 +56,16 @@ class ForgotPassword extends Component {
           Back
         </Button>
         <h2>Reset Password</h2>
-        <span className="onboarding-subheader">
+        {/* <span className="onboarding-subheader">
           Fill in your email below and we'll send you a link to create a new
           password.
-        </span>
+        </span> */}
         <div className="onboarding-form">
-          <FormGroup htmlFor="email" label="Email">
+          <h3>
+            Email support@blogwise.co from the email you signed up with, and
+            we'll send you a link
+          </h3>
+          {/* <FormGroup htmlFor="email" label="Email">
             <InputGroup
               name="email"
               value={this.state.email}
@@ -76,7 +80,7 @@ class ForgotPassword extends Component {
             intent={Intent.PRIMARY}
           >
             Send Email
-          </Button>
+          </Button> */}
         </div>
       </div>
     )
