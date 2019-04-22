@@ -17,9 +17,9 @@ class Client {
   }
   get(stub, options = {}) {
     if (stub === '/blogs') {
-      const blog = store.get('blog')
+      const blog = window.sessionStorage.getItem('blog')
       if (blog) {
-        return Promise.resolve(blog)
+        return Promise.resolve(JSON.parse(blog))
       }
       return rp({
         uri: config.apiUrl + stub,
@@ -27,7 +27,7 @@ class Client {
         ...this.defaultOptions,
         ...options,
       }).then(fetchedBlog => {
-        store.set('blog', fetchedBlog)
+        window.sessionStorage.setItem('blog', JSON.stringify(fetchedBlog))
         return fetchedBlog
       })
     }
@@ -49,7 +49,7 @@ class Client {
   }
   put(stub, body = {}, options = {}) {
     if (stub === '/blogs') {
-      store.remove('blog')
+      window.sessionStorage.removeItem('blog')
       store.set('hasUpdates', true)
       return rp({
         uri: config.apiUrl + stub,
