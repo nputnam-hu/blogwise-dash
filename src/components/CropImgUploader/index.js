@@ -3,6 +3,7 @@ import { Dialog, FormGroup, FileInput, Spinner } from '@blueprintjs/core'
 import Cropper from 'react-cropper'
 import BlueButton from '../BlueButton'
 import { uploadFileToS3 } from '../../client'
+import CropChoiceModal from './CropChoiceModal'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cropperjs/dist/cropper.css'
 import './styles.sass'
@@ -44,19 +45,12 @@ class CropImgUploader extends Component {
       isCropping: false,
       contentType: '',
       fileName: '',
+      cropChoiceOpen: false,
+      file: null,
     }
   }
-  handleFileUpload = e => {
-    e.preventDefault()
-    let files
-    if (e.dataTransfer) {
-      // eslint-disable-next-line prefer-destructuring
-      files = e.dataTransfer.files
-    } else if (e.target) {
-      // eslint-disable-next-line prefer-destructuring
-      files = e.target.files
-    }
-    const [file] = files
+  handleFileUpload = () => {
+    const { file } = this.state
     const reader = new FileReader()
     reader.onload = () => {
       this.setState({
@@ -70,7 +64,7 @@ class CropImgUploader extends Component {
     reader.readAsDataURL(file)
   }
   cropImage = () => {
-    if (typeof this.cropper.getCroppedCanvas() === 'undefined') {
+    if (!this.cropper.getCroppedCanvas()) {
       return null
     }
     return this.cropper.getCroppedCanvas().toDataURL()
@@ -79,9 +73,25 @@ class CropImgUploader extends Component {
     this.setState({ src: null, isCropping: false })
     this.props.handleClose()
   }
+  uploadWithoutCropping = async () => {
+    const { file } = this.state
+    const reader = new FileReader()
+    reader.onload = () => {
+      this.setState({
+        contentType: file.type,
+        fileName: file.name,
+        dataUploading: false,
+      })
+      this.uploadFromDataURI(reader.result)
+    }
+    await reader.readAsDataURL(file)
+  }
   confirmCrop = async () => {
     this.setState({ dataUploading: true })
     const dataURI = this.cropImage()
+    this.uploadFromDataURI(dataURI)
+  }
+  uploadFromDataURI = async dataURI => {
     if (!dataURI) {
       errorMessage('Could not save photo')
       return this.props.handleClose()
@@ -93,6 +103,19 @@ class CropImgUploader extends Component {
     this.setState({ src: null, isCropping: false, dataUploading: false })
     return this.props.onConfirmCrop(url.split('?')[0])
   }
+  openCropChoice = e => {
+    e.preventDefault()
+    let files
+    if (e.dataTransfer) {
+      // eslint-disable-next-line prefer-destructuring
+      files = e.dataTransfer.files
+    } else if (e.target) {
+      // eslint-disable-next-line prefer-destructuring
+      files = e.target.files
+    }
+    const [file] = files
+    this.setState({ cropChoiceOpen: true, file })
+  }
   render() {
     const { isOpen, handleClose, fileLabel, aspectRatio } = this.props
     return (
@@ -102,6 +125,12 @@ class CropImgUploader extends Component {
         title="Upload Image"
         style={{ width: '1100px' }}
       >
+        <CropChoiceModal
+          isOpen={this.state.cropChoiceOpen}
+          handleClose={() => this.setState({ cropChoiceOpen: false })}
+          onReject={this.uploadWithoutCropping}
+          onAccept={this.handleFileUpload}
+        />
         <div id="modal-top">
           <Cropper
             ref={cropper => {
@@ -126,7 +155,7 @@ class CropImgUploader extends Component {
               <FileInput
                 text="Choose file..."
                 name="img"
-                onInputChange={this.handleFileUpload}
+                onInputChange={this.openCropChoice}
                 style={{ width: 250 }}
               />
             </FormGroup>
