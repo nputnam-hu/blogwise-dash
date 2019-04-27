@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
-import {
-  InputGroup,
-  FormGroup,
-  TextArea,
-  Button,
-  Spinner,
-} from '@blueprintjs/core'
+import { InputGroup, FormGroup, TextArea, Spinner } from '@blueprintjs/core'
 import { DateInput } from '@blueprintjs/datetime'
 import Select from 'react-select'
 import ReactQuill, { Quill } from 'react-quill'
@@ -20,6 +14,7 @@ import UnsavedChangesModal from './UnsavedChangesModal'
 import SchedulePostModal from './SchedulePostModal'
 import UnsplashModal from './UnsplashModal'
 import Client from '../../../client'
+import BlueButton from '../../../components/BlueButton'
 import errorMessage, { validateState, alertUser } from '../../../toaster'
 import './styles.sass'
 
@@ -402,14 +397,25 @@ class NewPost extends Component {
                       <br />
                     </>
                   )}
-                  <Button
-                    text="Choose file..."
-                    name="coverPhotoUri"
-                    onClick={this.openCoverCropModal}
-                  />
-                  <Button onClick={this.openUnsplashModal} icon="media">
-                    Search professional cover photos
-                  </Button>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <BlueButton
+                      icon="upload"
+                      text="Choose file"
+                      name="coverPhotoUri"
+                      onClick={this.openCoverCropModal}
+                      style={{ marginRight: 10 }}
+                    />
+                    <BlueButton
+                      onClick={this.openUnsplashModal}
+                      text="Search Bank"
+                      icon="imageBank"
+                    />
+                  </div>
                 </FormGroup>
                 <FormGroup
                   htmlFor="thumbnailUri"
@@ -433,12 +439,13 @@ class NewPost extends Component {
                       <br />
                     </>
                   )}
-                  <Button
+                  <BlueButton
                     text={
-                      this.state.thumbnailUri ? 'Change File' : 'Choose file...'
+                      this.state.thumbnailUri ? 'Change File' : 'Choose file'
                     }
                     name="thumbnailUri"
                     onClick={this.openThumbCropModal}
+                    icon="upload"
                   />
                 </FormGroup>
                 <FormGroup htmlFor="description" label="Description">
