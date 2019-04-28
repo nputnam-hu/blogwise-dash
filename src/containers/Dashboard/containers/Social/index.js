@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Button } from '@blueprintjs/core'
 import TwitterLogin from 'react-twitter-auth'
-import FacebookLogin from 'react-facebook-login'
 import queryString from 'query-string'
+import FacebookButton from './components/Facebook'
 import config from '../../../../config'
 import Client from '../../../../client'
 import './styles.sass'
+import BlueButton from '../../../../components/BlueButton'
 
 const linkedinUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${
   config.linkedin.client_id
@@ -19,8 +20,10 @@ class Social extends Component {
     super()
     this.client = new Client()
     this.state = {
-      twitterToken: '',
-      code: '',
+      twitterId: '',
+      facebookId: '',
+      linkedinId: '',
+      loading: true,
     }
   }
 
@@ -38,9 +41,14 @@ class Social extends Component {
     alert(error)
   }
 
+  getPageToken = () => {
+    this.client.post('/api/facebook/pagetoken').then(data => console.log(data))
+  }
+
   responseFacebook = response => {
+    console.log(response)
     this.client
-      .post('/api/facebook/storetoken', response)
+      .post('/api/facebook/storetoken', response._token)
       .then(user => console.log(user))
   }
 
@@ -51,11 +59,15 @@ class Social extends Component {
         .post('/api/linkedin/storetoken', parsed)
         .then(user => console.log(user))
     }
+    this.client
+      .get('/organizations')
+      .then(orgs => this.setState(prev => ({ loading: !prev.loading })))
   }
 
   render() {
+    const { loading } = this.state
     return (
-      <div className="social">
+      <div id="social">
         <Button
           small
           icon="arrow-left"
@@ -65,23 +77,50 @@ class Social extends Component {
           Back to Post Genius
         </Button>
         <h1>Social Accounts</h1>
-        <TwitterLogin
-          style={{ borderRadius: '10px', padding: '10px' }}
-          loginUrl="http://localhost:3001/api/twitter"
-          text="Connect twitter account"
-          onFailure={this.onFailed}
-          onSuccess={this.onSuccess}
-          requestTokenUrl="http://localhost:3001/api/twitter/reverse"
-          showIcon
-          // customHeaders={customHeader}
-        />
-        <FacebookLogin
-          appId="1078110902387157"
-          fields="name,email,picture"
-          scope="public_profile,manage_pages,publish_pages"
-          callback={this.responseFacebook}
-        />
-        <a href={linkedinUrl}>Login Linked</a>
+        {!loading && (
+          <div id="buttons-container">
+            <TwitterLogin
+              style={{ padding: '0px', border: '0px' }}
+              loginUrl="http://localhost:3001/api/twitter"
+              text="Connect twitter account"
+              onFailure={this.onFailed}
+              onSuccess={this.onSuccess}
+              requestTokenUrl="http://localhost:3001/api/twitter/reverse"
+              showIcon
+            >
+              <BlueButton
+                icon="upload"
+                style={{ width: '200px', height: '60px' }}
+              >
+                Connect to Twitter
+              </BlueButton>
+            </TwitterLogin>
+            <FacebookButton
+              provider="facebook"
+              appId="1078110902387157"
+              scope="public_profile,publish_pages,manage_pages"
+              onLoginSuccess={this.responseFacebook}
+              onLoginFailure={this.onFailed}
+              style={{ width: '200px', height: '60px' }}
+            >
+              Connect to Facebook
+            </FacebookButton>
+            <BlueButton
+              icon="upload"
+              onClick={() => window.location.replace(linkedinUrl)}
+              style={{ width: '200px', height: '60px' }}
+            >
+              Connect to Linkedin
+            </BlueButton>
+            <BlueButton
+              icon="upload"
+              onClick={this.getPageToken}
+              style={{ width: '200px', height: '60px' }}
+            >
+              Get Facebook Page Access
+            </BlueButton>
+          </div>
+        )}
       </div>
     )
   }
