@@ -78,8 +78,12 @@ class Account extends Component {
         console.error(error)
         return
       }
-      await this.client.put('/organizations/creditcard', { source: token.id })
+      const { lastFour, brand } = await this.client.put(
+        '/organizations/creditcard',
+        { source: token.id },
+      )
       alertUser('Card Added')
+      this.setState({ lastFour, brand })
       this.closeCcModal()
     } catch (err) {
       errorMessage('Error adding card: make sure it is valid')
@@ -88,6 +92,7 @@ class Account extends Component {
   render() {
     const plan = this.state.plan.toLowerCase()
     const hasCC = Boolean(this.state.lastFour)
+    console.log(this.state.brand, this.state.lastFour)
     return (
       <>
         <div id="account-container">
