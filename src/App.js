@@ -5,8 +5,10 @@ import {
   Redirect,
   BrowserRouter as Router,
 } from 'react-router-dom'
+import { StripeProvider } from 'react-stripe-elements'
 import store from 'store'
 import moment from 'moment'
+import config from './config'
 import Navbar, { ReducedNavbar } from './components/Navbar'
 import {
   OverviewView,
@@ -90,59 +92,61 @@ class App extends Component {
   }
   render() {
     return (
-      <Router>
-        <div className="App">
-          <Switch>
-            <ReducedBar path="/writer/register" component={WriterRegister} />
-            <ReducedBar path="/writer/onboarding/1" component={WriterInfo} />
-            <PrivateRoute path="/writer" component={WriterView} />
-            <ReducedBar path="/login" component={Login} />
-            <ReducedBar path="/forgotpassword" component={ForgotPassword} />
-            <ReducedBar path="/resetpassword" component={ResetPassword} />
-            <ReducedBar path="/onboarding/3" component={Sidebar} />
-            <ReducedBar path="/onboarding/2" component={Header} />
-            <ReducedBar path="/onboarding/1" component={GetInfo} />
-            <ReducedBar path="/register" component={Register} />
-            <PrivateRoute
-              showNav={false}
-              path="/edit/header"
-              component={HomeHeader}
-            />
-            <PrivateRoute
-              showNav={false}
-              path="/edit/sidebar"
-              component={HomeSidebar}
-            />
-            <PrivateRoute
-              showNav={false}
-              path="/edit/navbar"
-              component={BlogNavbar}
-            />
-            <PrivateRoute
-              showNav={false}
-              path="/posts/:id(new|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})?"
-              component={NewPost}
-            />
-            <PrivateRoute path="/calendar/new" component={NewCalendar} />
-            <PrivateRoute path="/calendar/tasks" component={NewTasks} />
-            <PrivateRoute path="/calendar" component={CalendarView} />
-            <PrivateRoute
-              path="/dashboard/payment"
-              component={PaymentDashView}
-            />
-            <PrivateRoute path="/dashboard/account" component={AccountView} />
-            <PrivateRoute
-              path="/dashboard/postgenius"
-              component={PostGeniusView}
-            />
-            <PrivateRoute path="/dashboard/social" component={SocialView} />
-            <PrivateRoute path="/dashboard/myposts" component={MyPostsView} />
-            <PrivateRoute path="/dashboard/myblog" component={MyBlogView} />
-            <PrivateRoute path="/dashboard" component={OverviewView} />
-            <ReducedBar path="/" component={Home} />
-          </Switch>
-        </div>
-      </Router>
+      <StripeProvider apiKey={config.stripeToken}>
+        <Router>
+          <div className="App">
+            <Switch>
+              <ReducedBar path="/writer/register" component={WriterRegister} />
+              <ReducedBar path="/writer/onboarding/1" component={WriterInfo} />
+              <PrivateRoute path="/writer" component={WriterView} />
+              <ReducedBar path="/login" component={Login} />
+              <ReducedBar path="/forgotpassword" component={ForgotPassword} />
+              <ReducedBar path="/resetpassword" component={ResetPassword} />
+              <ReducedBar path="/onboarding/3" component={Sidebar} />
+              <ReducedBar path="/onboarding/2" component={Header} />
+              <ReducedBar path="/onboarding/1" component={GetInfo} />
+              <ReducedBar path="/register" component={Register} />
+              <PrivateRoute
+                showNav={false}
+                path="/edit/header"
+                component={HomeHeader}
+              />
+              <PrivateRoute
+                showNav={false}
+                path="/edit/sidebar"
+                component={HomeSidebar}
+              />
+              <PrivateRoute
+                showNav={false}
+                path="/edit/navbar"
+                component={BlogNavbar}
+              />
+              <PrivateRoute
+                showNav={false}
+                path="/posts/:id(new|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})?"
+                component={NewPost}
+              />
+              <PrivateRoute path="/calendar/new" component={NewCalendar} />
+              <PrivateRoute path="/calendar/tasks" component={NewTasks} />
+              <PrivateRoute path="/calendar" component={CalendarView} />
+              <PrivateRoute
+                path="/dashboard/payment"
+                component={PaymentDashView}
+              />
+              <PrivateRoute path="/dashboard/account" component={AccountView} />
+              <PrivateRoute
+                path="/dashboard/postgenius"
+                component={PostGeniusView}
+              />
+              <PrivateRoute path="/dashboard/social" component={SocialView} />
+              <PrivateRoute path="/dashboard/myposts" component={MyPostsView} />
+              <PrivateRoute path="/dashboard/myblog" component={MyBlogView} />
+              <PrivateRoute path="/dashboard" component={OverviewView} />
+              <ReducedBar path="/" component={Home} />
+            </Switch>
+          </div>
+        </Router>
+      </StripeProvider>
     )
   }
 }

@@ -4,7 +4,7 @@ import PricingCard from './PricingCard'
 
 import styles from './PricingCardGrid.module.sass'
 
-const PricingCardGrid = ({ activePlan }) => (
+const PricingCardGrid = ({ activePlan, updatePlan }) => (
   <div className={styles.pricingCardGrid}>
     <PricingCard
       bgColor="#e6faff"
@@ -14,6 +14,7 @@ const PricingCardGrid = ({ activePlan }) => (
       pageViews="10k"
       description="for small businesses"
       activePlan={activePlan === 'STARTER'}
+      onClick={updatePlan('STARTER')}
     />
     <PricingCard
       bgColor="rgba(103, 180, 249, 0.4)"
@@ -23,6 +24,7 @@ const PricingCardGrid = ({ activePlan }) => (
       pageViews="100k"
       description="for scaling startups"
       activePlan={activePlan === 'GROWTH'}
+      onClick={updatePlan('GROWTH')}
     />
     <PricingCard
       bgColor="rgba(59, 103, 226, 0.4)"
@@ -32,6 +34,7 @@ const PricingCardGrid = ({ activePlan }) => (
       pageViews="1 million"
       description="for businesses killing the marketing game"
       activePlan={activePlan === 'ENTERPRISE'}
+      onClick={updatePlan('ENTERPRISE')}
     />
   </div>
 )

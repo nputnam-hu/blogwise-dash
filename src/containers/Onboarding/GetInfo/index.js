@@ -2,8 +2,6 @@
 import React, { Component } from 'react'
 import { TwitterPicker } from 'react-color'
 import {
-  Button,
-  Intent,
   FormGroup,
   InputGroup,
   Popover,
@@ -13,6 +11,9 @@ import errorMessage, { validateState } from '../../../toaster'
 import BlueButton from '../../../components/BlueButton'
 import CropImgUploader from '../../../components/CropImgUploader'
 import Client from '../../../client'
+import lowerSwoosh from '../Register/lower_swoosh.png'
+import upperSwoosh from '../Register/upper_swoosh.png'
+import girlPainting from '../Register/girl_painting.png'
 import './styles.sass'
 
 function getColorByBgColor(bgColor) {
@@ -88,7 +89,9 @@ class GetInfo extends Component {
     return (
       <>
         <div className="getinfo">
-          <div className="onboarding-container">
+          <img src={upperSwoosh} alt="Upper Swoosh" id="upperswoosh-img" />
+          <img src={girlPainting} alt="Woman Painting" id="girlpainting-img" />
+          <div className="onboarding-container getinfo__container">
             <div className="onboarding-stepcounter">Step 2 of 3</div>
             <h2>Answer a Few Questions</h2>
             <span className="onboarding-subheader">
@@ -180,16 +183,14 @@ class GetInfo extends Component {
                 </div>
               </FormGroup>
               <br />
-              <Button
-                large
-                rightIcon="arrow-right"
-                intent={Intent.PRIMARY}
-                onClick={this.onClick}
-              >
-                Next Step
-              </Button>
+              <div style={{ alignSelf: 'center' }}>
+                <BlueButton rightIcon="arrowRightLarge" onClick={this.onClick}>
+                  Next Step
+                </BlueButton>
+              </div>
             </div>
           </div>
+          <img src={lowerSwoosh} alt="Lower Swoosh" id="lowerswoosh-img" />
         </div>
         {/* Modals */}
         <CropImgUploader

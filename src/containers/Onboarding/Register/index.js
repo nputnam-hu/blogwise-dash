@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-import {
-  Button,
-  Intent,
-  FormGroup,
-  InputGroup,
-  RadioGroup,
-  Radio,
-} from '@blueprintjs/core'
+import { FormGroup, InputGroup, RadioGroup, Radio } from '@blueprintjs/core'
 import store from 'store'
 import Client from '../../../client'
 import config from '../../../config'
@@ -15,6 +8,7 @@ import lowerSwoosh from './lower_swoosh.png'
 import upperSwoosh from './upper_swoosh.png'
 import girlPainting from './girl_painting.png'
 import './styles.sass'
+import BlueButton from '../../../components/BlueButton'
 
 class Register extends Component {
   constructor() {
@@ -134,14 +128,11 @@ class Register extends Component {
               <Radio label="Other" value="other" />
             </RadioGroup>
             <br />
-            <Button
-              large
-              rightIcon="arrow-right"
-              intent={Intent.PRIMARY}
-              onClick={this.onClick}
-            >
-              Create your blog
-            </Button>
+            <div style={{ alignSelf: 'center' }}>
+              <BlueButton rightIcon="arrowRightLarge" onClick={this.onClick}>
+                Create your blog
+              </BlueButton>
+            </div>
             <button
               onClick={() => {
                 this.props.history.push('/login')
