@@ -14,6 +14,7 @@ const PricingCard = ({
   description,
   activePlan,
   onClick,
+  onTrial,
 }) => (
   <div
     className={styles.pricingCard}
@@ -60,7 +61,9 @@ const PricingCard = ({
       </div>
       <span className={styles.pricingCard__description}>{description}</span>
       <br />
-      {!activePlan && <BlueButton onClick={onClick} text="Switch" />}
+      {!onTrial && !activePlan && (
+        <BlueButton onClick={onClick} text="Switch" />
+      )}
     </div>
   </div>
 )

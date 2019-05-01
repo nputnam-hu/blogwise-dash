@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Spinner, Alert, Intent } from '@blueprintjs/core'
+import moment from 'moment'
 import Client from '../../../../client'
 import PricingCardGrid from './PricingCardGrid'
 import BlueButton from '../../../../components/BlueButton'
@@ -21,6 +22,7 @@ class Account extends Component {
       plan: '',
       lastFour: '',
       brand: '',
+      invoices: [],
       trialDaysLeft: null,
       ccModalOpen: false,
       alertOpen: false,
@@ -35,9 +37,10 @@ class Account extends Component {
             plan: org.plan || '',
             trialDaysLeft: org.trialDaysLeft,
             brand: org.brand,
+            lastFour: org.lastFour,
+            invoices: org.invoices,
             email: user.email,
             name: user.name,
-            lastFour: org.lastFour,
             dataLoading: false,
           })
         })
@@ -114,12 +117,50 @@ class Account extends Component {
                   {hasCC ? 'Change' : 'Add'}
                 </BlueButton>
               </div>
+              {this.state.invoices.length > 0 && (
+                <>
+                  <h4>Invoices</h4>
+                  <table
+                    className="bp3-html-table bp3-html-table-striped"
+                    style={{ width: '50%' }}
+                  >
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Amount Due</th>
+                        <th>Download PDF</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {this.state.invoices.map(invoice => (
+                        <tr key={invoice.invoicePdf}>
+                          <td>
+                            {moment(invoice.dueDate).format('MM/DD/YYYY')}
+                          </td>
+                          <td>{invoice.amountDue}</td>
+                          <td>
+                            <a
+                              href={invoice.invoicePdf}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Download
+                            </a>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              )}
               <div style={{ height: '40px' }} />
               <div className="account__bottom">
                 {this.state.trialDaysLeft && !hasCC ? (
                   <>
                     <h2 className="plan__header">
-                      You have {this.state.trialDaysLeft} days left on your
+                      You have
+                      <b> {this.state.trialDaysLeft} </b> days left on your
                       trial for the Starter Plan
                     </h2>
                     <div
@@ -131,7 +172,7 @@ class Account extends Component {
                       }}
                     >
                       <BlueButton onClick={this.openCcModal}>
-                        Add Credit Card to Upgrade
+                        Add Card to Continue Past Trial
                       </BlueButton>
                     </div>
                   </>
@@ -143,8 +184,9 @@ class Account extends Component {
                 )}
               </div>
               <PricingCardGrid
-                activePlan={this.state.plan}
                 updatePlan={this.updatePlan}
+                activePlan={this.state.plan}
+                onTrial={Boolean(this.state.trialDaysLeft)}
               />
             </>
           )}
