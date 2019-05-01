@@ -100,12 +100,16 @@ class Account extends Component {
               <span>{this.state.email}</span>
               <h4>Payment Information</h4>
               <div className="paymentrow">
-                {hasCC && (
-                  <span className="paymentrow__info">
-                    <b>{this.state.brand}</b> •••• •••• ••••{' '}
-                    {this.state.lastFour}
-                  </span>
-                )}
+                <span className="paymentrow__info">
+                  {hasCC ? (
+                    <>
+                      <b>{this.state.brand}</b> •••• •••• ••••{' '}
+                      {this.state.lastFour}
+                    </>
+                  ) : (
+                    'No card saved'
+                  )}
+                </span>
                 <BlueButton onClick={this.openCcModal}>
                   {hasCC ? 'Change' : 'Add'}
                 </BlueButton>
