@@ -7,6 +7,7 @@ import {
   FormGroup,
   InputGroup,
   Spinner,
+  Popover
 } from '@blueprintjs/core'
 import moment from 'moment'
 import { DateInput } from '@blueprintjs/datetime'
@@ -102,16 +103,16 @@ class CalendarHome extends Component {
   render() {
     return (
       <div id="calendarhome-container">
-        <Button
+        {/* <Button
           small
           icon="arrow-left"
           minimal
           onClick={() => this.props.history.push('/dashboard/postgenius')}
         >
           Back to Post Genius
-        </Button>
+        </Button> */}
         <div id="calendar-wrapper">
-          <h1>Editorial Calendar</h1>
+          {/* <h1>Editorial Calendar</h1> */}
           {this.state.dataLoading ? (
             <Spinner />
           ) : (
@@ -120,22 +121,32 @@ class CalendarHome extends Component {
               defaultView="month"
               duration={{ days: 30 }}
               height={600}
+              customButtons={{
+                newPost: {
+                  text: 'New Post',
+                  click: function() {
+                    alert('clicked custom')
+                  },
+                },
+              }}
+              buttonText={{
+                today: 'Today',
+              }}
               header={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,list',
+                left: 'today prev,next title',
+                center: '',
+                right: 'newPost',
               }}
               events={mapPostsToFullCalendarEvents(this.state.posts)}
               eventClick={this.openEditEventModal}
             />
           )}
         </div>
-        {/* Modals */}
-        <Dialog
+        {/* Modals -> reaplce with popover */}
+        <Popover
           icon="calendar"
           isOpen={this.state.editEventModalOpen}
           onClose={this.closeEditEventModal}
-          title="Edit Scheduled Post"
         >
           <div id="editevent-modal">
             <FormGroup htmlFor="title" label="Post Headline">
@@ -188,7 +199,7 @@ class CalendarHome extends Component {
               Save Event
             </Button>
           </div>
-        </Dialog>
+        </Popover>
       </div>
     )
   }

@@ -1,3 +1,4 @@
+@import '../../../../../node_modules/fullcalendar-reactwrapper/dist/css/fullcalendar.min.css'
 #calendarhome-container
   min-height: 100vh
 #editevent-modal
@@ -7,3 +8,77 @@
   button
     width: 100px
     align-self: center
+#calendar-wrapper
+  h2
+    font-size: 16px
+    font-family: proxima-nova
+    font-weight: 100
+    line-height: 19px
+.fc-left
+  display: flex
+  align-items: center
+.fc-today-button
+  font-size: 10px
+  font-family: proxima-nova
+  font-weight: 200
+  background: #ffffff
+  border: 1px solid #EDEDED
+  border-radius: 5px
+.fc-prev-button
+  background: #ffffff
+  border-style: none
+.fc-next-button
+  border-style: none
+  background: #ffffff
+.fc-newPost-button
+  background: #FFFFFF
+  border: 1px solid #BFD7FF
+  font-size: 10px
+  font-family: proxima-nova
+  box-sizing: border-box
+  border-radius: 5px !important
+  padding: 8px 12px
+  color: #4D7DCD
+  font-weight: 400
+  display: flex
+  flex-direction: row
+  align-items: center
+  cursor: pointer
+  &:hover
+    background: #447ADD
+    border: 1px solid white
+    color: white
+    .bluebutton__icon
+      path
+        fill: whited
+
+  .bluebutton__icon
+    margin-right: 5px
+  .right
+    margin-right: 0px !important
+.fc-day-header
+  text-transform: uppercase
+  font-size: 10px
+  font-family: proxima-nova
+  font-weight: 100
+.fc-day-number
+  font-size: 10px
+  font-family: proxima-nova
+  font-weight: 100
+.fc-day
+  path
+    fill: whited
+.fc-event
+  border: 0px
+  background-color: transparent
+.fc-content
+  background-color: transparent
+  .fc-time
+    font-size: 10px
+    font-family: proxima-nova
+    color: #000000
+  .fc-title
+    font-size: 9px
+    font-family: proxima-nova
+    font-weight: 100
+    color: #000000
