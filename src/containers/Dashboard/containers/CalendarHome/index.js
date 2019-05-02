@@ -11,7 +11,7 @@ import {
 import moment from 'moment'
 import { DateInput } from '@blueprintjs/datetime'
 import Client from '../../../../client'
-import errorMessage, { validateState } from '../../../../toaster'
+import errorMessage, { validateState, alertUser } from '../../../../toaster'
 import './styles.sass'
 
 function mapPostsToFullCalendarEvents(posts) {
@@ -77,7 +77,7 @@ class CalendarHome extends Component {
     try {
       if (
         !validateState(
-          [['title', 'Headline'], ['dueDate', 'Due Date']],
+          [['title', 'Headline'], ['start', 'Due Date']],
           this.state.eventToEdit,
         )
       ) {
@@ -85,10 +85,15 @@ class CalendarHome extends Component {
       }
       const post = await this.client.put('/calendars/posts', {
         id: this.state.eventToEdit.id,
-        event: this.state.eventToEdit,
+        post: {
+          tags: this.state.eventToEdit.tags,
+          title: this.state.eventToEdit.title,
+          dueDate: this.state.eventToEdit.start,
+        },
       })
       const newPosts = [...this.state.posts.filter(p => p.id !== post.id), post]
       this.setState({ posts: newPosts })
+      alertUser('Post Saved')
       this.closeEditEventModal()
     } catch (err) {
       errorMessage('There was a problem saving your event')

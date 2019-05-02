@@ -2,6 +2,7 @@ import React from 'react'
 
 import styles from './PricingCard.module.sass'
 import lightning from './small-lightning.png'
+import BlueButton from '../../../../../../components/BlueButton'
 
 const PricingCard = ({
   bgColor,
@@ -12,7 +13,8 @@ const PricingCard = ({
   branding,
   description,
   activePlan,
-  freeTrial = false,
+  onClick,
+  onTrial,
 }) => (
   <div
     className={styles.pricingCard}
@@ -58,15 +60,9 @@ const PricingCard = ({
         </div>
       </div>
       <span className={styles.pricingCard__description}>{description}</span>
-      {freeTrial && (
-        <>
-          <div style={{ height: '5px' }} />
-          <b>
-            <span className={styles.pricingCard__description}>
-              Start your 14 day free trial today
-            </span>
-          </b>
-        </>
+      <br />
+      {!onTrial && !activePlan && (
+        <BlueButton onClick={onClick} text="Switch" />
       )}
     </div>
   </div>

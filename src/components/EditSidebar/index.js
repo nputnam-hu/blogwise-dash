@@ -74,16 +74,7 @@ class EditSidebar extends Component {
         <div className="editheader">
           <div className="editheader__inputs">
             {this.props.topPart}
-            <FormGroup htmlFor="description" label="Description">
-              <TextArea
-                name="description"
-                value={this.state.description || ''}
-                onChange={this.onChange}
-                fill
-                style={{ resize: 'none', height: '100px' }}
-                {...this.changeBgOnHover('description')}
-              />
-            </FormGroup>
+            <br />
             <FormGroup
               htmlFor="companyName"
               label="Company Name"
@@ -138,7 +129,18 @@ class EditSidebar extends Component {
               </div>
             </FormGroup>
             <br />
-            <FormGroup
+            <FormGroup htmlFor="description" label="Description">
+              <TextArea
+                name="description"
+                value={this.state.description || ''}
+                onChange={this.onChange}
+                fill
+                style={{ resize: 'none', height: '100px' }}
+                {...this.changeBgOnHover('description')}
+              />
+            </FormGroup>
+            <br />
+            {/* <FormGroup
               htmlFor="mainSiteUrl"
               label="Website Link"
               helperText="A link to your primary website"
@@ -148,7 +150,7 @@ class EditSidebar extends Component {
                 value={this.state.mainSiteUrl}
                 onChange={this.onChange}
               />
-            </FormGroup>
+            </FormGroup> */}
             <FormGroup
               htmlFor="twitterUrl"
               label="Twitter URL"
@@ -212,6 +214,7 @@ class EditSidebar extends Component {
               linkedinUrl: this.state.linkedinUrl,
               name: this.state.companyName,
             }}
+            idToScrollTo="companyName"
           />
         </div>
         {/* Modals */}

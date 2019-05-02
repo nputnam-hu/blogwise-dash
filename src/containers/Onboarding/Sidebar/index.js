@@ -32,7 +32,7 @@ class Sidebar extends Component {
         onSubmit={this.onSubmit}
         onBackButtonClick={this.onBackButtonClick}
         client={this.client}
-        buttonText="Submit"
+        buttonText="Finish Customizing Sidebar"
         topPart={
           <>
             <div className="onboarding-stepcounter">Step 3 of 3</div>

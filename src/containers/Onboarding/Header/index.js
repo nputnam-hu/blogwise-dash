@@ -39,7 +39,7 @@ class Header extends Component {
           client={this.client}
           onSubmit={this.onSubmit}
           onBackButtonClick={this.onBackButtonClick}
-          buttonText="Customize Sidebar"
+          buttonText="Finish Customizing Header"
           topPart={
             <>
               <div className="onboarding-stepcounter">Step 3 of 3</div>

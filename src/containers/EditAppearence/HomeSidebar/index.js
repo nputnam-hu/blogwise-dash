@@ -29,9 +29,7 @@ class HomeSidebar extends Component {
       <EditSidebar
         client={this.client}
         onSubmit={this.onSubmit}
-        onBackButtonClick={this.onBackButtonClick}
-        buttonText="Save"
-        rightIcon="floppy-disk"
+        buttonText="Save Changes"
         topPart={
           <Button
             small

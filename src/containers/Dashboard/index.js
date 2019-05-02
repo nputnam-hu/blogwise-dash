@@ -6,6 +6,7 @@ import {
   PopoverInteractionKind,
   Spinner,
 } from '@blueprintjs/core'
+import { Elements } from 'react-stripe-elements'
 import { Link } from 'react-router-dom'
 import store from 'store'
 import Account from './containers/Account'
@@ -178,7 +179,9 @@ export const PostGeniusView = props => (
 
 export const AccountView = props => (
   <Dashboard activeTab="account">
-    <Account {...props} />
+    <Elements>
+      <Account {...props} />
+    </Elements>
   </Dashboard>
 )
 

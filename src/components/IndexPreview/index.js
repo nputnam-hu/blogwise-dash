@@ -42,6 +42,17 @@ class IndexPreview extends Component {
           navbarHexCode: blog.navbarHexCode || '',
         },
       })
+      setTimeout(() => {
+        if (this.props.idToScrollTo) {
+          const el = document.getElementById(this.props.idToScrollTo)
+          if (el) {
+            const topPos = el.offsetTop - 80
+            document
+              .getElementById('preview')
+              .scrollTo({ top: topPos, behavior: 'smooth' })
+          }
+        }
+      }, 500)
     })
   }
   render() {
