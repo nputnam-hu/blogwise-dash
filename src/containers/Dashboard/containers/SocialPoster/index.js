@@ -19,10 +19,12 @@ class SocialPoster extends Component {
       fbsigned: false,
       twsigned: false,
       lnsigned: false,
-      link:
-        'https://blog.blogwise.co/a/2019-03-26-part_ii_the_content_marketing_trend_how_blogging_will_help_your_business',
-      text: 'Blogwise is producing original content on their own blog',
+      link: '',
+      text: '',
     }
+  }
+  handleUpdate = content => {
+    this.setState(content)
   }
   handleTabChange = tabId => {
     this.setState({ tabId })
@@ -40,7 +42,7 @@ class SocialPoster extends Component {
   }
   componentDidMount() {
     this.client.get('/organizations').then(orgs => {
-      if (orgs.facebookToken) {
+      if (orgs.facebookToken && orgs.facebookPageToken) {
         this.setState({ fbsigned: true })
       }
       if (orgs.twitterToken) {
@@ -53,7 +55,6 @@ class SocialPoster extends Component {
   }
   handleShare = () => {
     this.client.post('/api/shareall', this.state).then(result => {
-      console.log(result)
       this.setState({
         isOpen: false,
         isOpen2: true,
@@ -84,7 +85,11 @@ class SocialPoster extends Component {
           large
           animate={false}
         >
-          <Tab id="first" title="Your Posts" panel={<Posts />} />
+          <Tab
+            id="first"
+            title="Your Posts"
+            panel={<Posts updateFunc={this.handleUpdate} />}
+          />
         </Tabs>
         <BlueButton icon="gear" onClick={() => this.setState({ isOpen: true })}>
           Open Dialog

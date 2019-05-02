@@ -1,14 +1,6 @@
 import React, { Component } from 'react'
-import {
-  // Icon,
-  // Intent,
-  // Dialog,
-  // Button,
-  // FormGroup,
-  // InputGroup,
-  // HTMLSelect,
-  Spinner,
-} from '@blueprintjs/core'
+import { Spinner } from '@blueprintjs/core'
+import BlueButton from '../../../../../../components/BlueButton'
 import Client from '../../../../../../client'
 import './styles.sass'
 
@@ -29,14 +21,14 @@ class Posts extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onSelectChange = e => this.setState({ newRole: e.currentTarget.value })
 
-  //   openModal = () => this.setState({ modalIsOpen: true })
-  //   handleModalClose = () =>
-  //     this.setState({
-  //       modalIsOpen: false,
-  //       newName: '',
-  //       newEmail: '',
-  //       newRole: '',
-  //     })
+  handleClick = post => { 
+    console.log(window.location)
+    this.props.updateFunc({
+      isOpen: true,
+      text: post.title + ': ' + post.description,
+      link: window.location.origin + post.slug
+    })
+  }
 
   render() {
     const { blogPosts } = this.state
@@ -49,21 +41,27 @@ class Posts extends Component {
             <table className="bp3-html-table bp3-html-table-striped bp3-interactive posts-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Bio</th>
-                  <th>Invite Status</th>
+                  <th>Published Date</th>
+                  <th>Title</th>
+                  <th>Description</th>
                 </tr>
               </thead>
               <tbody>
-                <tr key={1} onClick={() => console.log('hi')}>
-                  <td>name</td>
-                  <td>email</td>
-                  <td>post</td>
-                  <td>bio</td>
-                  <td>...</td>
-                </tr>
+                {blogPosts.map(post => {
+                  const { id, description, publishDate, title } = post
+                  return (
+                    <tr key={id}>
+                      <td>{publishDate}</td>
+                      <td>{title}</td>
+                      <td>{description.substring(0, 40)}</td>
+                      <td>
+                        <BlueButton onClick={() => this.handleClick(post)}>
+                          Share!
+                        </BlueButton>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           )}
