@@ -143,7 +143,7 @@ class Account extends Component {
                           <td>
                             {moment(invoice.dueDate).format('MM/DD/YYYY')}
                           </td>
-                          <td>{invoice.amountDue}</td>
+                          <td>${(invoice.amountDue / 100).toFixed(2)}</td>
                           <td>
                             <a
                               href={invoice.invoicePdf}
