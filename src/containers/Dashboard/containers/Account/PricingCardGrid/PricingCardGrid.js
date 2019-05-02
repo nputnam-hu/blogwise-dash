@@ -11,7 +11,7 @@ const PricingCardGrid = ({ activePlan }) => (
       title="Starter"
       price="9"
       userNum="2"
-      pageViews="10k"
+      pageViews="5k"
       description="for small businesses"
       activePlan={activePlan === 'STARTER'}
     />
@@ -20,16 +20,16 @@ const PricingCardGrid = ({ activePlan }) => (
       title="Growth"
       price="29"
       userNum="5"
-      pageViews="100k"
+      pageViews="15k"
       description="for scaling startups"
       activePlan={activePlan === 'GROWTH'}
     />
     <PricingCard
       bgColor="rgba(59, 103, 226, 0.4)"
       title="Enterprise"
-      price="59"
+      price="99"
       userNum="Unlimited"
-      pageViews="1 million"
+      pageViews="50k"
       description="for businesses killing the marketing game"
       activePlan={activePlan === 'ENTERPRISE'}
     />
