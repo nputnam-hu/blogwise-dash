@@ -518,7 +518,7 @@ class NewPost extends Component {
           fileLabel="Media upload"
           onConfirmCrop={url => {
             const quill = this.quill.current.getEditor()
-            const range = quill.getSelection() || {
+            const range = quill.selection.savedRange || {
               index: 0,
             }
             quill.insertEmbed(range.index, 'image', url)
