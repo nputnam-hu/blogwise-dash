@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import moment from 'moment'
-import {
-  InputGroup,
-  FormGroup,
-  TextArea,
-  Button,
-  Spinner,
-} from '@blueprintjs/core'
+import { InputGroup, FormGroup, TextArea, Spinner } from '@blueprintjs/core'
 import { DateInput } from '@blueprintjs/datetime'
 import Select from 'react-select'
 import ReactQuill, { Quill } from 'react-quill'
 import { ImageResize } from 'quill-image-resize-module'
+import { Template1Canonical } from 'blogwise-article-view'
 import CropImgUploader from '../../../components/CropImgUploader'
 import PostNavbar from './PostNavbar'
-import { Template1 } from 'blogwise-article-view'
+import EditPostView from './EditPostView'
 import NewDraftModal from './NewDraftModal'
 import UnsavedChangesModal from './UnsavedChangesModal'
 import SchedulePostModal from './SchedulePostModal'
 import UnsplashModal from './UnsplashModal'
 import Client from '../../../client'
+import BlueButton from '../../../components/BlueButton'
 import errorMessage, { validateState, alertUser } from '../../../toaster'
 import './styles.sass'
+
+const HTMLContent = ({ content, className }) => (
+  <div className={className} dangerouslySetInnerHTML={{ __html: content }} />
+)
 
 Quill.register('modules/imageResize', ImageResize)
 
@@ -323,152 +323,181 @@ class NewPost extends Component {
           {this.state.dataLoading ? (
             <Spinner className="newpost__spinner" />
           ) : (
-            <div className="newpost__inputs">
-              <FormGroup htmlFor="title" label="Title">
-                <InputGroup
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.onChange}
-                />
-              </FormGroup>
-              <FormGroup htmlFor="author" label="Author">
-                <Select
-                  name="author"
-                  options={this.state.authorOptions}
-                  value={this.state.author}
-                  onChange={author =>
-                    this.setState({ author, postModified: true })
-                  }
-                />
-              </FormGroup>
-              <FormGroup htmlFor="pubdate-picker" label="Publish Date">
-                <DateInput
-                  name="pubdate-picker"
-                  value={
-                    this.state.publishDate && this.state.publishDate.toDate()
-                  }
-                  maxDate={new Date()}
-                  formatDate={date => moment(date).format('LL')}
-                  parseDate={str => moment(str).toDate()}
-                  onChange={publishDate =>
-                    this.setState({
-                      publishDate: moment(publishDate),
-                      postModified: true,
-                    })
-                  }
-                />
-              </FormGroup>
-              <FormGroup
-                htmlFor="coverPhotoUri"
-                label="Cover Photo"
-                labelInfo="(optional)"
-              >
-                {this.state.coverPhotoUri && (
-                  <>
-                    <button
-                      onClick={this.removeCoverPhoto}
-                      className="cover__xbutton"
-                    >
-                      <b>X</b>
-                    </button>
-                    <img
-                      src={this.state.coverPhotoUri}
-                      alt="Cover Preview"
-                      className="inputscover__preview"
-                    />
-                    <br />
-                  </>
-                )}
-                <Button
-                  text="Choose file..."
-                  name="coverPhotoUri"
-                  onClick={this.openCoverCropModal}
-                />
-                <Button onClick={this.openUnsplashModal} icon="media">
-                  Search professional cover photos
-                </Button>
-              </FormGroup>
-              <FormGroup
-                htmlFor="thumbnailUri"
-                label="Thumbnail"
-                labelInfo="(optional)"
-                helperText="If no thumbnail is provided, will default to cover photo"
-              >
-                {this.state.thumbnailUri && (
-                  <>
-                    <button
-                      onClick={this.removeThumbnail}
-                      className="cover__xbutton"
-                    >
-                      <b>X</b>
-                    </button>
-                    <img
-                      src={this.state.thumbnailUri}
-                      alt="Thumbnail Preview"
-                      className="inputscover__preview"
-                    />
-                    <br />
-                  </>
-                )}
-                <Button
-                  text={
-                    this.state.thumbnailUri ? 'Change File' : 'Choose file...'
-                  }
-                  name="thumbnailUri"
-                  onClick={this.openThumbCropModal}
-                />
-              </FormGroup>
-              <FormGroup htmlFor="description" label="Description">
-                <TextArea
-                  name="description"
-                  value={this.state.description}
-                  onChange={this.onChange}
-                  fill
-                  style={{ resize: 'none' }}
-                />
-              </FormGroup>
-              <FormGroup htmlFor="body-text" label="Body Text">
-                <ReactQuill
-                  name="body-text"
-                  theme="snow"
-                  style={{ height: '500px' }}
-                  value={this.state.htmlBody}
-                  onChange={(htmlBody, _, source) =>
-                    this.setState({ htmlBody, postModified: source === 'user' })
-                  }
-                  placeholder="Start telling your story..."
-                  modules={this.modules}
-                  format={this.formats}
-                  ref={this.quill}
-                />
-              </FormGroup>
-              <div style={{ height: '40px' }} />
-              <FormGroup htmlFor="tags" label="Tags">
-                <Select
-                  isMulti
-                  name="currentTags"
-                  options={this.state.tagOptions}
-                  value={this.state.tags}
-                  onChange={tags => this.setState({ tags, postModified: true })}
-                  menuPlacement="top"
-                />
-              </FormGroup>
-            </div>
-          )}
-          {!this.state.dataLoading && (
-            <Template1
-              title={this.state.title}
-              coverPhotoUri={this.state.coverPhotoUri}
-              description={this.state.description}
-              htmlBody={this.state.htmlBody}
-              tags={this.state.tags.map(t => t.label)}
-              publishDate={this.state.publishDate}
-              author={
-                this.state.users.filter(
-                  u => u.id === this.state.author.value,
-                )[0]
+            <EditPostView
+              postContent={
+                !this.state.dataLoading && (
+                  <Template1Canonical
+                    title={this.state.title}
+                    coverPhoto={this.state.coverPhotoUri}
+                    description={this.state.description}
+                    htmlBody={this.state.htmlBody}
+                    tags={this.state.tags.map(t => t.label)}
+                    publishDate={this.state.publishDate}
+                    author={
+                      this.state.users.filter(
+                        u => u.id === this.state.author.value,
+                      )[0]
+                    }
+                    isPreview
+                    contentComponent={HTMLContent}
+                  />
+                )
               }
-            />
+            >
+              <div className="newpost__inputs">
+                <FormGroup htmlFor="title" label="Title">
+                  <InputGroup
+                    name="title"
+                    value={this.state.title}
+                    onChange={this.onChange}
+                  />
+                </FormGroup>
+                <FormGroup htmlFor="author" label="Author">
+                  <Select
+                    name="author"
+                    options={this.state.authorOptions}
+                    value={this.state.author}
+                    onChange={author =>
+                      this.setState({ author, postModified: true })
+                    }
+                  />
+                </FormGroup>
+                <FormGroup htmlFor="pubdate-picker" label="Publish Date">
+                  <DateInput
+                    name="pubdate-picker"
+                    value={
+                      this.state.publishDate && this.state.publishDate.toDate()
+                    }
+                    maxDate={new Date()}
+                    formatDate={date => moment(date).format('LL')}
+                    parseDate={str => moment(str).toDate()}
+                    onChange={publishDate =>
+                      this.setState({
+                        publishDate: moment(publishDate),
+                        postModified: true,
+                      })
+                    }
+                  />
+                </FormGroup>
+                <FormGroup
+                  htmlFor="coverPhotoUri"
+                  label="Cover Photo"
+                  labelInfo="(optional)"
+                >
+                  {this.state.coverPhotoUri && (
+                    <>
+                      <button
+                        onClick={this.removeCoverPhoto}
+                        className="cover__xbutton"
+                      >
+                        <b>X</b>
+                      </button>
+                      <img
+                        src={this.state.coverPhotoUri}
+                        alt="Cover Preview"
+                        className="inputscover__preview"
+                      />
+                      <br />
+                    </>
+                  )}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <BlueButton
+                      icon="upload"
+                      text="Choose file"
+                      name="coverPhotoUri"
+                      onClick={this.openCoverCropModal}
+                      style={{ marginRight: 10 }}
+                    />
+                    <BlueButton
+                      onClick={this.openUnsplashModal}
+                      text="Search Bank"
+                      icon="imageBank"
+                    />
+                  </div>
+                </FormGroup>
+                <FormGroup
+                  htmlFor="thumbnailUri"
+                  label="Thumbnail"
+                  labelInfo="(optional)"
+                  helperText="If no thumbnail is provided, will default to cover photo"
+                >
+                  {this.state.thumbnailUri && (
+                    <>
+                      <button
+                        onClick={this.removeThumbnail}
+                        className="cover__xbutton"
+                      >
+                        <b>X</b>
+                      </button>
+                      <img
+                        src={this.state.thumbnailUri}
+                        alt="Thumbnail Preview"
+                        className="inputscover__preview"
+                      />
+                      <br />
+                    </>
+                  )}
+                  <BlueButton
+                    text={
+                      this.state.thumbnailUri ? 'Change File' : 'Choose file'
+                    }
+                    name="thumbnailUri"
+                    onClick={this.openThumbCropModal}
+                    icon="upload"
+                  />
+                </FormGroup>
+                <FormGroup htmlFor="description" label="Description">
+                  <TextArea
+                    name="description"
+                    value={this.state.description}
+                    onChange={this.onChange}
+                    fill
+                    style={{ resize: 'none' }}
+                  />
+                </FormGroup>
+                <FormGroup htmlFor="body-text" label="Body Text">
+                  <div>
+                    <ReactQuill
+                      name="body-text"
+                      theme="snow"
+                      style={{ height: '500px' }}
+                      value={this.state.htmlBody}
+                      onChange={(htmlBody, _, source) =>
+                        this.setState({
+                          htmlBody,
+                          postModified: source === 'user',
+                        })
+                      }
+                      placeholder="Start telling your story..."
+                      modules={this.modules}
+                      format={this.formats}
+                      ref={this.quill}
+                    />
+                  </div>
+                </FormGroup>
+                <FormGroup
+                  htmlFor="tags"
+                  label="Tags"
+                  style={{ marginTop: 80 }}
+                >
+                  <Select
+                    isMulti
+                    name="currentTags"
+                    options={this.state.tagOptions}
+                    value={this.state.tags}
+                    onChange={tags =>
+                      this.setState({ tags, postModified: true })
+                    }
+                    menuPlacement="top"
+                  />
+                </FormGroup>
+              </div>
+            </EditPostView>
           )}
         </div>
         {/* Modals */}
@@ -492,7 +521,7 @@ class NewPost extends Component {
           fileLabel="Media upload"
           onConfirmCrop={url => {
             const quill = this.quill.current.getEditor()
-            const range = quill.getSelection() || {
+            const range = quill.selection.savedRange || {
               index: 0,
             }
             quill.insertEmbed(range.index, 'image', url)

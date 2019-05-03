@@ -7,6 +7,7 @@ import Pencil from './icons/pencil'
 import Plus from './icons/plus'
 import InviteUser from './icons/inviteUser'
 import ArrowRight from './icons/arrowRight'
+import ImageBank from './icons/imageBank'
 import ArrowRightLarge from './icons/arrowRightLarge'
 import './styles.sass'
 
@@ -31,6 +32,8 @@ const genIcon = icon => {
       return InviteUser
     case 'arrowRight':
       return ArrowRight
+    case 'imageBank':
+      return ImageBank
     case 'arrowRightLarge':
       return ArrowRightLarge
     default:
