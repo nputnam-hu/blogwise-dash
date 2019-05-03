@@ -38,10 +38,7 @@ class Account extends Component {
             trialDaysLeft: org.trialDaysLeft,
             brand: org.brand,
             lastFour: org.lastFour,
-            invoices: org.invoices.reduce(
-              (acc, el) => [...acc, el, el, el, el],
-              [],
-            ),
+            invoices: org.invoices,
             email: user.email,
             name: user.name,
             dataLoading: false,
