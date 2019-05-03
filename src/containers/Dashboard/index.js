@@ -100,9 +100,9 @@ class Dashboard extends Component {
               className={`dashboard-tabs__tab ${
                 activeTab === 'postgenius' ? 'active' : ''
               }`}
-              to="/dashboard/postgenius"
+              to="/dashboard/calendar"
             >
-              PostGenius
+              Editorial Calendar
             </Link>
             {isAdmin && (
               <Link
