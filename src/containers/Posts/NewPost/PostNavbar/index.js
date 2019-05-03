@@ -10,6 +10,9 @@ import {
   Spinner,
 } from '@blueprintjs/core'
 import './styles.sass'
+import logo from './logo.png'
+import BlueButton from '../../../../components/BlueButton'
+import ExpandMore from './expandMore'
 
 const PostNavbar = ({
   hasBeenPublished,
@@ -33,7 +36,7 @@ const PostNavbar = ({
   }
   return (
     <div className="postnavbar">
-      <Button
+      <BlueButton
         onClick={backtoDash}
         minimal
         icon="arrow-left"
@@ -41,14 +44,8 @@ const PostNavbar = ({
         className="postnavbar__backbutton"
       >
         Back to Dashboard
-      </Button>
-      <div
-        style={{
-          borderRight: '2px solid lightgrey',
-          width: '0px',
-          height: '70px',
-        }}
-      />
+      </BlueButton>
+      <img src={logo} className="logo__image" />
       <div className="pastnavbar__rightpart">
         {/* eslint-disable-next-line no-nested-ternary */}
         {savingPost ? (
@@ -57,7 +54,7 @@ const PostNavbar = ({
             <Spinner size={Spinner.SIZE_SMALL} />
           </div>
         ) : postLastSaved ? (
-          <div>
+          <div className="post__savedAt">
             Post last saved at {postLastSaved.format('LT')} <Icon icon="tick" />
           </div>
         ) : (
@@ -67,10 +64,10 @@ const PostNavbar = ({
           position={Position.BOTTOM_RIGHT}
           className="pastnavbar__savebutton"
         >
-          <Button intent={Intent.PRIMARY} large rightIcon="caret-down">
-            {title}
-          </Button>
-          <Menu large>
+          <button className={'publish__updates'}>
+            {title} <ExpandMore />
+          </button>
+          <Menu large className="popover__menu">
             {hasBeenPublished ? (
               <>
                 <MenuItem

@@ -9,6 +9,7 @@ import InviteUser from './icons/inviteUser'
 import ArrowRight from './icons/arrowRight'
 import ImageBank from './icons/imageBank'
 import ArrowRightLarge from './icons/arrowRightLarge'
+import ArrowLeft from './icons/arrowLeft'
 import './styles.sass'
 
 const genIcon = icon => {
@@ -36,6 +37,8 @@ const genIcon = icon => {
       return ImageBank
     case 'arrowRightLarge':
       return ArrowRightLarge
+    case 'arrowLeft':
+      return ArrowLeft
     default:
       console.warn('Invalid icon prop given, ignored')
       return null

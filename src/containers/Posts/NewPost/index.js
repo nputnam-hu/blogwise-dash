@@ -98,6 +98,7 @@ class NewPost extends Component {
           tags: blogPost.tags || [],
           author: blogPost.author || '',
           dataLoading: false,
+          postLastSaved: blogPost.updatedAt ? moment(blogPost.updatedAt) : null,
         })
       }
     }

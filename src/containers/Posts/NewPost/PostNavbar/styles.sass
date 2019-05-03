@@ -1,16 +1,40 @@
 .postnavbar
   height: 70px
-  background: #eaf5fd
+  background: white
   display: flex
   flex-direction: row
   align-items: center
+  justify-content: space-between
   border-bottom: 2px solid #E0E4E7
-  .postnavbar__backbutton
-    margin: 0px 20px
-  .pastnavbar__rightpart
+  padding: 20px
+  .logo__image
+    width: 151px
+    height: 42px
     margin-left: auto
-    margin-right: 40px
+    margin-right: auto
+    position: absolute
+    left: calc(50vw - 75.5px)
+    @media (max-width: 600px)
+      display: none
+  .pastnavbar__rightpart
     display: flex
     align-items: center
     .pastnavbar__savebutton
-      margin-left: 30px
+      color: rgba(0, 0, 0, 0.22)
+  .publish__updates
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    background: #FFC100
+    border: none
+    border-radius: 5px
+    padding: 10px
+    font-size: 16px 
+    color: #FFFFFF
+    font-size: 16px
+    cursor: pointer
+    margin-left: 20px
+  .post__savedAt
+    @media (max-width: 1000px)
+      display: none
