@@ -7,7 +7,6 @@ import {
   FormGroup,
   InputGroup,
   Spinner,
-  Popover
 } from '@blueprintjs/core'
 import moment from 'moment'
 import { DateInput } from '@blueprintjs/datetime'
@@ -33,6 +32,8 @@ class CalendarHome extends Component {
       posts: [],
       tagNames: [],
       editEventModalOpen: false,
+      newEventModalOpen: false,
+      newEvent: {},
       eventToEdit: {},
       eventEdited: false,
       dataLoading: true,
@@ -60,6 +61,15 @@ class CalendarHome extends Component {
         [e.target.name]: e.target.value,
       },
     })
+  onNewChange = e => {
+    this.setState({
+      eventEdited: true,
+      newEvent: {
+        ...this.state.newEvent,
+        [e.target.name]: e.target.value,
+      },
+    })
+  }
   openEditEventModal = event => {
     this.setState({
       editEventModalOpen: true,
@@ -72,6 +82,19 @@ class CalendarHome extends Component {
       editEventModalOpen: false,
       eventEdited: false,
       eventToEdit: {},
+    })
+  }
+  openNewEventModal = () => {
+    this.setState({
+      newEventModalOpen: true,
+      eventEdited: false,
+    })
+  }
+  closeNewEventModal = () => {
+    this.setState({
+      newEventModalOpen: false,
+      eventEdited: false,
+      newEvent: {},
     })
   }
   editEvent = async () => {
@@ -100,6 +123,31 @@ class CalendarHome extends Component {
       errorMessage('There was a problem saving your event')
     }
   }
+  createNewEvent = async () => {
+    try {
+      if (
+        !validateState(
+          [['title', 'Headline'], ['start', 'Due Date']],
+          this.state.newEvent,
+        )
+      ) {
+        return
+      }
+      const post = await this.client.put('/calendars/posts', {
+        post: {
+          tags: this.state.newEvent.tags,
+          title: this.state.newEvent.title,
+          dueDate: this.state.newEvent.start,
+        },
+      })
+      const newPosts = [...this.state.posts.filter(p => p.id !== post.id), post]
+      this.setState({ posts: newPosts })
+      alertUser('Post Saved')
+      this.closeNewEventModal()
+    } catch (err) {
+      errorMessage('There was a problem saving your event')
+    }
+  }
   render() {
     return (
       <div id="calendarhome-container">
@@ -124,9 +172,7 @@ class CalendarHome extends Component {
               customButtons={{
                 newPost: {
                   text: 'New Post',
-                  click: function() {
-                    alert('clicked custom')
-                  },
+                  click: this.openNewEventModal,
                 },
               }}
               buttonText={{
@@ -142,11 +188,12 @@ class CalendarHome extends Component {
             />
           )}
         </div>
-        {/* Modals -> reaplce with popover */}
-        <Popover
+        {/* Modals */}
+        <Dialog
           icon="calendar"
           isOpen={this.state.editEventModalOpen}
           onClose={this.closeEditEventModal}
+          title="Edit Scheduled Post"
         >
           <div id="editevent-modal">
             <FormGroup htmlFor="title" label="Post Headline">
@@ -199,7 +246,67 @@ class CalendarHome extends Component {
               Save Event
             </Button>
           </div>
-        </Popover>
+        </Dialog>
+        <Dialog
+          icon="calendar"
+          isOpen={this.state.newEventModalOpen}
+          onClose={this.closeNewEventModal}
+        >
+          <div id="editevent-modal">
+            <FormGroup htmlFor="title" label="Post Headline">
+              <InputGroup
+                name="title"
+                placeholder="Your headline here"
+                value={this.state.newEvent.title}
+                onChange={this.onNewChange}
+              />
+            </FormGroup>
+            <FormGroup htmlFor="tags" label="Tags" labelInfo="(optional)">
+              <Select
+                isMulti
+                name="currentTags"
+                options={this.state.tagNames}
+                value={this.state.newEvent.tags}
+                onChange={tags =>
+                  this.setState({
+                    eventEdited: true,
+                    newEvent: {
+                      ...this.state.newEvent,
+                      tags,
+                    },
+                  })
+                }
+                className="tagmultiselect"
+              />
+            </FormGroup>
+            <FormGroup htmlFor="duedate-picker" label="Due Date">
+              <DateInput
+                name="duedate-picker"
+                value={
+                  this.state.eventToEdit.start &&
+                  this.state.eventToEdit.start.toDate()
+                }
+                formatDate={date => moment(date).format('LL')}
+                parseDate={str => moment(str).toDate()}
+                onChange={selectedDate => {
+                  this.setState({
+                    eventEdited: true,
+                    newEvent: {
+                      ...this.state.newEvent,
+                      start: moment(selectedDate),
+                    },
+                  })
+                }}
+              />
+            </FormGroup>
+            <Button
+              onClick={this.createNewEvent}
+              disabled={!this.state.eventEdited}
+            >
+              Save Event
+            </Button>
+          </div>
+        </Dialog>
       </div>
     )
   }
