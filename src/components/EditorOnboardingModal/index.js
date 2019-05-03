@@ -132,11 +132,11 @@ class EditorOnboardingModal extends Component {
           isOpen={this.state.currentModal === 2}
           {...this.highLightElementById('preview')}
         />
-        <ModalFour
+        {/* <ModalFour
           nextAction={this.nextModal(3)}
           isOpen={this.state.currentModal === 3}
           {...this.highLightElementById('editheader__button')}
-        />
+        /> */}
       </>
     )
   }
