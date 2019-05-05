@@ -30,7 +30,6 @@
     "react-select": "^2.4.1",
     "react-stripe-elements": "^3.0.0",
     "react-social-login": "^3.4.4",
-    "react-twitter-auth": "0.0.13",
     "react-twitter-embed": "^2.0.4",
     "request-promise": "^4.2.2",
     "store": "^2.0.12",
