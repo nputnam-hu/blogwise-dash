@@ -15,7 +15,6 @@ import {
   MyBlogView,
   MyPostsView,
   AccountView,
-  PostGeniusView,
   CalendarView,
   PaymentDashView,
   WriterView,
@@ -35,8 +34,6 @@ import BlogNavbar from './containers/EditAppearence/BlogNavbar'
 import ForgotPassword from './containers/ForgotPassword'
 import ResetPassword from './containers/ResetPassword'
 import Footer from './components/Footer'
-import NewTasks from './containers/Calendar/NewTasks'
-import NewCalendar from './containers/Calendar/NewCalendar'
 import NewPost from './containers/Posts/NewPost'
 
 const PrivateRoute = ({
@@ -126,17 +123,14 @@ class App extends Component {
                 path="/posts/:id(new|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})?"
                 component={NewPost}
               />
-              <PrivateRoute path="/calendar/new" component={NewCalendar} />
-              <PrivateRoute path="/calendar/tasks" component={NewTasks} />
-              <PrivateRoute path="/calendar" component={CalendarView} />
               <PrivateRoute
                 path="/dashboard/payment"
                 component={PaymentDashView}
               />
               <PrivateRoute path="/dashboard/account" component={AccountView} />
               <PrivateRoute
-                path="/dashboard/postgenius"
-                component={PostGeniusView}
+                path="/dashboard/calendar"
+                component={CalendarView}
               />
               <PrivateRoute path="/dashboard/social" component={SocialView} />
               <PrivateRoute path="/dashboard/myposts" component={MyPostsView} />

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './styles.sass'
 import IndexPreview from './IndexPreview'
 
-class EditHeader extends Component {
+class EditPostView extends Component {
   state = { showPreview: true }
   hidePreview = () => this.setState({ showPreview: !this.state.showPreview })
   render() {
@@ -31,4 +31,4 @@ class EditHeader extends Component {
   }
 }
 
-export default EditHeader
+export default EditPostView

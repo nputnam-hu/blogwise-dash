@@ -100,65 +100,71 @@ class Account extends Component {
             <Spinner />
           ) : (
             <>
-              <h4>Admin Name</h4>
-              <div style={{ height: '4px' }} />
-              <span>{this.state.name}</span>
-              <h4>Admin Email</h4>
-              <div style={{ height: '4px' }} />
-              <span>{this.state.email}</span>
-              <h4>Payment Information</h4>
-              <div className="paymentrow">
-                <span className="paymentrow__info">
-                  {hasCC ? (
-                    <>
-                      <b>{this.state.brand}</b> •••• •••• ••••{' '}
-                      {this.state.lastFour}
-                    </>
-                  ) : (
-                    'No card saved'
-                  )}
-                </span>
-                <BlueButton onClick={this.openCcModal}>
-                  {hasCC ? 'Change' : 'Add'}
-                </BlueButton>
-              </div>
-              {this.state.invoices.length > 0 && (
-                <>
-                  <h4>Invoices</h4>
-                  <table
-                    className="bp3-html-table bp3-html-table-striped"
-                    style={{ width: '50%' }}
-                  >
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Amount Due</th>
-                        <th>Download PDF</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {this.state.invoices.map(invoice => (
-                        <tr key={invoice.invoicePdf}>
-                          <td>
-                            {moment(invoice.dueDate).format('MM/DD/YYYY')}
-                          </td>
-                          <td>${(invoice.amountDue / 100).toFixed(2)}</td>
-                          <td>
-                            <a
-                              href={invoice.invoicePdf}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Download
-                            </a>
-                          </td>
+              <div className="account__card">
+                <h2>Payment</h2>
+                {/* <div className="account__row">
+                  <span style={{ alignSelf: 'center' }}>Name</span>
+                  <span style={{ alignSelf: 'center' }}>{this.state.name}</span>
+                </div>
+                <div className="account__row">
+                  <span style={{ alignSelf: 'center' }}>Email</span>
+                  <span style={{ alignSelf: 'center' }}>
+                    {this.state.email}
+                  </span>
+                </div> */}
+                <div className="account__row">
+                  <span style={{ alignSelf: 'center' }}>Credit Card</span>
+                  <div className="paymentrow">
+                    <span className="paymentrow__info">
+                      {hasCC ? (
+                        <>
+                          <b>{this.state.brand}</b> •••• •••• ••••{' '}
+                          {this.state.lastFour}
+                        </>
+                      ) : (
+                        'No card saved'
+                      )}
+                    </span>
+                    <BlueButton onClick={this.openCcModal}>
+                      {hasCC ? 'Change' : 'Add'}
+                    </BlueButton>
+                  </div>
+                </div>
+                <div style={{ height: '40px' }} />
+                {this.state.invoices.length > 0 && (
+                  <div className="account__row">
+                    <span>Invoices</span>
+                    <table className="bp3-html-table">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Amount Due</th>
+                          <th>Download PDF</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </>
-              )}
+                      </thead>
+                      <tbody>
+                        {this.state.invoices.map(invoice => (
+                          <tr key={invoice.invoicePdf}>
+                            <td>
+                              {moment(invoice.dueDate).format('MM/DD/YYYY')}
+                            </td>
+                            <td>${(invoice.amountDue / 100).toFixed(2)}</td>
+                            <td>
+                              <a
+                                href={invoice.invoicePdf}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Download
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
               <div style={{ height: '40px' }} />
               <div className="account__bottom">
                 {this.state.trialDaysLeft && !hasCC ? (

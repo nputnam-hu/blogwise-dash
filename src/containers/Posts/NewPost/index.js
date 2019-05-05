@@ -252,7 +252,10 @@ class NewPost extends Component {
     alertUser('Post Unpublished')
   }
   unsplashOnConfirmImage = image => {
-    this.setState({ coverPhotoUri: image.downloadLink, postModified: true })
+    this.setState({
+      coverPhotoUri: `${image.downloadLink}.jpeg`,
+      postModified: true,
+    })
   }
   removeCoverPhoto = () => {
     this.setState({ coverPhotoUri: '', postModified: true })

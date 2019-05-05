@@ -7,6 +7,7 @@ import {
   Popover,
   PopoverInteractionKind,
 } from '@blueprintjs/core'
+import uuid from 'uuid/v4'
 import errorMessage, { validateState } from '../../../toaster'
 import BlueButton from '../../../components/BlueButton'
 import CropImgUploader from '../../../components/CropImgUploader'
@@ -30,6 +31,7 @@ class GetInfo extends Component {
     this.state = {
       companyName: '',
       headerPhotoUri: '',
+      tagName: '',
       backgroundHexCode: '#ffffff',
       cropModalOpen: false,
     }
@@ -37,7 +39,12 @@ class GetInfo extends Component {
   onChange = e => this.setState({ [e.target.name]: e.target.value })
   onRadioChange = e => this.setState({ surveyAnswer: e.target.value })
   onClick = async () => {
-    if (!validateState([['companyName', 'Organization Name']], this.state)) {
+    if (
+      !validateState(
+        [['companyName', 'Organization Name'], ['tagName', 'Topic']],
+        this.state,
+      )
+    ) {
       return
     }
     try {
@@ -66,6 +73,12 @@ class GetInfo extends Component {
         backgroundHexCode,
         headerTextColor,
         title,
+        tags: {
+          [uuid()]: {
+            name: this.state.tagName,
+            description: '',
+          },
+        },
       })
       this.props.history.push('/onboarding/2')
     } catch (err) {
@@ -112,6 +125,18 @@ class GetInfo extends Component {
               </FormGroup>
               <br />
               <FormGroup
+                htmlFor="tagName"
+                label="What is a topic you're interested in?"
+              >
+                <InputGroup
+                  name="tagName"
+                  value={this.state.tagName}
+                  onChange={this.onChange}
+                  placeholder="Marketing"
+                />
+              </FormGroup>
+              <br />
+              <FormGroup
                 htmlFor="headerPhotoUri"
                 label="Do you have a logo to upload?"
               >
@@ -151,7 +176,6 @@ class GetInfo extends Component {
                   />
                 </div>
               </FormGroup>
-              <br />
               <br />
               <FormGroup
                 htmlFor="backgroundHexCode"
