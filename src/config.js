@@ -8,4 +8,6 @@ export default {
     moment()
       .add(1, 'days')
       .valueOf(),
+  defaultLogo:
+    'https://s3.amazonaws.com/megaphone-logo-uploads/defaultLogo.png',
 }

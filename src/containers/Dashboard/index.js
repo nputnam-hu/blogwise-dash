@@ -17,6 +17,7 @@ import PostGenius from './containers/PostGenius'
 import CalendarHome from './containers/CalendarHome'
 import PaymentDash from './containers/PaymentDash'
 import Social from './containers/Social'
+import SocialPost from './containers/SocialPoster'
 import WriterHome from '../Writer/WriterHome'
 import Client from '../../client'
 import errorMessage, { alertUser } from '../../toaster'
@@ -206,5 +207,11 @@ export const WriterView = props => (
 export const SocialView = props => (
   <Dashboard>
     <Social {...props} />
+  </Dashboard>
+)
+
+export const SocialPoster = props => (
+  <Dashboard>
+    <SocialPost {...props} />
   </Dashboard>
 )

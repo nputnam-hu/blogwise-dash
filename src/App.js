@@ -19,6 +19,7 @@ import {
   PaymentDashView,
   WriterView,
   SocialView,
+  SocialPoster
 } from './containers/Dashboard/'
 import HomeHeader from './containers/EditAppearence/HomeHeader'
 import Login from './containers/Login'
@@ -133,6 +134,7 @@ class App extends Component {
                 component={CalendarView}
               />
               <PrivateRoute path="/dashboard/social" component={SocialView} />
+              <PrivateRoute path="/dashboard/socialposter" component={SocialPoster} />
               <PrivateRoute path="/dashboard/myposts" component={MyPostsView} />
               <PrivateRoute path="/dashboard/myblog" component={MyBlogView} />
               <PrivateRoute path="/dashboard" component={OverviewView} />

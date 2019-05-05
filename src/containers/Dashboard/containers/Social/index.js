@@ -1,30 +1,89 @@
 import React, { Component } from 'react'
 import { Button } from '@blueprintjs/core'
-import TwitterLogin from 'react-twitter-auth'
+import queryString from 'query-string'
+import FacebookButton from './components/Facebook'
 import Client from '../../../../client'
 import './styles.sass'
+import BlueButton from '../../../../components/BlueButton'
 
 class Social extends Component {
   constructor() {
     super()
     this.client = new Client()
     this.state = {
-      twitterToken: '',
+      twitterId: '',
+      facebookId: '',
+      linkedinId: '',
+      loading: true,
     }
   }
-  onSuccess = response => {
-    response.json().then(body => {
-      alert(JSON.stringify(body))
+
+  getPageToken = () => {
+    this.client.post('/api/facebook/pagetoken').then(data => console.log(data))
+  }
+
+  handleLinkedin = () => {
+    this.client
+      .get('/api/linkedin')
+      .then(data => window.location.replace(data.url))
+  }
+
+  handleTwitter = () => {
+    this.client
+      .post('/api/twitter/reverse')
+      .then(data => {
+        const url = `https://api.twitter.com/oauth/authorize?oauth_token=${
+          data.oauth_token
+        }`
+        window.location = url
+      })
+      .catch(error => console.log(error))
+  }
+
+  responseFacebook = response => {
+    this.client
+      .post('/api/facebook/storetoken', response)
+      .then(info => console.log(info))
+  }
+
+  componentDidMount() {
+    if (window.location.search !== '') {
+      const parsed = queryString.parse(window.location.search)
+      if ('oauth_token' in parsed) {
+        this.client.post('/api/twitter', parsed).then(org => console.log(org))
+      } else if ('code' in parsed) {
+        this.client
+          .post('/api/linkedin/storetoken', parsed)
+          .then(user => console.log(user))
+      }
+    }
+    this.client.get('/organizations/row').then(orgs => {
+      this.setState(prev => ({ loading: !prev.loading }))
+      if (orgs.twitterToken) {
+        this.client.get('/api/twitter/identify').then(user => {
+          this.setState({ twitterId: user.screen_name })
+        })
+      }
+      if (orgs.facebookToken) {
+        this.client.get('/api/facebook/identify').then(user => {
+          this.setState({ facebookId: user.name })
+        })
+      }
+      if (orgs.linkedinToken) {
+        this.client.get('/api/linkedin/identify').then(user => {
+          this.setState({
+            linkedinId: `${user.localizedFirstName} ${user.localizedLastName}`,
+          })
+        })
+      }
     })
   }
 
-  onFailed = error => {
-    alert(error)
-  }
-
   render() {
+    console.log(this.state)
+    const { twitterId, facebookId, linkedinId, loading } = this.state
     return (
-      <div className="social">
+      <div id="social">
         <Button
           small
           icon="arrow-left"
@@ -34,16 +93,58 @@ class Social extends Component {
           Back to Post Genius
         </Button>
         <h1>Social Accounts</h1>
-        <TwitterLogin
-          style={{ borderRadius: '10px', padding: '10px' }}
-          loginUrl="http://localhost:4000/api/v1/auth/twitter"
-          text="Connect twitter account"
-          onFailure={this.onFailed}
-          onSuccess={this.onSuccess}
-          requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"
-          showIcon
-          // customHeaders={customHeader}
-        />
+        {!loading && (
+          <div id="buttons-container">
+            <div id="twitter-row">
+              <BlueButton
+                icon="upload"
+                onClick={this.handleTwitter}
+                style={{ width: '200px', height: '60px' }}
+              >
+                Connect to Twitter
+              </BlueButton>
+              {twitterId !== '' && (
+                <p>
+                  <strong>Logged in as: </strong>
+                  {twitterId}
+                </p>
+              )}
+            </div>
+            <div id="facebook-row">
+              <FacebookButton
+                provider="facebook"
+                appId="1078110902387157"
+                scope="public_profile,publish_pages,manage_pages"
+                onLoginSuccess={this.responseFacebook}
+                onLoginFailure={this.onFailed}
+                style={{ width: '200px', height: '60px' }}
+              >
+                Connect to Facebook
+              </FacebookButton>
+              {facebookId !== '' && (
+                <p>
+                  <strong>Logged in as: </strong>
+                  {facebookId}
+                </p>
+              )}
+            </div>
+            <div id="linkedin-row">
+              <BlueButton
+                icon="upload"
+                onClick={this.handleLinkedin}
+                style={{ width: '200px', height: '60px' }}
+              >
+                Connect to Linkedin
+              </BlueButton>
+              {linkedinId !== '' && (
+                <p>
+                  <strong>Logged in as: </strong>
+                  {linkedinId}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     )
   }
