@@ -41,7 +41,7 @@ class SocialPoster extends Component {
     this.setState({ isOpen2: false })
   }
   componentDidMount() {
-    this.client.get('/organizations').then(orgs => {
+    this.client.get('/organizations/row').then(orgs => {
       if (orgs.facebookToken && orgs.facebookPageToken) {
         this.setState({ fbsigned: true })
       }

@@ -23,7 +23,9 @@ class Social extends Component {
   }
 
   handleLinkedin = () => {
-    this.client.get('/api/linkedin').then(data => window.location.replace(data.url))
+    this.client
+      .get('/api/linkedin')
+      .then(data => window.location.replace(data.url))
   }
 
   handleTwitter = () => {
