@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Tabs, Tab, Dialog, Switch } from '@blueprintjs/core'
+import { Tabs, Tab, Dialog, Switch, InputGroup } from '@blueprintjs/core'
 import Posts from './sections/Posts'
 import Client from '../../../../client'
 import './styles.sass'
@@ -55,6 +55,7 @@ class SocialPoster extends Component {
   }
   handleShare = () => {
     this.client.post('/api/shareall', this.state).then(result => {
+      console.log(result)
       this.setState({
         isOpen: false,
         isOpen2: true,
@@ -64,6 +65,13 @@ class SocialPoster extends Component {
       })
     })
   }
+  navigate = () => {
+    this.props.history.push('/dashboard/social')
+  }
+  onChange = e =>
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
   render() {
     const {
       isOpen,
@@ -74,6 +82,8 @@ class SocialPoster extends Component {
       fbsigned,
       twsigned,
       lnsigned,
+      link,
+      text,
     } = this.state
     return (
       <div id="socialposter-container">
@@ -91,9 +101,6 @@ class SocialPoster extends Component {
             panel={<Posts updateFunc={this.handleUpdate} />}
           />
         </Tabs>
-        <BlueButton icon="gear" onClick={() => this.setState({ isOpen: true })}>
-          Open Dialog
-        </BlueButton>
         <Dialog
           className="bp3-dialog-container"
           icon="upload"
@@ -101,6 +108,18 @@ class SocialPoster extends Component {
           title="Post to the following outlets"
           isOpen={isOpen}
         >
+          <InputGroup
+            name="text"
+            placeholder="Your description here"
+            value={text}
+            onChange={this.onChange}
+          />
+          <InputGroup
+            name="link"
+            placeholder="Your link to be shared here"
+            value={link}
+            onChange={this.onChange}
+          />
           <div id="preview-container">
             {fbsigned && (
               <div className="social-preview">
