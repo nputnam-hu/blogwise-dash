@@ -10,9 +10,4 @@ export default {
       .valueOf(),
   defaultLogo:
     'https://s3.amazonaws.com/megaphone-logo-uploads/defaultLogo.png',
-  linkedin: {
-    client_id: '78lfgcpfr5idxn',
-    client_secret: 'fMC2Eq6BLjVUaE0e',
-    redirect_uri: 'http://localhost:3000/dashboard/social',
-  },
 }

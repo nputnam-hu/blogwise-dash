@@ -2,17 +2,9 @@ import React, { Component } from 'react'
 import { Button } from '@blueprintjs/core'
 import queryString from 'query-string'
 import FacebookButton from './components/Facebook'
-import config from '../../../../config'
 import Client from '../../../../client'
 import './styles.sass'
 import BlueButton from '../../../../components/BlueButton'
-
-const linkedinUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${
-  config.linkedin.client_id
-}&redirect_uri=${
-  config.linkedin.redirect_uri
-}&state=noahisabasedgod&scope=r_liteprofile%20r_emailaddress%20w_member_social
-`
 
 class Social extends Component {
   constructor() {
@@ -30,6 +22,10 @@ class Social extends Component {
     this.client.post('/api/facebook/pagetoken').then(data => console.log(data))
   }
 
+  handleLinkedin = () => {
+    this.client.get('/api/linkedin').then(data => window.location.replace(data.url))
+  }
+
   handleTwitter = () => {
     this.client
       .post('/api/twitter/reverse')
@@ -43,7 +39,6 @@ class Social extends Component {
   }
 
   responseFacebook = response => {
-    console.log(response)
     this.client
       .post('/api/facebook/storetoken', response)
       .then(info => console.log(info))
@@ -60,7 +55,7 @@ class Social extends Component {
           .then(user => console.log(user))
       }
     }
-    this.client.get('/organizations').then(orgs => {
+    this.client.get('/organizations/row').then(orgs => {
       this.setState(prev => ({ loading: !prev.loading }))
       if (orgs.twitterToken) {
         this.client.get('/api/twitter/identify').then(user => {
@@ -69,7 +64,6 @@ class Social extends Component {
       }
       if (orgs.facebookToken) {
         this.client.get('/api/facebook/identify').then(user => {
-          console.log(user)
           this.setState({ facebookId: user.name })
         })
       }
@@ -84,6 +78,7 @@ class Social extends Component {
   }
 
   render() {
+    console.log(this.state)
     const { twitterId, facebookId, linkedinId, loading } = this.state
     return (
       <div id="social">
@@ -134,7 +129,7 @@ class Social extends Component {
             <div id="linkedin-row">
               <BlueButton
                 icon="upload"
-                onClick={() => window.location.replace(linkedinUrl)}
+                onClick={this.handleLinkedin}
                 style={{ width: '200px', height: '60px' }}
               >
                 Connect to Linkedin
