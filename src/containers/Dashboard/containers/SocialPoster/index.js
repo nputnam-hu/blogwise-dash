@@ -4,6 +4,7 @@ import Posts from './sections/Posts'
 import Client from '../../../../client'
 import './styles.sass'
 import BlueButton from '../../../../components/BlueButton'
+import moment from 'moment'
 
 class SocialPoster extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class SocialPoster extends Component {
       fbsigned: false,
       twsigned: false,
       lnsigned: false,
+      linkedinTokenExpired: false,
       link: '',
       text: '',
     }
@@ -51,6 +53,13 @@ class SocialPoster extends Component {
       if (orgs.linkedinToken) {
         this.setState({ lnsigned: true })
       }
+      if (orgs.linkedinTokenExpirationDate) {
+        if (moment().diff(orgs.linkedinTokenExpirationDate) > 0) {
+          this.setState({
+            linkedinTokenExpired: true,
+          })
+        }
+      }
     })
   }
   handleShare = () => {
@@ -64,6 +73,13 @@ class SocialPoster extends Component {
         linkedin: false,
       })
     })
+  }
+  handleLinkedinToggle = () => {
+    if (this.state.linkedinTokenExpired) {
+      window.alert('Sign in again into your Linkedin account!')
+    } else {
+      this.setState(prev => ({ linkedin: !prev.linkedin }))
+    }
   }
   navigate = () => {
     this.props.history.push('/dashboard/social')
@@ -157,9 +173,7 @@ class SocialPoster extends Component {
                 <div id="linkedin-preview">PREVIEW HERE</div>
                 <Switch
                   checked={linkedin}
-                  onChange={() =>
-                    this.setState(prev => ({ linkedin: !prev.linkedin }))
-                  }
+                  onChange={this.handleLinkedinToggle}
                 />
               </div>
             )}

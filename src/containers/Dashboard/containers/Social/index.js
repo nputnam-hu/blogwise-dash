@@ -5,6 +5,7 @@ import FacebookButton from './components/Facebook'
 import Client from '../../../../client'
 import './styles.sass'
 import BlueButton from '../../../../components/BlueButton'
+import moment from 'moment'
 
 class Social extends Component {
   constructor() {
@@ -14,6 +15,7 @@ class Social extends Component {
       twitterId: '',
       facebookId: '',
       linkedinId: '',
+      linkedinTokenExpired: false,
       loading: true,
     }
   }
@@ -24,7 +26,7 @@ class Social extends Component {
 
   handleLinkedin = () => {
     this.client
-      .get('/api/linkedin')
+      .get('/api/linkedin/generateUrl')
       .then(data => window.location.replace(data.url))
   }
 
@@ -76,12 +78,25 @@ class Social extends Component {
           })
         })
       }
+      if (orgs.linkedinTokenExpirationDate) {
+        if (moment().diff(orgs.linkedinTokenExpirationDate) > 0) {
+          this.setState({
+            linkedinTokenExpired: true,
+          })
+        }
+      }
     })
   }
 
   render() {
     console.log(this.state)
-    const { twitterId, facebookId, linkedinId, loading } = this.state
+    const {
+      twitterId,
+      facebookId,
+      linkedinId,
+      loading,
+      linkedinTokenExpired,
+    } = this.state
     return (
       <div id="social">
         <Button
@@ -136,7 +151,7 @@ class Social extends Component {
               >
                 Connect to Linkedin
               </BlueButton>
-              {linkedinId !== '' && (
+              {linkedinId !== '' && !linkedinTokenExpired && (
                 <p>
                   <strong>Logged in as: </strong>
                   {linkedinId}
