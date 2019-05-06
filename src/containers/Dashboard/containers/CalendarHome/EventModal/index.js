@@ -277,7 +277,7 @@ class EditModal extends Component {
         </div>
         <LeaveModal
           isOpen={this.state.leaveModalOpen}
-          handleClose={this.onClick}
+          handleClose={this.closeLeaveModal}
           discardChanges={this.onClose}
           closeModal={this.closeLeaveModal}
         />

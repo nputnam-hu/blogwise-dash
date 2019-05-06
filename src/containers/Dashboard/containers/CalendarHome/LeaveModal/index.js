@@ -14,13 +14,10 @@ const UnsavedChangesModal = ({
     onClose={closeModal}
     onCancel={handleClose}
     onConfirm={discardChanges}
-    cancelButtonText="Save Changes"
+    cancelButtonText="Cancel"
     confirmButtonText="Discard Changes"
   >
-    <p>
-      You have unsaved changes. Do you want to discard these changes or save
-      them?
-    </p>
+    <p>You have unsaved changes. Do you want to discard these changes?</p>
   </Alert>
 )
 
