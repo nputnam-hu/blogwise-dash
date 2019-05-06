@@ -14,9 +14,9 @@ function mapPostsToFullCalendarEvents(posts) {
     title: post.title,
     id: post.id,
     tags: post.tags,
-    start: post.dueDate,
-    end: post.dueDate,
-    authorId: post.author,
+    start: moment(post.dueDate).local(),
+    end: moment(post.dueDate).local(),
+    authorId: post.authorId,
   }))
 }
 
@@ -40,7 +40,10 @@ class CalendarHome extends Component {
         this.setState({
           tweets,
           headlines,
-          posts,
+          posts: posts.map(({ dueDate, ...rest }) => ({
+            dueDate: moment(dueDate).local(),
+            ...rest,
+          })),
           dataLoading: false,
         })
       })
@@ -63,6 +66,17 @@ class CalendarHome extends Component {
       editEventModalOpen: false,
       eventToEdit: {},
     })
+  }
+  deletePost = async id => {
+    try {
+      await this.client.delete('/calendars/posts', { id })
+      const newPosts = [...this.state.posts.filter(p => p.id !== id)]
+      this.setState({ posts: newPosts })
+      this.closeEventModal()
+    } catch (err) {
+      console.error(err)
+      errorMessage('There was a problem saving your event')
+    }
   }
   submitEvent = async state => {
     try {
@@ -231,6 +245,7 @@ class CalendarHome extends Component {
           defaultState={this.state.eventToEdit}
           submitEvent={this.submitEvent}
           client={this.client}
+          deletePost={this.deletePost}
         />
       </>
     )
