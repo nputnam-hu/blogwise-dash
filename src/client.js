@@ -48,7 +48,7 @@ class Client {
     })
   }
   put(stub, body = {}, options = {}) {
-    if (stub === '/blogs') {
+    if (stub === '/blogs' || stub === '/blogs/googleAnalyticsToken') {
       window.sessionStorage.removeItem('blog')
       store.set('hasUpdates', true)
       return rp({
