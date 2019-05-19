@@ -58,7 +58,7 @@ class Client {
         ...this.defaultOptions,
         ...options,
       }).then(updatedBlog => {
-        store.set('blog', updatedBlog)
+        window.sessionStorage.setItem('blog', JSON.stringify(updatedBlog))
         return updatedBlog
       })
     }

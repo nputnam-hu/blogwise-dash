@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import store from 'store'
 import { InputGroup, FormGroup } from '@blueprintjs/core'
 import QuestionHint from '../../../../../../components/QuestionHint'
 import Client from '../../../../../../client'
@@ -9,9 +8,11 @@ export default class Analytics extends Component {
   constructor(props) {
     super(props)
     this.client = new Client()
-    const { googleAnalyticsToken } = store.get('blog')
+    const blogString = window.sessionStorage.getItem('blog')
+    const blog = blogString && JSON.parse(blogString)
+    const googleAnalyticsToken = blog ? blog.googleAnalyticsToken : ''
     this.state = {
-      googleAnalyticsToken: googleAnalyticsToken || '',
+      googleAnalyticsToken,
     }
   }
 
