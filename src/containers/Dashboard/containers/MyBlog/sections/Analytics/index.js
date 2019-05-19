@@ -8,16 +8,21 @@ export default class Analytics extends Component {
   constructor(props) {
     super(props)
     this.client = new Client()
-    const blogString = window.sessionStorage.getItem('blog')
-    const blog = blogString && JSON.parse(blogString)
-    const googleAnalyticsToken = blog ? blog.googleAnalyticsToken : ''
     this.state = {
-      googleAnalyticsToken,
+      googleAnalyticsToken: '',
     }
   }
 
+  componentDidMount() {
+    this.client
+      .get('/blogs')
+      .then(blog =>
+        this.setState({ googleAnalyticsToken: blog.googleAnalyticsToken }),
+      )
+  }
+
   updateAnalytics = async () =>
-    await this.client.put('/blogs/googleAnalyticsToken', {
+    await this.client.put('/blogs', {
       ...this.state,
     })
 
