@@ -27,6 +27,7 @@ export default class Analytics extends Component {
     })
 
   onChange = e => this.setState({ [e.target.name]: e.target.value })
+
   render() {
     return (
       <div>
@@ -45,6 +46,7 @@ export default class Analytics extends Component {
             name="googleAnalyticsToken"
             defaultValue={this.state.googleAnalyticsToken}
             onChange={this.onChange}
+            onBlur={this.onChange}
             autoFocus
           />
         </FormGroup>
