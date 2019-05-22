@@ -5,6 +5,7 @@ import Tags from './sections/Tags'
 import Appearence from './sections/Appearence'
 import DomainSettings from './sections/DomainSettings'
 import General from './sections/General'
+import Analytics from './sections/Analytics'
 import './styles.sass'
 
 class MyBlog extends Component {
@@ -32,7 +33,8 @@ class MyBlog extends Component {
           <Tab id="second" title="Tags" panel={<Tags />} />
           <Tab id="third" title="Appearance" panel={<Appearence />} />
           <Tab id="fourth" title="Domain Settings" panel={<DomainSettings />} />
-          <Tab id="fifth" title="Favicon" panel={<General />} />
+          <Tab id="fifth" title="Analytics" panel={<Analytics />} />
+          <Tab id="sixth" title="Favicon" panel={<General />} />
         </Tabs>
       </div>
     )
